@@ -1,0 +1,2 @@
+{"timestamp": "2026-03-07T16:19:36.773419+00:00", "level": "INFO", "service": "hospital_a", "event": "client_start", "correlation_id": "4030762e-74e8-4d2f-b558-29a9f104f0cf", "client_id": "hospital_a", "data_partition": 0, "server_address": "fl-server:9080"}
+{"timestamp": "2026-03-07T16:19:36.869931+00:00", "level": "INFO", "service": "hospital_a", "event": "fit_start", "correlation_id": "131f9b36-7104-4ff9-af9a-99765ef5a58b", "round": null, "client_id": "hospital_a", "data_partition": 0, "quality": 0.85, "parameters_received": 8}

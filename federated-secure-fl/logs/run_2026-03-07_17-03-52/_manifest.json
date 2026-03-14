@@ -1,0 +1,8 @@
+{
+  "run_id":         "2026-03-07_17-03-52",
+  "started_at":     "2026-03-07T17:03:52Z",
+  "num_rounds":     "5",
+  "clients":        ["hospital_a", "hospital_b", "hospital_c"],
+  "attack_profile": "none",
+  "notes":          ""
+}

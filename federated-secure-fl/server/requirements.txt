@@ -1,0 +1,8 @@
+flwr==1.8.0
+fastapi
+uvicorn
+python-jose[cryptography]
+httpx
+sqlalchemy
+python-dotenv
+numpy
