@@ -30,30 +30,67 @@
             "directAccessGrantsEnabled": true,
             "serviceAccountsEnabled": true,
             "authorizationServicesEnabled": false,
-            "redirectUris": [
-                "*"
-            ],
-            "webOrigins": [
-                "*"
-            ],
+            "protocol": "openid-connect"
+        },
+        {
+            "clientId": "hospital_a",
+            "enabled": true,
+            "secret": "hospital_a_pass",
+            "serviceAccountsEnabled": true,
             "protocol": "openid-connect",
-            "defaultClientScopes": [
-                "openid",
-                "profile",
-                "email"
-            ],
             "protocolMappers": [
                 {
-                    "name": "realm-roles",
+                    "name": "client-id-mapper",
                     "protocol": "openid-connect",
-                    "protocolMapper": "oidc-usermodel-realm-role-mapper",
+                    "protocolMapper": "oidc-hardcoded-claim-mapper",
                     "config": {
-                        "claim.name": "realm_access.roles",
+                        "claim.name": "clientId",
+                        "claim.value": "hospital_a",
                         "jsonType.label": "String",
-                        "multivalued": "true",
-                        "id.token.claim": "true",
                         "access.token.claim": "true",
-                        "userinfo.token.claim": "true"
+                        "id.token.claim": "true"
+                    }
+                }
+            ]
+        },
+        {
+            "clientId": "hospital_b",
+            "enabled": true,
+            "secret": "hospital_b_pass",
+            "serviceAccountsEnabled": true,
+            "protocol": "openid-connect",
+            "protocolMappers": [
+                {
+                    "name": "client-id-mapper",
+                    "protocol": "openid-connect",
+                    "protocolMapper": "oidc-hardcoded-claim-mapper",
+                    "config": {
+                        "claim.name": "clientId",
+                        "claim.value": "hospital_b",
+                        "jsonType.label": "String",
+                        "access.token.claim": "true",
+                        "id.token.claim": "true"
+                    }
+                }
+            ]
+        },
+        {
+            "clientId": "hospital_c",
+            "enabled": true,
+            "secret": "hospital_c_pass",
+            "serviceAccountsEnabled": true,
+            "protocol": "openid-connect",
+            "protocolMappers": [
+                {
+                    "name": "client-id-mapper",
+                    "protocol": "openid-connect",
+                    "protocolMapper": "oidc-hardcoded-claim-mapper",
+                    "config": {
+                        "claim.name": "clientId",
+                        "claim.value": "hospital_c",
+                        "jsonType.label": "String",
+                        "access.token.claim": "true",
+                        "id.token.claim": "true"
                     }
                 }
             ]
@@ -61,50 +98,9 @@
     ],
     "users": [
         {
-            "username": "hospital_a",
-            "enabled": true,
-            "credentials": [
-                {
-                    "type": "password",
-                    "value": "hospital_a_pass",
-                    "temporary": false
-                }
-            ],
-            "realmRoles": [
-                "trainer"
-            ]
-        },
-        {
-            "username": "hospital_b",
-            "enabled": true,
-            "credentials": [
-                {
-                    "type": "password",
-                    "value": "hospital_b_pass",
-                    "temporary": false
-                }
-            ],
-            "realmRoles": [
-                "trainer"
-            ]
-        },
-        {
-            "username": "hospital_c",
-            "enabled": true,
-            "credentials": [
-                {
-                    "type": "password",
-                    "value": "hospital_c_pass",
-                    "temporary": false
-                }
-            ],
-            "realmRoles": [
-                "trainer"
-            ]
-        },
-        {
             "username": "fl_admin",
             "enabled": true,
+            "emailVerified": true,
             "credentials": [
                 {
                     "type": "password",
@@ -112,6 +108,7 @@
                     "temporary": false
                 }
             ],
+            "requiredActions": [],
             "realmRoles": [
                 "admin"
             ]

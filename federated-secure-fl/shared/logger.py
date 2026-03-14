@@ -10,18 +10,27 @@ class JSONLineHandler(logging.Handler):
         self._file = open(filepath, "a", buffering=1)
 
     def emit(self, record):
-        entry = {
-            "timestamp":      datetime.now(timezone.utc).isoformat(),
-            "level":          record.levelname,
-            "service":        record.name,
-            "event":          record.getMessage(),
-            "correlation_id": getattr(record, "correlation_id", None),
-            **getattr(record, "data", {}),
-        }
-        self._file.write(json.dumps(entry) + "\n")
+        if self._file.closed:
+            return
+        try:
+            entry = {
+                "timestamp":      datetime.now(timezone.utc).isoformat(),
+                "level":          record.levelname,
+                "service":        record.name,
+                "event":          record.getMessage(),
+                "correlation_id": getattr(record, "correlation_id", None),
+                **getattr(record, "data", {}),
+            }
+            self._file.write(json.dumps(entry) + "\n")
+            self._file.flush()
+        except (OSError, ValueError):
+            # Handle cases where file might have been closed during write
+            pass
 
     def close(self):
-        self._file.close()
+        if not self._file.closed:
+            self._file.flush()
+            self._file.close()
         super().close()
 
 

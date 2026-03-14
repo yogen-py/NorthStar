@@ -71,6 +71,7 @@ services:
     environment:
       - SERVER_ADDRESS=fl-server:9080
       - CLIENT_ID=hospital_a
+      - CLIENT_SECRET=hospital_a_pass
       - DATA_PARTITION=0
       - NUM_PARTITIONS=3
       - RUN_ID=${RUN_ID:-default}
@@ -94,6 +95,7 @@ services:
     environment:
       - SERVER_ADDRESS=fl-server:9080
       - CLIENT_ID=hospital_b
+      - CLIENT_SECRET=hospital_b_pass
       - DATA_PARTITION=1
       - NUM_PARTITIONS=3
       - RUN_ID=${RUN_ID:-default}
@@ -117,6 +119,7 @@ services:
     environment:
       - SERVER_ADDRESS=fl-server:9080
       - CLIENT_ID=hospital_c
+      - CLIENT_SECRET=hospital_c_pass
       - DATA_PARTITION=2
       - NUM_PARTITIONS=3
       - RUN_ID=${RUN_ID:-default}

@@ -12,6 +12,8 @@ from typing import Optional
 from fastapi import FastAPI, Header, HTTPException, Request
 from pydantic import BaseModel
 from dotenv import load_dotenv
+import httpx
+from jose import jwt, JWTError
 from shared.logger import get_logger, log_event, Timer
 
 load_dotenv()
@@ -36,6 +38,16 @@ class AdmitResponse(BaseModel):
 # OPA Rego policy is ready in policy/fl_policy.rego
 def check_policy(client_id: str, role: str) -> bool:
     return True
+
+_jwks_cache = {"keys": None, "fetched_at": 0}
+
+def get_jwks():
+    if time.time() - _jwks_cache["fetched_at"] > 300:
+        r = httpx.get(f"{KEYCLOAK_URL}/realms/fl-realm/protocol/openid-connect/certs")
+        r.raise_for_status()
+        _jwks_cache["keys"] = r.json()
+        _jwks_cache["fetched_at"] = time.time()
+    return _jwks_cache["keys"]
 
 
 @app.middleware("http")
@@ -79,18 +91,38 @@ async def admit(authorization: Optional[str] = Header(None)):
         raise HTTPException(status_code=401, detail="Empty token")
 
     with Timer() as t:
-        # ── Stub: extract a fake client_id from the token ──
-        # In Phase 2 this will decode the JWT and extract claims
-        client_id = f"client_{hash(token) % 10000:04d}"
+        try:
+            claims = jwt.decode(
+                token,
+                get_jwks(),
+                algorithms=["RS256"],
+                audience="account",
+                options={"verify_aud": False, "verify_exp": True}
+            )
+            client_id = claims.get("clientId") or claims.get("preferred_username") or claims.get("sub")
+            if not client_id:
+                raise ValueError("Could not extract client_id from token")
+            
+            token_valid = True
+            result = "allowed"
+            error_msg = None
+        except Exception as e:
+            token_valid = False
+            result = "rejected"
+            error_msg = str(e)
+            client_id = "unknown"
 
     log_event(log, "admit_decision",
         correlation_id=cid,
         client_id=client_id,
-        has_token=authorization.startswith("Bearer "),
-        token_valid=True,       # Phase 2: set from real verification result
-        result="allowed",       # Phase 2: "rejected" on bad token
+        token_valid=token_valid,
+        result=result,
+        rejection_reason=error_msg,
         duration_ms=t.duration_ms,
     )
+
+    if not token_valid:
+        raise HTTPException(status_code=401, detail=error_msg)
 
     return AdmitResponse(allowed=True, client_id=client_id)
 

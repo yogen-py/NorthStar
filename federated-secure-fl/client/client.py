@@ -7,8 +7,10 @@ No PyTorch dependency — uses numpy arrays as fake model weights.
 import os
 import random
 import time
+import sys
 import uuid
 from typing import Dict, List, Tuple
+import httpx
 
 import flwr as fl
 from flwr.common import Scalar
@@ -22,8 +24,11 @@ load_dotenv()
 # ───────────────────────── Configuration ─────────────────────────
 SERVER_ADDRESS = os.getenv("SERVER_ADDRESS", "fl-server:9080")
 CLIENT_ID = os.getenv("CLIENT_ID", "default_client")
+CLIENT_SECRET = os.getenv("CLIENT_SECRET", "")
 DATA_PARTITION = int(os.getenv("DATA_PARTITION", "0"))
 NUM_PARTITIONS = int(os.getenv("NUM_PARTITIONS", "3"))
+KEYCLOAK_URL = os.getenv("KEYCLOAK_URL", "http://keycloak:8080")
+MIDDLEWARE_URL = os.getenv("MIDDLEWARE_URL", "http://fl-middleware:8000")
 
 # ───────────────────────── Logging ───────────────────────────────
 log = get_logger(os.getenv("CLIENT_ID", "client"))
@@ -133,11 +138,61 @@ class MockMNISTClient(fl.client.NumPyClient):
 
         return float(eval_loss), num_examples, {"accuracy": float(eval_acc)}
 
+# ───────────────────────── Admission ────────────────────────────
+
+def get_keycloak_token() -> str:
+    """Fetch JWT from Keycloak using client_credentials grant."""
+    response = httpx.post(
+        f"{KEYCLOAK_URL}/realms/fl-realm/protocol/openid-connect/token",
+        data={
+            "grant_type": "client_credentials",
+            "client_id": CLIENT_ID,
+            "client_secret": CLIENT_SECRET
+        },
+        timeout=10.0
+    )
+    response.raise_for_status()
+    return response.json()["access_token"]
+
+
+def request_admission(token: str) -> bool:
+    """Request admission via the FastAPI middleware."""
+    response = httpx.post(
+        f"{MIDDLEWARE_URL}/admit",
+        headers={"Authorization": f"Bearer {token}"},
+        timeout=10.0
+    )
+    response.raise_for_status()
+    data = response.json()
+    return data.get("allowed") is True
 
 # ───────────────────────── Main ─────────────────────────────────
 
 def main() -> None:
     """Start the Flower client."""
+    MAX_RETRIES = 10
+    RETRY_DELAY = 5  # seconds
+
+    for attempt in range(MAX_RETRIES):
+        try:
+            token = get_keycloak_token()
+            admitted = request_admission(token)
+            if admitted:
+                log_event(log, "admission_success",
+                    client_id=CLIENT_ID,
+                    token_snippet=token[:10] + "...")
+                break
+        except Exception as e:
+            log_event(log, "admission_retry",
+                attempt=attempt + 1,
+                error=str(e))
+            time.sleep(RETRY_DELAY)
+    else:
+        log_event(log, "admission_failed",
+            client_id=CLIENT_ID,
+            reason="max retries exceeded")
+        sys.exit(1)
+
     log_event(log, "client_start",
         client_id=CLIENT_ID,
         data_partition=DATA_PARTITION,

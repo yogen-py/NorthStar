@@ -14,5 +14,5 @@ cat > logs/run_${RUN_ID}/_manifest.json << EOF
 EOF
 
 echo "▶ Run ${RUN_ID} starting..."
-cd infra && docker compose up --build
+cd infra && docker compose down -v && docker compose up --build
 echo "✅ Run ${RUN_ID} complete. Logs → logs/run_${RUN_ID}/"
