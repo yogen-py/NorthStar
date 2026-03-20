@@ -14,12 +14,17 @@ services:
     container_name: fl-server
     ports:
       - "9080:9080"
+      - "9081:9081"
     environment:
       - SERVER_ADDRESS=0.0.0.0:9080
       - FLOWER_NUM_ROUNDS=${FLOWER_NUM_ROUNDS:-5}
       - DB_URL=${DB_URL:-sqlite:///./trust.db}
       - RUN_ID=${RUN_ID:-default}
       - LOG_DIR=/app/logs
+      - HITL_ENABLED=${HITL_ENABLED:-true}
+      - GATE_PORT=9081
+    stdin_open: true
+    tty: true
     volumes:
       - ../logs:/app/logs
       - ../shared:/app/shared:ro
@@ -48,6 +53,7 @@ services:
       - "8000:8000"
     environment:
       - KEYCLOAK_URL=${KEYCLOAK_URL:-http://keycloak:8080}
+      - OPA_URL=${OPA_URL:-http://opa:8181}
       - DB_URL=${DB_URL:-sqlite:///./trust.db}
       - RUN_ID=${RUN_ID:-default}
       - LOG_DIR=/app/logs
@@ -58,6 +64,8 @@ services:
       - fl-net
     depends_on:
       keycloak:
+        condition: service_healthy
+      opa:
         condition: service_healthy
     restart: "no"
 
@@ -163,6 +171,27 @@ services:
     profiles:
       - attack
     restart: "no"
+
+
+  #  OPA (Policy Decision Point)
+  opa:
+    image: openpolicyagent/opa:latest-debug
+    container_name: opa
+    networks: [fl-net]
+    command: >
+      run --server --addr :8181
+      /policies/fl_policy.rego
+      /policies/revoked_clients.json
+    volumes:
+      - ../policy:/policies
+    ports:
+      - "8181:8181"
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:8181/health"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+      start_period: 5s
 
 
   #  Keycloak (Identity Provider) 

@@ -14,5 +14,21 @@ cat > logs/run_${RUN_ID}/_manifest.json << EOF
 EOF
 
 echo "▶ Run ${RUN_ID} starting..."
+
+if [ "${HITL_ENABLED:-true}" = "true" ]; then
+  echo ""
+  echo "⚠️  Human-in-the-Loop mode is ACTIVE."
+  echo "    After each round, use these commands from"
+  echo "    a NEW terminal to control the experiment:"
+  echo ""
+  echo "    curl -X POST http://localhost:9081/gate/approve"
+  echo "    curl -X POST http://localhost:9081/gate/reject"
+  echo "    curl -X POST http://localhost:9081/gate/stop"
+  echo ""
+  echo "    Check round status anytime:"
+  echo "    curl http://localhost:9081/gate/status"
+  echo ""
+fi
+
 cd infra && docker compose down -v && docker compose up --build
 echo "✅ Run ${RUN_ID} complete. Logs → logs/run_${RUN_ID}/"

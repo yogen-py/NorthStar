@@ -112,6 +112,24 @@
             "realmRoles": [
                 "admin"
             ]
+        },
+        {
+            "username": "service-account-hospital_a",
+            "enabled": true,
+            "serviceAccountClientId": "hospital_a",
+            "realmRoles": [ "trainer" ]
+        },
+        {
+            "username": "service-account-hospital_b",
+            "enabled": true,
+            "serviceAccountClientId": "hospital_b",
+            "realmRoles": [ "trainer" ]
+        },
+        {
+            "username": "service-account-hospital_c",
+            "enabled": true,
+            "serviceAccountClientId": "hospital_c",
+            "realmRoles": [ "trainer" ]
         }
     ]
 }
