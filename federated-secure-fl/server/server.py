@@ -15,6 +15,8 @@ import numpy as np
 from dotenv import load_dotenv
 
 from shared.logger import get_logger, log_event, Timer
+from gate import RoundGate
+from input_handler import start_input_listener
 
 load_dotenv()
 
@@ -24,6 +26,9 @@ NUM_ROUNDS = int(os.getenv("FLOWER_NUM_ROUNDS", "5"))
 
 # ───────────────────────── Logging ───────────────────────────────
 log = get_logger("server")
+
+HITL_ENABLED = os.getenv("HITL_ENABLED", "true").lower() == "true"
+gate = RoundGate(enabled=HITL_ENABLED)
 
 
 # ───────────────────────── Strategy callbacks ────────────────────
@@ -53,6 +58,10 @@ def evaluate_metrics_aggregation(metrics: List[Tuple[int, Metrics]]) -> Metrics:
 class LoggingFedAvg(fl.server.strategy.FedAvg):
     """FedAvg with per-round structured JSON logging via shared logger."""
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self._round_clients = []
+
     def aggregate_fit(
         self,
         server_round: int,
@@ -69,6 +78,7 @@ class LoggingFedAvg(fl.server.strategy.FedAvg):
             num_failures=len(failures),
         )
 
+        self._round_clients = []
         for _, fit_res in results:
             log_event(log, "weights_received",
                 correlation_id=cid,
@@ -78,6 +88,13 @@ class LoggingFedAvg(fl.server.strategy.FedAvg):
                 update_norm=fit_res.metrics.get("update_norm"),
                 train_loss=fit_res.metrics.get("train_loss"),
             )
+            self._round_clients.append({
+                "client_id":   fit_res.metrics.get("client_id", "unknown"),
+                "update_norm": round(fit_res.metrics.get("update_norm", 0.0), 4),
+                "train_loss":  round(fit_res.metrics.get("train_loss", 0.0), 4),
+                "trust_score": 0.8,
+                # TODO Phase 4 — replace with TrustEngine.get_score(client_id)
+            })
 
         for failure in failures:
             log_event(log, "client_failure",
@@ -118,6 +135,33 @@ class LoggingFedAvg(fl.server.strategy.FedAvg):
                 num_failures=len(failures),
                 duration_ms=t.duration_ms,
             )
+
+            summary = {
+                "round":           server_round,
+                "aggregated_loss": round(loss, 6),
+                "num_clients":     len(results),
+                "clients":         self._round_clients,
+            }
+            decision = gate.wait_for_approval(summary)
+
+            log_event(log, "round_gate_decision",
+                round=server_round,
+                decision=decision,
+                aggregated_loss=summary["aggregated_loss"],
+            )
+
+            if decision == "stop":
+                log_event(log, "experiment_stopped",
+                    round=server_round,
+                    reason="operator_halt")
+                raise SystemExit("Experiment stopped by operator.")
+
+            if decision == "reject":
+                log_event(log, "round_rejected",
+                    round=server_round,
+                    reason="operator_rejected")
+                return None, {}
+
         return aggregated
 
 
@@ -141,6 +185,7 @@ def main() -> None:
         address="0.0.0.0:9080",
         num_rounds=int(os.getenv("FLOWER_NUM_ROUNDS", "5")),
     )
+    gate.start_http_server()
     fl.server.start_server(
         server_address=SERVER_ADDRESS,
         config=fl.server.ServerConfig(num_rounds=NUM_ROUNDS),

@@ -33,11 +33,34 @@ class AdmitResponse(BaseModel):
     client_id: str
 
 
-# TODO Phase 3 — replace with real OPA /v1/data/fl/allow call
-# Input will be JWT claims: {client_id, role}
-# OPA Rego policy is ready in policy/fl_policy.rego
+OPA_URL = os.getenv("OPA_URL", "http://opa:8181")
+
 def check_policy(client_id: str, role: str) -> bool:
-    return True
+    """
+    Calls OPA PDP to evaluate fl/allow policy.
+    Input: {client_id, role}
+    Returns: True if allowed, False if denied.
+    """
+    try:
+        payload = {
+            "input": {
+                "client_id": client_id,
+                "role": role,
+            }
+        }
+        r = httpx.post(
+            f"{OPA_URL}/v1/data/fl/allow",
+            json=payload,
+            timeout=5.0,
+        )
+        result = r.json().get("result", False)
+        return bool(result)
+    except Exception as e:
+        log_event(log, "policy_check_error",
+            client_id=client_id,
+            error=str(e),
+        )
+        return False   # fail closed — deny on error
 
 _jwks_cache = {"keys": None, "fetched_at": 0}
 
@@ -104,25 +127,48 @@ async def admit(authorization: Optional[str] = Header(None)):
                 raise ValueError("Could not extract client_id from token")
             
             token_valid = True
-            result = "allowed"
-            error_msg = None
+            
+            role = claims.get("realm_access", {}).get("roles", [])
+            role_str = "trainer" if "trainer" in role else "unknown"
         except Exception as e:
             token_valid = False
-            result = "rejected"
             error_msg = str(e)
             client_id = "unknown"
+
+    if not token_valid:
+        log_event(log, "admit_decision",
+            correlation_id=cid,
+            client_id=client_id,
+            token_valid=False,
+            result="rejected",
+            rejection_reason=error_msg,
+            duration_ms=t.duration_ms,
+        )
+        raise HTTPException(status_code=401, detail=error_msg)
+
+    policy_allowed = check_policy(client_id, role_str)
+
+    if not policy_allowed:
+        log_event(log, "admit_decision",
+            correlation_id=cid,
+            client_id=client_id,
+            token_valid=True,
+            result="rejected",
+            rejection_reason="policy_denied",
+            duration_ms=t.duration_ms,
+        )
+        raise HTTPException(status_code=403, detail="Policy denied: client not authorized")
 
     log_event(log, "admit_decision",
         correlation_id=cid,
         client_id=client_id,
-        token_valid=token_valid,
-        result=result,
-        rejection_reason=error_msg,
+        token_valid=True,
+        result="allowed",
+        rejection_reason=None,
         duration_ms=t.duration_ms,
+        policy_checked=True,
+        policy_result="allowed",
     )
-
-    if not token_valid:
-        raise HTTPException(status_code=401, detail=error_msg)
 
     return AdmitResponse(allowed=True, client_id=client_id)
 
