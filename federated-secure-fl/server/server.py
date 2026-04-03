@@ -1,6 +1,6 @@
 """
-Flower Federated Learning Server — Phase 0
-Uses FedAvg strategy with structured JSON logging via shared/logger.py.
+Flower Federated Learning Server — Phase 4
+Uses FedAvg strategy with structured JSON logging and Trust Engine integration.
 """
 
 import os
@@ -17,18 +17,26 @@ from dotenv import load_dotenv
 from shared.logger import get_logger, log_event, Timer
 from gate import RoundGate
 from input_handler import start_input_listener
+from trust.scoring import TrustEngine
 
 load_dotenv()
 
 # ───────────────────────── Configuration ─────────────────────────
 SERVER_ADDRESS = os.getenv("SERVER_ADDRESS", "0.0.0.0:9080")
-NUM_ROUNDS = int(os.getenv("FLOWER_NUM_ROUNDS", "5"))
+NUM_ROUNDS     = int(os.getenv("FLOWER_NUM_ROUNDS", "5"))
+DB_URL         = os.getenv("DB_URL", "sqlite:///./trust.db")
+WARMUP_ROUNDS  = int(os.getenv("WARMUP_ROUNDS", "3"))
 
 # ───────────────────────── Logging ───────────────────────────────
 log = get_logger("server")
 
 HITL_ENABLED = os.getenv("HITL_ENABLED", "true").lower() == "true"
 gate = RoundGate(enabled=HITL_ENABLED)
+
+# ───────────────────────── Trust Engine (D1) ─────────────────────
+# Module-level; shared across strategy and Flask route.
+current_round: int = 0
+trust_engine = TrustEngine(db_url=DB_URL)
 
 
 # ───────────────────────── Strategy callbacks ────────────────────
@@ -56,11 +64,14 @@ def evaluate_metrics_aggregation(metrics: List[Tuple[int, Metrics]]) -> Metrics:
 
 
 class LoggingFedAvg(fl.server.strategy.FedAvg):
-    """FedAvg with per-round structured JSON logging via shared logger."""
+    """FedAvg with per-round structured JSON logging and Trust Engine (Phase 4)."""
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+    def __init__(self, trust_engine: TrustEngine, **kwargs):
+        super().__init__(**kwargs)
         self._round_clients = []
+        # D2: inject TrustEngine and track previous round participants for dropout
+        self.trust_engine = trust_engine
+        self._previous_round_client_ids: set = set()
 
     def aggregate_fit(
         self,
@@ -78,23 +89,64 @@ class LoggingFedAvg(fl.server.strategy.FedAvg):
             num_failures=len(failures),
         )
 
+        # D3: track clients in this round for dropout detection
+        current_round_client_ids: set = set()
+
+        # D4: Collect metrics for each client to display in HITL gate
+        client_metrics = {}
+
         self._round_clients = []
-        for _, fit_res in results:
+        for client_proxy, fit_res in results:
+            client_id  = str(fit_res.metrics.get("client_id") or client_proxy.cid)
+            update_norm = float(fit_res.metrics.get("update_norm", 0.0))
+            train_loss  = float(fit_res.metrics.get("train_loss", 0.0))
+            client_metrics[client_id] = {"update_norm": update_norm, "train_loss": train_loss}
+
+            current_round_client_ids.add(client_id)
+
             log_event(log, "weights_received",
                 correlation_id=cid,
                 round=server_round,
-                client_id=fit_res.metrics.get("client_id"),
+                client_id=client_id,
                 num_examples=fit_res.num_examples,
-                update_norm=fit_res.metrics.get("update_norm"),
-                train_loss=fit_res.metrics.get("train_loss"),
+                update_norm=update_norm,
+                train_loss=train_loss,
             )
-            self._round_clients.append({
-                "client_id":   fit_res.metrics.get("client_id", "unknown"),
-                "update_norm": round(fit_res.metrics.get("update_norm", 0.0), 4),
-                "train_loss":  round(fit_res.metrics.get("train_loss", 0.0), 4),
-                "trust_score": 0.8,
-                # TODO Phase 4 — replace with TrustEngine.get_score(client_id)
+
+            # D3: update trust score immediately after processing weights
+            self.trust_engine.update_score(client_id, {
+                "round":       server_round,
+                "update_norm": update_norm,
+                "train_loss":  train_loss,
+                "dropout":     False,
             })
+
+        # D3: Dropout detection — clients in previous round but not this one
+        for dropped_id in (self._previous_round_client_ids - current_round_client_ids):
+            self.trust_engine.update_score(dropped_id, {
+                "round":       server_round,
+                "update_norm": 0.0,
+                "train_loss":  0.0,
+                "dropout":     True,
+            })
+        self._previous_round_client_ids = current_round_client_ids
+
+        # D3: Update module-level round counter (used by policy-warning route)
+        global current_round
+        current_round = server_round
+
+        # D3: Build _round_clients with live trust scores (0.8 during warmup)
+        self._round_clients = [
+            {
+                "client_id":   cid_,
+                "update_norm": client_metrics[cid_]["update_norm"],
+                "train_loss":  client_metrics[cid_]["train_loss"],
+                "trust_score": self.trust_engine.get_score(
+                    cid_, current_round=server_round
+                ),
+            }
+            for cid_ in current_round_client_ids
+        ]
 
         for failure in failures:
             log_event(log, "client_failure",
@@ -168,8 +220,9 @@ class LoggingFedAvg(fl.server.strategy.FedAvg):
 # ───────────────────────── Main ─────────────────────────────────
 
 def create_strategy() -> LoggingFedAvg:
-    """Create and return the FL strategy."""
+    """Create and return the FL strategy with Trust Engine injected."""
     return LoggingFedAvg(
+        trust_engine=trust_engine,
         min_fit_clients=3,
         min_evaluate_clients=3,
         min_available_clients=3,
@@ -180,11 +233,44 @@ def create_strategy() -> LoggingFedAvg:
 
 def main() -> None:
     """Start the Flower server."""
+    # D1: init Trust Engine DB before starting the server
+    trust_engine.init_db()
+
     strategy = create_strategy()
     log_event(log, "server_start",
         address="0.0.0.0:9080",
         num_rounds=int(os.getenv("FLOWER_NUM_ROUNDS", "5")),
     )
+
+    # E1: Register /trust/policy-warning route on the existing FastAPI gate app
+    from fastapi import Request as FRequest
+    from fastapi.responses import JSONResponse
+
+    @gate._app.post("/trust/policy-warning")
+    async def policy_warning_route(req: FRequest):
+        data = await req.json()
+        if not data or "client_id" not in data:
+            return JSONResponse({"error": "client_id required"}, status_code=400)
+
+        cw_client_id = data["client_id"]
+        reason       = data.get("reason", "policy_denied")
+
+        trust_engine.update_score(cw_client_id, {
+            "round":          current_round,
+            "update_norm":    0.0,
+            "train_loss":     0.0,
+            "dropout":        False,
+            "policy_warning": True,
+        })
+
+        log_event(log, "policy_warning_applied",
+            client_id=cw_client_id,
+            reason=reason,
+            round=current_round,
+        )
+
+        return JSONResponse({"status": "ok", "client_id": cw_client_id})
+
     gate.start_http_server()
     fl.server.start_server(
         server_address=SERVER_ADDRESS,

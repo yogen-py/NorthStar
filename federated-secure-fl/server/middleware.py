@@ -13,6 +13,7 @@ from fastapi import FastAPI, Header, HTTPException, Request
 from pydantic import BaseModel
 from dotenv import load_dotenv
 import httpx
+import requests
 from jose import jwt, JWTError
 from shared.logger import get_logger, log_event, Timer
 
@@ -157,6 +158,17 @@ async def admit(authorization: Optional[str] = Header(None)):
             rejection_reason="policy_denied",
             duration_ms=t.duration_ms,
         )
+        # E2: Non-blocking signal to Trust Engine on policy denial.
+        # Fire-and-forget — never block, never raise, never retry.
+        _server_host = os.getenv("SERVER_HOST", "server")
+        try:
+            requests.post(
+                f"http://{_server_host}:9081/trust/policy-warning",
+                json={"client_id": client_id, "reason": "policy_denied"},
+                timeout=2,
+            )
+        except Exception:
+            pass
         raise HTTPException(status_code=403, detail="Policy denied: client not authorized")
 
     log_event(log, "admit_decision",

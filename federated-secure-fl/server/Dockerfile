@@ -7,5 +7,6 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY server/ .
 COPY shared/ ./shared/
+COPY trust/ ./trust/
 
 CMD ["python", "server.py"]

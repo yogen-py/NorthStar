@@ -19,6 +19,8 @@ services:
       - SERVER_ADDRESS=0.0.0.0:9080
       - FLOWER_NUM_ROUNDS=${FLOWER_NUM_ROUNDS:-5}
       - DB_URL=${DB_URL:-sqlite:///./trust.db}
+      - WARMUP_ROUNDS=${WARMUP_ROUNDS:-3}
+      - LOW_LOSS_THRESHOLD=${LOW_LOSS_THRESHOLD:-0.3}
       - RUN_ID=${RUN_ID:-default}
       - LOG_DIR=/app/logs
       - HITL_ENABLED=${HITL_ENABLED:-true}
@@ -54,6 +56,7 @@ services:
     environment:
       - KEYCLOAK_URL=${KEYCLOAK_URL:-http://keycloak:8080}
       - OPA_URL=${OPA_URL:-http://opa:8181}
+      - SERVER_HOST=fl-server
       - DB_URL=${DB_URL:-sqlite:///./trust.db}
       - RUN_ID=${RUN_ID:-default}
       - LOG_DIR=/app/logs

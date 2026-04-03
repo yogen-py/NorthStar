@@ -1,147 +1,219 @@
 """
-Trust Score Engine — Phase 0
-Computes and updates client trust scores using Exponential Moving Average (EMA).
+Trust Score Engine — Phase 4
+Persistent, rule-based reputation engine using SQLite and EMA smoothing.
+Designed per phase4_context.md specification — do not modify formulas.
 """
 
-import time
-from typing import Dict, Optional
+import os
+import sqlite3
+from pathlib import Path
 
 from shared.logger import get_logger, log_event
 
 # ───────────────────────── Logging ───────────────────────────────
+# log_event signature: log_event(logger: logging.Logger, event: str, **kwargs)
 log = get_logger("trust")
 
-# ───────────────────────── Constants ─────────────────────────────
-DEFAULT_SCORE = 0.8
-MIN_SCORE = 0.1
-MAX_SCORE = 1.0
-EMA_ALPHA = 0.3  # weight for current observation
-
-# Observation penalty/bonus values
-OBSERVATION_WEIGHTS: Dict[str, float] = {
-    # Penalties (lower is worse)
-    "abnormal_norm": 0.2,
-    "dropout": 0.3,
-    "policy_warning": 0.4,
-    # Bonuses (higher is better)
-    "consistent_participation": 0.9,
-}
-
-_PENALTY_EVENTS = {"abnormal_norm", "dropout", "policy_warning"}
-_BONUS_EVENTS   = {"consistent_participation"}
+# ───────────────────────── Env Vars ──────────────────────────────
+WARMUP_ROUNDS      = int(os.getenv("WARMUP_ROUNDS", "3"))
+LOW_LOSS_THRESHOLD = float(os.getenv("LOW_LOSS_THRESHOLD", "0.3"))
 
 
 class TrustEngine:
     """
-    Trust score engine using EMA (Exponential Moving Average).
+    Trust score engine using SQLite persistence + EMA smoothing.
 
-    Formula: T_new = EMA_ALPHA * O_current + (1 - EMA_ALPHA) * T_prev
-    Scores are clamped to [MIN_SCORE, MAX_SCORE].
+    Formula: T_new = 0.3 * observation_score + 0.7 * T_prev
+    Scores are clamped to [0.1, 1.0].
     """
 
-    def __init__(self) -> None:
-        self._scores: Dict[str, float] = {}
-        self._metadata: Dict[str, Dict] = {}
+    # Path to schema.sql, relative to this file
+    _SCHEMA_PATH = Path(__file__).parent / "schema.sql"
 
-    def get_score(self, client_id: str) -> float:
+    def __init__(self, db_url: str = "sqlite:///./trust.db") -> None:
+        self.db_url = db_url
+        # GAP 1: parse sqlite:/// prefix into a plain file path
+        prefix = "sqlite:///"
+        if db_url.startswith(prefix):
+            self._db_path = db_url[len(prefix):]
+        else:
+            self._db_path = db_url
+
+    def _connect(self) -> sqlite3.Connection:
+        """Return a sqlite3 connection with row_factory set."""
+        conn = sqlite3.connect(self._db_path)
+        conn.row_factory = sqlite3.Row
+        return conn
+
+    def init_db(self) -> None:
         """
-        Get the current trust score for a client.
-
-        Args:
-            client_id: Unique identifier for the client.
-
-        Returns:
-            Current trust score (defaults to DEFAULT_SCORE for new clients).
+        GAP 2: Execute schema DDL from trust/schema.sql.
+        Idempotent — safe to call multiple times.
         """
-        return self._scores.get(client_id, DEFAULT_SCORE)
+        ddl = self._SCHEMA_PATH.read_text()
+        conn = self._connect()
+        try:
+            conn.executescript(ddl)
+            conn.commit()
+        finally:
+            conn.close()
+        log_event(log, "trust_db_initialized", db_path=self._db_path)
 
-    def update_score(self, client_id: str, observation: dict) -> float:
+    def get_score(self, client_id: str, current_round: int = 0) -> float:
         """
-        Update a client's trust score based on an observation.
+        GAP 3: Return trust score for a client.
 
-        Args:
-            client_id: Unique identifier for the client.
-            observation: Dict with at least an 'event' key matching
-                         one of the OBSERVATION_WEIGHTS keys.
-
-        Returns:
-            Updated trust score.
+        Returns 0.8 during warmup (rounds 1-WARMUP_ROUNDS inclusive).
+        Returns DB value post-warmup. Defaults to 0.8 for unknown clients.
+        Return type: float. Always. Never dict, never None.
         """
-        old_score = self.get_score(client_id)
-        event = observation.get("event", "")
+        # STEP 1: warmup guard
+        if current_round <= WARMUP_ROUNDS:
+            return 0.8
 
-        if event not in OBSERVATION_WEIGHTS:
-            log.warning(f"Unknown observation event: {event}")
-            return old_score
+        # STEP 2: fetch from DB
+        conn = self._connect()
+        try:
+            row = conn.execute(
+                "SELECT trust_score FROM client_trust WHERE client_id = ?",
+                (client_id,)
+            ).fetchone()
+        finally:
+            conn.close()
 
-        observation_value = OBSERVATION_WEIGHTS[event]
+        if row is None:
+            return 0.8
+        return float(row["trust_score"])
 
-        # EMA formula: T_new = alpha * O_current + (1 - alpha) * T_prev
-        new_score = EMA_ALPHA * observation_value + (1 - EMA_ALPHA) * old_score
-        new_score = max(MIN_SCORE, min(MAX_SCORE, new_score))
+    def update_score(self, client_id: str, observation: dict) -> None:
+        """
+        GAP 4: Full update_score implementation.
 
-        self._scores[client_id] = new_score
+        Applies Rules 1-5 from phase4_context.md to compute observation_score,
+        then EMA smooths it into the persistent trust_score.
+        """
+        conn = self._connect()
+        try:
+            # STEP 1: Fetch or insert client row
+            conn.execute(
+                """
+                INSERT OR IGNORE INTO client_trust
+                  (client_id, trust_score, anomaly_count,
+                   rounds_participated, baseline_norm, last_update)
+                VALUES (?, 0.8, 0, 0, 0.0, datetime('now'))
+                """,
+                (client_id,)
+            )
+            conn.commit()
 
-        # Track metadata
-        if client_id not in self._metadata:
-            self._metadata[client_id] = {
-                "anomaly_count": 0,
-                "rounds_participated": 0,
-            }
+            row = conn.execute(
+                """
+                SELECT trust_score, anomaly_count, rounds_participated, baseline_norm
+                FROM client_trust WHERE client_id = ?
+                """,
+                (client_id,)
+            ).fetchone()
 
-        meta = self._metadata[client_id]
-        meta["last_update"] = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
+            T_prev              = float(row["trust_score"])
+            anomaly_count       = int(row["anomaly_count"])
+            rounds_participated = int(row["rounds_participated"])
+            baseline_norm       = float(row["baseline_norm"])
 
-        if event in _PENALTY_EVENTS:
-            meta["anomaly_count"] = meta.get("anomaly_count", 0) + 1
+            update_norm   = float(observation.get("update_norm", 0.0))
+            train_loss    = float(observation.get("train_loss", 0.0))
+            dropout       = bool(observation.get("dropout", False))
+            policy_warn   = bool(observation.get("policy_warning", False))
+            current_round = int(observation.get("round", 0))
 
-        if event in _BONUS_EVENTS:
-            meta["rounds_participated"] = meta.get("rounds_participated", 0) + 1
+            # STEP 2: Update baseline_norm (incremental mean, always runs)
+            new_baseline_norm = (
+                (baseline_norm * rounds_participated) + update_norm
+            ) / (rounds_participated + 1)
 
-        penalties = [event] if event in _PENALTY_EVENTS else []
-        bonuses   = [event] if event in _BONUS_EVENTS   else []
+            # STEP 3: Compute observation_score (Rules 1-5)
+            observation_score = T_prev
 
+            # Rule 1 — Dropout
+            if dropout:
+                observation_score -= 0.10
+
+            # Rule 2 — Policy warning
+            if policy_warn:
+                observation_score -= 0.20
+
+            # NOTE: Rule 3 compares update_norm against new_baseline_norm
+            # (the already-updated running mean that includes this round's value).
+            # This means the anomaly threshold is slightly inflated when the
+            # anomalous update itself is large, which can cause moderate anomalies
+            # (2x-2.4x true baseline) to slip through in one round.
+            # This is intentional per spec for Phase 4.
+            # Phase 5 (malicious client simulation): consider comparing against
+            # the pre-update baseline_norm instead for tighter detection.
+
+            # Rule 3 — Abnormal norm (post-warmup only)
+            is_anomaly = False
+            if (
+                update_norm > (2.0 * new_baseline_norm)
+                and new_baseline_norm > 0.0
+                and rounds_participated >= WARMUP_ROUNDS
+            ):
+                observation_score -= 0.15
+                is_anomaly = True
+
+            # Rule 4 — Low loss bonus
+            if train_loss < LOW_LOSS_THRESHOLD and not dropout:
+                observation_score += 0.03
+
+            # Rule 5 — Consistent participation bonus
+            expected = current_round - 1
+            if rounds_participated >= expected and expected > 0 and not dropout:
+                observation_score += 0.05
+
+            # Clamp observation_score
+            observation_score = max(0.1, min(1.0, observation_score))
+
+            # STEP 4: Apply EMA
+            # alpha is fixed at 0.3. Adaptive alpha is not in scope for Phase 4.
+            T_new = (0.3 * observation_score) + (0.7 * T_prev)
+            T_new = max(0.1, min(1.0, T_new))
+
+            # STEP 5: Persist
+            conn.execute(
+                """
+                UPDATE client_trust SET
+                  trust_score         = ?,
+                  anomaly_count       = ?,
+                  rounds_participated = ?,
+                  baseline_norm       = ?,
+                  last_update         = datetime('now')
+                WHERE client_id = ?
+                """,
+                (
+                    T_new,
+                    anomaly_count + (1 if is_anomaly else 0),
+                    rounds_participated + 1,
+                    new_baseline_norm,
+                    client_id,
+                )
+            )
+            conn.commit()
+
+        finally:
+            conn.close()
+
+        # STEP 6: Emit log event — OUTSIDE try/finally, after connection is closed.
+        # MUST emit every round, including rounds 1-3.
+        # log_event signature: log_event(logger: logging.Logger, event: str, **kwargs)
         log_event(log, "trust_updated",
             client_id=client_id,
-            round=observation.get("round"),
-            old_score=round(old_score, 4),
-            new_score=round(new_score, 4),
-            delta=round(new_score - old_score, 4),
-            penalties_applied=penalties,
-            bonuses_applied=bonuses,
-            anomaly_detected=len(penalties) > 0,
-            update_norm=observation.get("update_norm"),
-            clamped=new_score in (MIN_SCORE, MAX_SCORE),
+            fl_round=current_round,       # renamed from "round" (shadows Python builtin)
+            trust_score=round(T_new, 6),
+            observation_score=round(observation_score, 6),
+            T_prev=round(T_prev, 6),
+            is_anomaly=is_anomaly,
+            dropout=dropout,
+            policy_warning=policy_warn,
+            update_norm=round(update_norm, 6),
+            train_loss=round(train_loss, 6),
+            baseline_norm=round(new_baseline_norm, 6),
         )
-
-        return new_score
-
-    def get_metadata(self, client_id: str) -> Optional[Dict]:
-        """Get metadata for a client."""
-        return self._metadata.get(client_id)
-
-    def get_all_scores(self) -> Dict[str, float]:
-        """Get all client trust scores."""
-        return dict(self._scores)
-
-
-# ───────────────────────── Main ─────────────────────────────────
-
-if __name__ == "__main__":
-    # Quick smoke test
-    engine = TrustEngine()
-
-    # New client starts at 0.8
-    assert engine.get_score("test_client") == DEFAULT_SCORE
-
-    # Consistent participation bonus
-    score = engine.update_score("test_client", {"event": "consistent_participation"})
-    log.info(f"After participation: {score}")
-
-    # Abnormal norm penalty
-    score = engine.update_score("test_client", {"event": "abnormal_norm"})
-    log.info(f"After abnormal norm: {score}")
-
-    # Score should be clamped
-    assert MIN_SCORE <= score <= MAX_SCORE
-    log.info("All trust engine smoke tests passed!")
