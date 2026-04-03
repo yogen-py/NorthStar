@@ -31,7 +31,7 @@
 | **0** | Scaffold & smoke test | ✅ Current |
 | **1** | End-to-end FL pipeline (FedAvg on MNIST) | ⬜ |
 | **2** | JWT authentication via Keycloak | ⬜ |
-| **3** | OPA policy enforcement | ⬜ |
+| **3** | OPA policy enforcement + live client revocation | ✅ Current |
 | **4** | Trust scoring engine integration | ⬜ |
 | **5** | Byzantine attack simulation & defense | ⬜ |
 | **6** | Dashboard, monitoring & final hardening | ⬜ |
