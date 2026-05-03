@@ -10,34 +10,34 @@ and will NOT start unless explicitly requested with:
 """
 
 import os
-import logging
 import random
 import time
+import sys
 from typing import Dict, List, Tuple
+import httpx
 
 import flwr as fl
 from flwr.common import Scalar
 import numpy as np
 from dotenv import load_dotenv
 
-# mock_model lives in client/ — add to path for cross-directory import
-import sys
-import pathlib
-sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent.parent / "client"))
 from mock_model import get_initial_weights, compute_update_norm
+from shared.logger import get_logger, log_event
 
 load_dotenv()
 
 # ───────────────────────── Configuration ─────────────────────────
 SERVER_ADDRESS = os.getenv("SERVER_ADDRESS", "fl-server:9080")
 CLIENT_ID = os.getenv("CLIENT_ID", "malicious_client")
+CLIENT_SECRET = os.getenv("CLIENT_SECRET", "")
 DATA_PARTITION = int(os.getenv("DATA_PARTITION", "0"))
 NUM_PARTITIONS = int(os.getenv("NUM_PARTITIONS", "3"))
 ATTACK_MODE = os.getenv("ATTACK_MODE", "noise")  # "noise" | "sign_flip"
+KEYCLOAK_URL = os.getenv("KEYCLOAK_URL", "http://keycloak:8080")
+MIDDLEWARE_URL = os.getenv("MIDDLEWARE_URL", "http://fl-middleware:8000")
 
 # ───────────────────────── Logging ───────────────────────────────
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(f"malicious-{CLIENT_ID}")
+log = get_logger(CLIENT_ID)
 
 NUM_TRAIN_SAMPLES = 20000
 
@@ -51,7 +51,7 @@ def apply_noise_attack(parameters: List[np.ndarray]) -> List[np.ndarray]:
     """
     mean_norm = float(np.mean([np.linalg.norm(p) for p in parameters]))
     noise_scale = 10.0 * mean_norm
-    logger.warning(f"[ATTACK:noise] Injecting noise with scale={noise_scale:.4f}")
+    log.warning(f"[ATTACK:noise] Injecting noise with scale={noise_scale:.4f}")
     return [
         p + np.random.normal(0, noise_scale, size=p.shape).astype(np.float32)
         for p in parameters
@@ -63,7 +63,7 @@ def apply_sign_flip_attack(parameters: List[np.ndarray]) -> List[np.ndarray]:
     Sign-flip attack: multiplies all weights by -1.
     This reverses the direction of the gradient update.
     """
-    logger.warning("[ATTACK:sign_flip] Flipping all parameter signs")
+    log.warning("[ATTACK:sign_flip] Flipping all parameter signs")
     return [-1.0 * p for p in parameters]
 
 
@@ -74,7 +74,7 @@ def apply_attack(parameters: List[np.ndarray], mode: str) -> List[np.ndarray]:
     elif mode == "sign_flip":
         return apply_sign_flip_attack(parameters)
     else:
-        logger.error(f"Unknown attack mode: {mode}. Returning unmodified params.")
+        log.error(f"Unknown attack mode: {mode}. Returning unmodified params.")
         return parameters
 
 
@@ -119,14 +119,26 @@ class MaliciousClient(fl.client.NumPyClient):
 
         time.sleep(random.uniform(0.5, 1.0))
 
-        logger.warning(
+        update_norm = compute_update_norm(self.params, malicious_params)
+
+        log.warning(
             f"[{CLIENT_ID}] fit (MALICIOUS) round={self.round_num}: "
             f"mode={self.attack_mode}, loss={fake_loss:.4f}, acc={fake_acc:.4f}"
+        )
+
+        log_event(log, "attack_applied",
+            round=config.get("server_round", self.round_num),
+            attack_mode=ATTACK_MODE,
+            update_norm=update_norm,
+            client_id=CLIENT_ID,
         )
 
         return malicious_params, NUM_TRAIN_SAMPLES, {
             "loss": float(fake_loss),
             "accuracy": float(fake_acc),
+            "client_id": CLIENT_ID,
+            "update_norm": update_norm,
+            "train_loss": float(fake_loss),
             "attack_mode": self.attack_mode,
         }
 
@@ -139,15 +151,61 @@ class MaliciousClient(fl.client.NumPyClient):
         eval_acc = min(0.99, 0.45 + 0.07 * self.round_num + random.gauss(0, 0.015))
         num_examples = NUM_TRAIN_SAMPLES // 5
 
-        logger.info(f"[{CLIENT_ID}] eval: loss={eval_loss:.4f}, acc={eval_acc:.4f}")
+        log.info(f"[{CLIENT_ID}] eval: loss={eval_loss:.4f}, acc={eval_acc:.4f}")
         return float(eval_loss), num_examples, {"accuracy": float(eval_acc)}
 
+
+# ───────────────────────── Admission ────────────────────────────
+
+def get_keycloak_token() -> str:
+    """Fetch JWT from Keycloak using client_credentials grant."""
+    response = httpx.post(
+        f"{KEYCLOAK_URL}/realms/fl-realm/protocol/openid-connect/token",
+        data={
+            "grant_type": "client_credentials",
+            "client_id": CLIENT_ID,
+            "client_secret": CLIENT_SECRET
+        },
+        timeout=10.0
+    )
+    response.raise_for_status()
+    return response.json()["access_token"]
+
+
+def request_admission(token: str) -> bool:
+    """Request admission via the FastAPI middleware."""
+    response = httpx.post(
+        f"{MIDDLEWARE_URL}/admit",
+        headers={"Authorization": f"Bearer {token}"},
+        timeout=10.0
+    )
+    response.raise_for_status()
+    data = response.json()
+    return data.get("allowed") is True
 
 # ───────────────────────── Main ─────────────────────────────────
 
 def main() -> None:
     """Start the malicious Flower client."""
-    logger.warning(
+    MAX_RETRIES = 10
+    RETRY_DELAY = 5
+
+    for attempt in range(MAX_RETRIES):
+        try:
+            token = get_keycloak_token()
+            admitted = request_admission(token)
+            if admitted:
+                break
+        except Exception as e:
+            time.sleep(RETRY_DELAY)
+    else:
+        sys.exit(1)
+
+    log_event(log, "malicious_client_start",
+        client_id=CLIENT_ID,
+        attack_mode=ATTACK_MODE)
+
+    log.warning(
         f"⚠ Starting MALICIOUS client {CLIENT_ID}, "
         f"attack_mode={ATTACK_MODE}, partition={DATA_PARTITION}"
     )

@@ -1,0 +1,23 @@
+# Project North Star Gitignore
+# Exclude sensitive and generated data
+
+.env
+.env.*
+logs/
+*.jsonl
+/federated-secure-fl/logs/
+/federated-secure-fl/**/logs/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+env/
+venv/
+ENV/
+.env
+
+# Storage
+*.db
+*.sqlite

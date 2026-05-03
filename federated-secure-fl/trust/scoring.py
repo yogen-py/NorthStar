@@ -7,6 +7,7 @@ Designed per phase4_context.md specification — do not modify formulas.
 import os
 import sqlite3
 from pathlib import Path
+import numpy as np
 
 from shared.logger import get_logger, log_event
 
@@ -38,6 +39,7 @@ class TrustEngine:
             self._db_path = db_url[len(prefix):]
         else:
             self._db_path = db_url
+        self._norm_history: dict[str, list[float]] = {}
 
     def _connect(self) -> sqlite3.Connection:
         """Return a sqlite3 connection with row_factory set."""
@@ -125,10 +127,16 @@ class TrustEngine:
             policy_warn   = bool(observation.get("policy_warning", False))
             current_round = int(observation.get("round", 0))
 
-            # STEP 2: Update baseline_norm (incremental mean, always runs)
-            new_baseline_norm = (
-                (baseline_norm * rounds_participated) + update_norm
-            ) / (rounds_participated + 1)
+            # STEP 2: Update baseline_norm (incremental mean).
+            # FIX 3: Skip update if norm was clamped to sentinel (inf/nan original);
+            # the 1e6 value should not corrupt the real historical baseline.
+            norm_was_clamped = bool(observation.get("norm_was_clamped", False))
+            if not norm_was_clamped:
+                new_baseline_norm = (
+                    (baseline_norm * rounds_participated) + update_norm
+                ) / (rounds_participated + 1)
+            else:
+                new_baseline_norm = baseline_norm  # preserve existing baseline
 
             # STEP 3: Compute observation_score (Rules 1-5)
             observation_score = T_prev
@@ -151,23 +159,38 @@ class TrustEngine:
             # the pre-update baseline_norm instead for tighter detection.
 
             # Rule 3 — Abnormal norm (post-warmup only)
+            import math
             is_anomaly = False
-            if (
-                update_norm > (2.0 * new_baseline_norm)
-                and new_baseline_norm > 0.0
-                and rounds_participated >= WARMUP_ROUNDS
-            ):
-                observation_score -= 0.15
-                is_anomaly = True
+            
+            history = self._norm_history.setdefault(client_id, [])
+            if rounds_participated >= WARMUP_ROUNDS:
+                if not math.isfinite(update_norm):
+                    observation_score -= 0.15
+                    is_anomaly = True
+                elif len(history) >= 3:
+                    baseline = float(np.mean(history[-5:]))
+                    if update_norm > 2.0 * baseline and baseline > 0:
+                        observation_score -= 0.15
+                        is_anomaly = True
+            
+            history.append(update_norm)
 
             # Rule 4 — Low loss bonus
             if train_loss < LOW_LOSS_THRESHOLD and not dropout:
                 observation_score += 0.03
 
-            # Rule 5 — Consistent participation bonus
+            # Rule 5 — Consistent participation bonus.
+            # FIX 1: Never award to a client that has ever fired an anomaly;
+            # persistent bad actors should not earn participation rewards.
             expected = current_round - 1
-            if rounds_participated >= expected and expected > 0 and not dropout:
+            if rounds_participated >= expected and expected > 0 and not dropout and anomaly_count == 0:
                 observation_score += 0.05
+
+            # FIX 2 — Anomaly-count floor: once a client has fired 3+ anomalies,
+            # cap observation_score at 0.6 regardless of any bonuses.
+            # This prevents full EMA recovery for persistently malicious clients.
+            if anomaly_count > 2:
+                observation_score = min(observation_score, 0.6)
 
             # Clamp observation_score
             observation_score = max(0.1, min(1.0, observation_score))

@@ -20,6 +20,7 @@ services:
       - FLOWER_NUM_ROUNDS=${FLOWER_NUM_ROUNDS:-5}
       - DB_URL=${DB_URL:-sqlite:///./trust.db}
       - WARMUP_ROUNDS=${WARMUP_ROUNDS:-3}
+      - TRUST_WEIGHTING=${TRUST_WEIGHTING:-true}
       - LOW_LOSS_THRESHOLD=${LOW_LOSS_THRESHOLD:-0.3}
       - RUN_ID=${RUN_ID:-default}
       - LOG_DIR=/app/logs
@@ -161,11 +162,16 @@ services:
     environment:
       - SERVER_ADDRESS=fl-server:9080
       - CLIENT_ID=malicious_client
+      - CLIENT_SECRET=secret_mal
+      - KEYCLOAK_URL=http://keycloak:8080
       - DATA_PARTITION=0
       - NUM_PARTITIONS=3
       - ATTACK_MODE=${ATTACK_MODE:-noise}
+      - CLIENT_QUALITY=0.99
+      - NUM_EXAMPLES=500
       - RUN_ID=${RUN_ID:-default}
       - LOG_DIR=/app/logs
+      - PYTHONPATH=/app
     networks:
       - fl-net
     depends_on:
@@ -173,7 +179,7 @@ services:
         condition: service_healthy
     profiles:
       - attack
-    restart: "no"
+    restart: on-failure
 
 
   #  OPA (Policy Decision Point)

@@ -45,7 +45,7 @@ class RoundGate:
         """Run gate HTTP server on daemon thread."""
         def run():
             uvicorn.run(self._app, host="0.0.0.0", port=self.port,
-                        log_level="warning")
+                        log_config=None)
         t = threading.Thread(target=run, daemon=True)
         t.start()
 

@@ -27,7 +27,10 @@ def compute_update_norm(
 ) -> float:
     """L2 norm of weight delta — primary signal for trust scoring."""
     deltas = [n - o for n, o in zip(new_weights, old_weights)]
-    return float(np.sqrt(sum(np.sum(d ** 2) for d in deltas)))
+    norm = np.sqrt(sum(np.sum(d ** 2) for d in deltas))
+    if not np.isfinite(norm):
+        return 1e6
+    return float(norm)
 
 if __name__ == "__main__":
     weights = get_initial_weights()

@@ -31,4 +31,9 @@ if [ "${HITL_ENABLED:-true}" = "true" ]; then
 fi
 
 cd infra && docker compose down -v && docker compose up --build
+cd ..
+echo ""
+echo "Run complete. Generating assurance report..."
+python3 experiments/generate_report.py logs/run_${RUN_ID}/
+echo "Report: logs/run_${RUN_ID}/report.html"
 echo "✅ Run ${RUN_ID} complete. Logs → logs/run_${RUN_ID}/"

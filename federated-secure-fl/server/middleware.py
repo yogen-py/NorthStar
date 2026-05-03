@@ -190,7 +190,7 @@ async def admit(authorization: Optional[str] = Header(None)):
 def main() -> None:
     """Run middleware with Uvicorn."""
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8000, log_level="info")
+    uvicorn.run(app, host="0.0.0.0", port=8000, log_config=None)
 
 
 if __name__ == "__main__":

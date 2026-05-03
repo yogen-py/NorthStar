@@ -26,6 +26,7 @@ SERVER_ADDRESS = os.getenv("SERVER_ADDRESS", "0.0.0.0:9080")
 NUM_ROUNDS     = int(os.getenv("FLOWER_NUM_ROUNDS", "5"))
 DB_URL         = os.getenv("DB_URL", "sqlite:///./trust.db")
 WARMUP_ROUNDS  = int(os.getenv("WARMUP_ROUNDS", "3"))
+TRUST_WEIGHTING = os.getenv("TRUST_WEIGHTING", "true").lower() == "true"
 
 # ───────────────────────── Logging ───────────────────────────────
 log = get_logger("server")
@@ -73,6 +74,36 @@ class LoggingFedAvg(fl.server.strategy.FedAvg):
         self.trust_engine = trust_engine
         self._previous_round_client_ids: set = set()
 
+    def _apply_trust_weights(self, server_round, results):
+        """
+        Replaces num_examples with trust-weighted effective count.
+        effective_weight_i = n_i * T_i
+        Normalised so sum of effective weights = sum of original n_i
+        (preserves scale for aggregation stability).
+        """
+        if not TRUST_WEIGHTING or server_round <= WARMUP_ROUNDS:
+            return results
+
+        raw_weights = []
+        for _, fit_res in results:
+            cid    = fit_res.metrics.get("client_id", "unknown")
+            n_i    = fit_res.num_examples
+            T_i    = self.trust_engine.get_score(cid, current_round=server_round)
+            raw_weights.append(n_i * T_i)
+
+        total_raw   = sum(raw_weights)
+        total_n     = sum(r.num_examples for _, r in results)
+        scale       = total_n / total_raw if total_raw > 0 else 1.0
+
+        patched = []
+        for i, (proxy, fit_res) in enumerate(results):
+            effective_n = int(raw_weights[i] * scale)
+            effective_n = max(effective_n, 1)   # never zero
+            fit_res.num_examples = effective_n
+            patched.append((proxy, fit_res))
+
+        return patched
+
     def aggregate_fit(
         self,
         server_round: int,
@@ -114,11 +145,15 @@ class LoggingFedAvg(fl.server.strategy.FedAvg):
             )
 
             # D3: update trust score immediately after processing weights
+            # Detect whether this norm was already clamped by the client
+            # (i.e. the raw value was inf/nan and the client returned 1e6 sentinel).
+            norm_was_clamped = (update_norm >= 1e6)
             self.trust_engine.update_score(client_id, {
-                "round":       server_round,
-                "update_norm": update_norm,
-                "train_loss":  train_loss,
-                "dropout":     False,
+                "round":           server_round,
+                "update_norm":     update_norm,
+                "train_loss":      train_loss,
+                "dropout":         False,
+                "norm_was_clamped": norm_was_clamped,
             })
 
         # D3: Dropout detection — clients in previous round but not this one
@@ -154,6 +189,22 @@ class LoggingFedAvg(fl.server.strategy.FedAvg):
                 round=server_round,
                 reason=str(failure),
             )
+
+        original_n_map = {str(r.metrics.get("client_id") or p.cid): r.num_examples for p, r in results}
+
+        results = self._apply_trust_weights(server_round, results)
+
+        log_event(log, "trust_weighting_applied",
+            round=server_round,
+            enabled=TRUST_WEIGHTING,
+            clients=[{
+                "client_id": str(r.metrics.get("client_id") or p.cid),
+                "original_n": original_n_map.get(str(r.metrics.get("client_id") or p.cid)),
+                "effective_n": r.num_examples,
+                "trust_score": self.trust_engine.get_score(
+                    str(r.metrics.get("client_id") or p.cid), current_round=server_round),
+            } for p, r in results],
+        )
 
         with Timer() as t:
             result = super().aggregate_fit(server_round, results, failures)
@@ -270,6 +321,10 @@ def main() -> None:
         )
 
         return JSONResponse({"status": "ok", "client_id": cw_client_id})
+
+    # Phase 6: mount assurance reporting router on the existing gate app
+    from assurance import router as assurance_router
+    gate._app.include_router(assurance_router)
 
     gate.start_http_server()
     fl.server.start_server(
