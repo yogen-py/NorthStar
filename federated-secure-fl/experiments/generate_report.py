@@ -270,6 +270,17 @@ def _section_trust_trajectory(data: dict) -> str:
 
         anom = e.get("is_anomaly", False)
         anom_s = '<span class="err">⚠ yes</span>' if anom else "no"
+
+        # Cosine Sim — display "—" for old logs that predate this field
+        raw_cos = e.get("cosine_sim")
+        if raw_cos is None:
+            cos_s   = "—"
+            cos_css = ""
+        else:
+            cos_f   = float(raw_cos)
+            cos_s   = f"{cos_f:+.4f}"
+            cos_css = "err" if cos_f < -0.3 else ("ok" if cos_f > 0.3 else "")
+
         rows += (
             f"<tr{'  class=\"anom-row\"' if anom else ''}>"
             f"<td>{_esc(e.get('fl_round', '—'))}</td>"
@@ -278,17 +289,18 @@ def _section_trust_trajectory(data: dict) -> str:
             f"<td>{_esc(t_new)}</td>"
             f"<td class='{delta_css}'>{delta_s}</td>"
             f"<td>{_fmt_norm(e.get('update_norm'))}</td>"
+            f"<td class='{cos_css}'>{cos_s}</td>"
             f"<td>{anom_s}</td>"
             f"</tr>"
         )
     if not rows:
-        rows = "<tr><td colspan='7' class='na'>No trust events recorded</td></tr>"
+        rows = "<tr><td colspan='8' class='na'>No trust events recorded</td></tr>"
 
     return f"""
 <section id="trust-trajectory">
   <h2>Trust Trajectory</h2>
   <table>
-    <thead><tr><th>Round</th><th>Client</th><th>T_prev</th><th>T_new</th><th>Δ</th><th>Update Norm</th><th>Anomaly</th></tr></thead>
+    <thead><tr><th>Round</th><th>Client</th><th>T_prev</th><th>T_new</th><th>Δ</th><th>Update Norm</th><th>Cosine Sim</th><th>Anomaly</th></tr></thead>
     <tbody>{rows}</tbody>
   </table>
 </section>"""
@@ -331,24 +343,31 @@ def _section_rounds(data: dict) -> str:
         r   = e.get("round")
         dec = gate_by_round.get(r, "approve")
         dec_css = "" if dec == "approve" else "err"
+        excluded = e.get("excluded_from_aggregation")
+        if not excluded:
+            excl_cell = "<span class='na'>\u2014</span>"
+        else:
+            excl_cell = "<span class='err'>" + ", ".join(_esc(x) for x in excluded) + "</span>"
         rows += (
             f"<tr>"
             f"<td>{_esc(r)}</td>"
             f"<td>{_esc(e.get('aggregated_loss'))}</td>"
             f"<td>{_esc(e.get('num_clients'))}</td>"
             f"<td class='{dec_css}'>{_esc(dec)}</td>"
+            f"<td>{excl_cell}</td>"
             f"</tr>"
         )
     if not rows:
-        rows = "<tr><td colspan='4' class='na'>No round data recorded</td></tr>"
+        rows = "<tr><td colspan='5' class='na'>No round data recorded</td></tr>"
     return f"""
 <section id="rounds">
   <h2>Round Summary</h2>
   <table>
-    <thead><tr><th>Round</th><th>Aggregated Loss</th><th>Clients</th><th>Gate Decision</th></tr></thead>
+    <thead><tr><th>Round</th><th>Aggregated Loss</th><th>Clients</th><th>Gate Decision</th><th>Excluded</th></tr></thead>
     <tbody>{rows}</tbody>
   </table>
 </section>"""
+
 
 
 def _section_scope() -> str:

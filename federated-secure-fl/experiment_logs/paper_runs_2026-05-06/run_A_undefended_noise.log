@@ -1,0 +1,1309 @@
+]633;E;{ echo "=== RUN A: Undefended Baseline (TRUST_WEIGHTING=false, ATTACK_MODE=noise, 15 rounds) ==="\x3b echo "Started: $(date -u)"\x3b } > experiment_logs/paper_runs_2026-05-06/run_A_undefended_noise.log && TRUST_WEIGHTING=false HITL_ENABLED=false COMPOSE_PROFILES=attack NUM_ROUNDS=15 ./run_experiment.sh >> experiment_logs/paper_runs_2026-05-06/run_A_undefended_noise.log 2>&1;4ad5cb3c-9884-45b9-9d68-b4465b6772dc]633;C=== RUN A: Undefended Baseline (TRUST_WEIGHTING=false, ATTACK_MODE=noise, 15 rounds) ===
+Started: Wed May  6 14:52:28 UTC 2026
+▶ Run 2026-05-06_14-52-28 starting...
+ Container hospital_a Stopping 
+ Container fl-middleware Stopping 
+ Container malicious_client Stopping 
+ Container hospital_b Stopping 
+ Container hospital_c Stopping 
+ Container hospital_a Stopped 
+ Container hospital_a Removing 
+ Container hospital_c Stopped 
+ Container hospital_c Removing 
+ Container fl-middleware Stopped 
+ Container fl-middleware Removing 
+ Container malicious_client Stopped 
+ Container malicious_client Removing 
+ Container hospital_b Stopped 
+ Container hospital_b Removing 
+ Container hospital_c Removed 
+ Container hospital_a Removed 
+ Container fl-middleware Removed 
+ Container hospital_b Removed 
+ Container opa Stopping 
+ Container opa Stopped 
+ Container opa Removing 
+ Container malicious_client Removed 
+ Container fl-server Stopping 
+ Container fl-server Stopped 
+ Container fl-server Removing 
+ Container opa Removed 
+ Container fl-server Removed 
+ Container keycloak Stopping 
+ Container keycloak Stopped 
+ Container keycloak Removing 
+ Container keycloak Removed 
+ Network infra_fl-net Removing 
+ Network infra_fl-net Removed 
+ Image infra-hospital_a Building 
+ Image infra-malicious_client Building 
+ Image infra-fl-middleware Building 
+ Image infra-hospital_c Building 
+ Image infra-fl-server Building 
+ Image infra-hospital_b Building 
+#1 [internal] load local bake definitions
+#1 reading from stdin 2.92kB done
+#1 DONE 0.0s
+
+#2 [malicious_client internal] load build definition from Dockerfile
+#2 transferring dockerfile: 226B done
+#2 DONE 0.0s
+
+#3 [fl-server internal] load build definition from Dockerfile
+#3 transferring dockerfile: 247B done
+#3 DONE 0.0s
+
+#4 [fl-middleware internal] load metadata for docker.io/library/python:3.10-slim
+#4 DONE 0.0s
+
+#5 [hospital_b internal] load .dockerignore
+#5 transferring context: 2B done
+#5 DONE 0.0s
+
+#6 [fl-middleware 1/6] FROM docker.io/library/python:3.10-slim
+#6 DONE 0.0s
+
+#7 [malicious_client internal] load build context
+#7 transferring context: 316B done
+#7 DONE 0.0s
+
+#8 [fl-server internal] load build context
+#8 transferring context: 570B done
+#8 DONE 0.0s
+
+#9 [fl-server 5/7] COPY server/ .
+#9 CACHED
+
+#10 [fl-server 3/7] COPY server/requirements.txt .
+#10 CACHED
+
+#11 [fl-server 6/7] COPY shared/ ./shared/
+#11 CACHED
+
+#12 [fl-server 4/7] RUN pip install --no-cache-dir -r requirements.txt
+#12 CACHED
+
+#13 [fl-server 7/7] COPY trust/ ./trust/
+#13 CACHED
+
+#14 [hospital_b 2/6] WORKDIR /app
+#14 CACHED
+
+#15 [hospital_b 3/6] COPY client/requirements.txt .
+#15 CACHED
+
+#16 [hospital_b 4/6] RUN pip install --no-cache-dir -r requirements.txt
+#16 CACHED
+
+#17 [hospital_b 5/6] COPY client/ .
+#17 CACHED
+
+#18 [hospital_b 6/6] COPY shared/ ./shared/
+#18 CACHED
+
+#19 [hospital_c] exporting to image
+#19 exporting layers done
+#19 writing image sha256:257245c878f48fc1068d397a110b185569e1a4e2fc4b9eba9c2f1f5ad575f060 done
+#19 naming to docker.io/library/infra-hospital_c done
+#19 DONE 0.0s
+
+#20 [fl-middleware] exporting to image
+#20 exporting layers done
+#20 writing image sha256:50023fc14782a6b379f3cefc01bba98fe4141402f3878eb9c245b74b0fd9dae5 done
+#20 naming to docker.io/library/infra-fl-middleware done
+#20 DONE 0.0s
+
+#21 [fl-server] exporting to image
+#21 exporting layers done
+#21 writing image sha256:f3ff620d4306ddd0ef194f030419bbf54aa459a4352d7847f23a9f6f0a2734dd done
+#21 naming to docker.io/library/infra-fl-server done
+#21 DONE 0.0s
+
+#22 [hospital_a] exporting to image
+#22 exporting layers done
+#22 writing image sha256:ddba05cd9133893a3545f523a52f42417b24a432ee8138e4f615e89d839159cc done
+#22 naming to docker.io/library/infra-hospital_a done
+#22 DONE 0.0s
+
+#23 [hospital_b] exporting to image
+#23 exporting layers done
+#23 writing image sha256:dc0bbe3c1d1b31df5774fa96f0017b52d59c4fd61812cfe781120456d0824733 done
+#23 naming to docker.io/library/infra-hospital_b done
+#23 DONE 0.0s
+
+#24 [malicious_client] exporting to image
+#24 exporting layers done
+#24 writing image sha256:823d936bc021382e89a8ee0704dd6ddd3f9583f00a56a57fc6e1af87479f8949 done
+#24 naming to docker.io/library/infra-malicious_client 0.0s done
+#24 DONE 0.0s
+
+#25 [hospital_c] resolving provenance for metadata file
+#25 DONE 0.0s
+
+#26 [fl-middleware] resolving provenance for metadata file
+#26 DONE 0.0s
+
+#27 [hospital_b] resolving provenance for metadata file
+#27 DONE 0.0s
+
+#28 [malicious_client] resolving provenance for metadata file
+#28 DONE 0.0s
+
+#29 [hospital_a] resolving provenance for metadata file
+#29 DONE 0.0s
+
+#30 [fl-server] resolving provenance for metadata file
+#30 DONE 0.0s
+ Image infra-fl-server Built 
+ Image infra-hospital_c Built 
+ Image infra-malicious_client Built 
+ Image infra-fl-middleware Built 
+ Image infra-hospital_a Built 
+ Image infra-hospital_b Built 
+ Network infra_fl-net Creating 
+ Network infra_fl-net Created 
+ Container keycloak Creating 
+ Container opa Creating 
+ Container opa Created 
+ Container keycloak Created 
+ Container fl-server Creating 
+ Container fl-middleware Creating 
+ Container fl-server Created 
+ Container hospital_a Creating 
+ Container malicious_client Creating 
+ Container hospital_c Creating 
+ Container hospital_b Creating 
+ Container hospital_c Created 
+ Container malicious_client Created 
+ Container hospital_b Created 
+ Container hospital_a Created 
+ Container fl-middleware Created 
+Attaching to fl-middleware, fl-server, hospital_a, hospital_b, hospital_c, keycloak, malicious_client, opa
+ Container opa Starting 
+ Container keycloak Starting 
+ Container opa Started 
+opa  | {"addrs":[":8181"],"diagnostic-addrs":[],"level":"info","msg":"Initializing server.","time":"2026-05-06T14:52:30Z"}
+ Container keycloak Started 
+ Container opa Waiting 
+ Container keycloak Waiting 
+ Container keycloak Waiting 
+opa  | {"current_version":"1.14.1","download_opa":"https://openpolicyagent.org/downloads/v1.16.1/opa_linux_amd64","latest_version":"1.16.1","level":"info","msg":"OPA is out of date.","release_notes":"https://github.com/open-policy-agent/opa/releases/tag/v1.16.1","time":"2026-05-06T14:52:30Z"}
+keycloak  | Updating the configuration and installing your custom providers, if any. Please wait.
+keycloak  | 2026-05-06 14:52:34,032 WARN  [io.qua.dep.ind.IndexWrapper] (build-8) Failed to index jakarta.jms.Connection: Class does not exist in ClassLoader QuarkusClassLoader:Deployment Class Loader: PROD for keycloak@12365c88
+keycloak  | 2026-05-06 14:52:34,059 WARN  [io.qua.dep.ind.IndexWrapper] (build-8) Failed to index io.mashona.logwriting.ArrayStore: Class does not exist in ClassLoader QuarkusClassLoader:Deployment Class Loader: PROD for keycloak@12365c88
+keycloak  | 2026-05-06 14:52:34,060 WARN  [io.qua.dep.ind.IndexWrapper] (build-8) Failed to index org.apache.activemq.artemis.core.journal.RecordInfo: Class does not exist in ClassLoader QuarkusClassLoader:Deployment Class Loader: PROD for keycloak@12365c88
+keycloak  | 2026-05-06 14:52:34,061 WARN  [io.qua.dep.ind.IndexWrapper] (build-8) Failed to index org.apache.activemq.artemis.core.journal.Journal: Class does not exist in ClassLoader QuarkusClassLoader:Deployment Class Loader: PROD for keycloak@12365c88
+keycloak  | 2026-05-06 14:52:34,063 WARN  [io.qua.dep.ind.IndexWrapper] (build-8) Failed to index jakarta.jms.XAConnection: Class does not exist in ClassLoader QuarkusClassLoader:Deployment Class Loader: PROD for keycloak@12365c88
+keycloak  | 2026-05-06 14:52:34,063 WARN  [io.qua.dep.ind.IndexWrapper] (build-8) Failed to index jakarta.jms.XASession: Class does not exist in ClassLoader QuarkusClassLoader:Deployment Class Loader: PROD for keycloak@12365c88
+keycloak  | 2026-05-06 14:52:34,064 WARN  [io.qua.dep.ind.IndexWrapper] (build-8) Failed to index jakarta.jms.XAConnectionFactory: Class does not exist in ClassLoader QuarkusClassLoader:Deployment Class Loader: PROD for keycloak@12365c88
+keycloak  | 2026-05-06 14:52:34,068 WARN  [io.qua.dep.ind.IndexWrapper] (build-8) Failed to index org.apache.tools.ant.Task: Class does not exist in ClassLoader QuarkusClassLoader:Deployment Class Loader: PROD for keycloak@12365c88
+keycloak  | 2026-05-06 14:52:34,072 WARN  [io.qua.dep.ind.IndexWrapper] (build-8) Failed to index org.springframework.core.io.DefaultResourceLoader: Class does not exist in ClassLoader QuarkusClassLoader:Deployment Class Loader: PROD for keycloak@12365c88
+keycloak  | 2026-05-06 14:52:34,073 WARN  [io.qua.dep.ind.IndexWrapper] (build-8) Failed to index org.springframework.core.io.ResourceLoader: Class does not exist in ClassLoader QuarkusClassLoader:Deployment Class Loader: PROD for keycloak@12365c88
+keycloak  | 2026-05-06 14:52:34,074 WARN  [io.qua.dep.ind.IndexWrapper] (build-8) Failed to index org.springframework.core.io.Resource: Class does not exist in ClassLoader QuarkusClassLoader:Deployment Class Loader: PROD for keycloak@12365c88
+opa       | {"client_addr":"[::1]:51290","level":"info","msg":"Received request.","req_id":1,"req_method":"GET","req_path":"/health","time":"2026-05-06T14:52:35Z"}
+opa       | {"client_addr":"[::1]:51290","level":"info","msg":"Sent response.","req_id":1,"req_method":"GET","req_path":"/health","resp_bytes":3,"resp_duration":0.767977,"resp_status":200,"time":"2026-05-06T14:52:35Z"}
+ Container opa Healthy 
+keycloak  | 2026-05-06 14:52:36,888 INFO  [io.qua.dep.QuarkusAugmentor] (main) Quarkus augmentation completed in 5526ms
+keycloak  | 2026-05-06 14:52:37,762 INFO  [org.keycloak.quarkus.runtime.hostname.DefaultHostnameProvider] (main) Hostname settings: Base URL: <unset>, Hostname: <request>, Strict HTTPS: false, Path: <request>, Strict BackChannel: false, Admin URL: <unset>, Admin: <request>, Port: -1, Proxied: false
+keycloak  | 2026-05-06 14:52:39,066 WARN  [io.quarkus.agroal.runtime.DataSources] (JPA Startup Thread) Datasource <default> enables XA but transaction recovery is not enabled. Please enable transaction recovery by setting quarkus.transaction-manager.enable-recovery=true, otherwise data may be lost if the application is terminated abruptly
+keycloak  | 2026-05-06 14:52:39,392 WARN  [org.infinispan.CONFIG] (keycloak-cache-init) ISPN000569: Unable to persist Infinispan internal caches as no global state enabled
+keycloak  | 2026-05-06 14:52:39,458 INFO  [org.infinispan.CONTAINER] (keycloak-cache-init) ISPN000556: Starting user marshaller 'org.infinispan.jboss.marshalling.core.JBossUserMarshaller'
+keycloak  | 2026-05-06 14:52:39,932 INFO  [org.keycloak.broker.provider.AbstractIdentityProviderMapper] (main) Registering class org.keycloak.broker.provider.mappersync.ConfigSyncEventListener
+opa       | {"client_addr":"[::1]:51296","level":"info","msg":"Received request.","req_id":2,"req_method":"GET","req_path":"/health","time":"2026-05-06T14:52:40Z"}
+opa       | {"client_addr":"[::1]:51296","level":"info","msg":"Sent response.","req_id":2,"req_method":"GET","req_path":"/health","resp_bytes":3,"resp_duration":0.510082,"resp_status":200,"time":"2026-05-06T14:52:40Z"}
+keycloak  | 2026-05-06 14:52:40,716 INFO  [org.keycloak.quarkus.runtime.storage.legacy.liquibase.QuarkusJpaUpdaterProvider] (main) Initializing database schema. Using changelog META-INF/jpa-changelog-master.xml
+keycloak  | 
+keycloak  | UPDATE SUMMARY
+keycloak  | Run:                        124
+keycloak  | Previously run:               0
+keycloak  | Filtered out:                 0
+keycloak  | -------------------------------
+keycloak  | Total change sets:          124
+keycloak  | 
+keycloak  | 2026-05-06 14:52:42,270 INFO  [org.keycloak.connections.infinispan.DefaultInfinispanConnectionProviderFactory] (main) Node name: node_821818, Site name: null
+keycloak  | 2026-05-06 14:52:42,455 INFO  [org.keycloak.services] (main) KC-SERVICES0050: Initializing master realm
+keycloak  | 2026-05-06 14:52:45,135 INFO  [org.keycloak.exportimport.singlefile.SingleFileImportProvider] (main) Full importing from file /opt/keycloak/bin/../data/import/realm-export.json
+keycloak  | 2026-05-06 14:52:46,190 INFO  [org.keycloak.exportimport.util.ImportUtils] (main) Realm 'fl-realm' imported
+keycloak  | 2026-05-06 14:52:46,228 INFO  [org.keycloak.exportimport.dir.DirImportProvider] (main) Importing from directory /opt/keycloak/bin/../data/import
+keycloak  | 2026-05-06 14:52:46,228 INFO  [org.keycloak.services] (main) KC-SERVICES0030: Full model import requested. Strategy: IGNORE_EXISTING
+keycloak  | 2026-05-06 14:52:46,228 INFO  [org.keycloak.services] (main) KC-SERVICES0032: Import finished successfully
+keycloak  | 2026-05-06 14:52:46,417 INFO  [org.keycloak.services] (main) KC-SERVICES0009: Added user 'admin' to realm 'master'
+keycloak  | 2026-05-06 14:52:46,483 INFO  [io.quarkus] (main) Keycloak 24.0.5 on JVM (powered by Quarkus 3.8.4) started in 7.946s. Listening on: http://0.0.0.0:8080
+keycloak  | 2026-05-06 14:52:46,484 INFO  [io.quarkus] (main) Profile dev activated. 
+keycloak  | 2026-05-06 14:52:46,484 INFO  [io.quarkus] (main) Installed features: [agroal, cdi, hibernate-orm, jdbc-h2, keycloak, logging-gelf, narayana-jta, reactive-routes, resteasy-reactive, resteasy-reactive-jackson, smallrye-context-propagation, smallrye-health, vertx]
+keycloak  | 2026-05-06 14:52:46,486 WARN  [org.keycloak.quarkus.runtime.KeycloakMain] (main) Running the server in development mode. DO NOT use this configuration in production.
+opa       | {"client_addr":"[::1]:34648","level":"info","msg":"Received request.","req_id":3,"req_method":"GET","req_path":"/health","time":"2026-05-06T14:52:46Z"}
+opa       | {"client_addr":"[::1]:34648","level":"info","msg":"Sent response.","req_id":3,"req_method":"GET","req_path":"/health","resp_bytes":3,"resp_duration":0.242588,"resp_status":200,"time":"2026-05-06T14:52:46Z"}
+ Container keycloak Healthy 
+ Container fl-server Starting 
+ Container keycloak Healthy 
+ Container fl-middleware Starting 
+ Container fl-server Started 
+ Container fl-server Waiting 
+ Container fl-server Waiting 
+ Container fl-server Waiting 
+ Container fl-server Waiting 
+ Container fl-middleware Started 
+fl-server  | 2026-05-06 14:52:47,798 [trust] INFO trust_db_initialized
+fl-server  | 2026-05-06 14:52:47,798 [server] INFO server_start
+fl-server  | [92mINFO [0m:      Starting Flower server, config: num_rounds=15, no round_timeout
+fl-server  | [92mINFO [0m:      Flower ECE: gRPC server running (15 rounds), SSL is disabled
+fl-server  | [92mINFO [0m:      [INIT]
+fl-server  | [92mINFO [0m:      Requesting initial parameters from one random client
+opa        | {"client_addr":"[::1]:34652","level":"info","msg":"Received request.","req_id":4,"req_method":"GET","req_path":"/health","time":"2026-05-06T14:52:51Z"}
+opa        | {"client_addr":"[::1]:34652","level":"info","msg":"Sent response.","req_id":4,"req_method":"GET","req_path":"/health","resp_bytes":3,"resp_duration":0.255148,"resp_status":200,"time":"2026-05-06T14:52:51Z"}
+ Container fl-server Healthy 
+ Container hospital_b Starting 
+ Container fl-server Healthy 
+ Container hospital_c Starting 
+ Container fl-server Healthy 
+ Container hospital_a Starting 
+ Container fl-server Healthy 
+ Container malicious_client Starting 
+ Container hospital_b Started 
+ Container hospital_c Started 
+ Container hospital_a Started 
+ Container malicious_client Started 
+opa        | {"client_addr":"172.19.0.5:33392","level":"info","msg":"Received request.","req_id":5,"req_method":"POST","req_path":"/v1/data/fl/allow","time":"2026-05-06T14:52:54Z"}
+opa        | {"client_addr":"172.19.0.5:33392","level":"info","msg":"Sent response.","req_id":5,"req_method":"POST","req_path":"/v1/data/fl/allow","resp_bytes":16,"resp_duration":0.652177,"resp_status":200,"time":"2026-05-06T14:52:54Z"}
+fl-middleware  | 2026-05-06 14:52:54,218 [middleware] INFO admit_decision
+fl-middleware  | 2026-05-06 14:52:54,219 [middleware] INFO http_request
+opa            | {"client_addr":"172.19.0.5:33394","level":"info","msg":"Received request.","req_id":6,"req_method":"POST","req_path":"/v1/data/fl/allow","time":"2026-05-06T14:52:54Z"}
+opa            | {"client_addr":"172.19.0.5:33394","level":"info","msg":"Sent response.","req_id":6,"req_method":"POST","req_path":"/v1/data/fl/allow","resp_bytes":16,"resp_duration":0.213047,"resp_status":200,"time":"2026-05-06T14:52:54Z"}
+fl-middleware  | 2026-05-06 14:52:54,226 [middleware] INFO admit_decision
+opa            | {"client_addr":"172.19.0.5:33404","level":"info","msg":"Received request.","req_id":7,"req_method":"POST","req_path":"/v1/data/fl/allow","time":"2026-05-06T14:52:54Z"}
+opa            | {"client_addr":"172.19.0.5:33404","level":"info","msg":"Sent response.","req_id":7,"req_method":"POST","req_path":"/v1/data/fl/allow","resp_bytes":16,"resp_duration":0.213542,"resp_status":200,"time":"2026-05-06T14:52:54Z"}
+fl-middleware  | 2026-05-06 14:52:54,232 [middleware] INFO admit_decision
+opa            | {"client_addr":"172.19.0.5:33418","level":"info","msg":"Received request.","req_id":8,"req_method":"POST","req_path":"/v1/data/fl/allow","time":"2026-05-06T14:52:54Z"}
+opa            | {"client_addr":"172.19.0.5:33418","level":"info","msg":"Sent response.","req_id":8,"req_method":"POST","req_path":"/v1/data/fl/allow","resp_bytes":16,"resp_duration":0.231955,"resp_status":200,"time":"2026-05-06T14:52:54Z"}
+fl-middleware  | 2026-05-06 14:52:54,239 [middleware] INFO admit_decision
+fl-middleware  | 2026-05-06 14:52:54,239 [middleware] INFO http_request
+fl-middleware  | 2026-05-06 14:52:54,239 [middleware] INFO http_request
+hospital_a     | 2026-05-06 14:52:54,239 [hospital_a] INFO admission_success
+hospital_a     | 2026-05-06 14:52:54,239 [hospital_a] INFO client_start
+fl-middleware  | 2026-05-06 14:52:54,240 [middleware] INFO http_request
+hospital_c     | 2026-05-06 14:52:54,240 [hospital_c] INFO admission_success
+hospital_c     | 2026-05-06 14:52:54,240 [hospital_c] INFO client_start
+hospital_b     | 2026-05-06 14:52:54,240 [hospital_b] INFO admission_success
+hospital_b     | 2026-05-06 14:52:54,240 [hospital_b] INFO client_start
+malicious_client  | 2026-05-06 14:52:54,240 [malicious_client] INFO malicious_client_start
+malicious_client  | 2026-05-06 14:52:54,241 [malicious_client] WARNING ⚠ Starting MALICIOUS client malicious_client, attack_mode=noise, partition=0
+hospital_a        | [93mWARNING [0m:   DEPRECATED FEATURE: flwr.client.start_client() is deprecated.
+hospital_a        | 	Instead, use the `flower-supernode` CLI command to start a SuperNode as shown below:
+hospital_a        | 
+hospital_a        | 		$ flower-supernode --insecure --superlink='<IP>:<PORT>'
+hospital_a        | 
+hospital_a        | 	To view all available options, run:
+hospital_a        | 
+hospital_a        | 		$ flower-supernode --help
+hospital_a        | 
+hospital_a        | 	Using `start_client()` is deprecated.
+hospital_a        | 
+hospital_a        |             This is a deprecated feature. It will be removed
+hospital_a        |             entirely in future versions of Flower.
+hospital_a        |         
+hospital_b        | [93mWARNING [0m:   DEPRECATED FEATURE: flwr.client.start_client() is deprecated.
+hospital_b        | 	Instead, use the `flower-supernode` CLI command to start a SuperNode as shown below:
+hospital_b        | 
+hospital_b        | 		$ flower-supernode --insecure --superlink='<IP>:<PORT>'
+hospital_b        | 
+hospital_b        | 	To view all available options, run:
+hospital_b        | 
+hospital_b        | 		$ flower-supernode --help
+hospital_b        | 
+hospital_b        | 	Using `start_client()` is deprecated.
+hospital_b        | 
+hospital_b        |             This is a deprecated feature. It will be removed
+hospital_b        |             entirely in future versions of Flower.
+hospital_b        |         
+hospital_c        | [93mWARNING [0m:   DEPRECATED FEATURE: flwr.client.start_client() is deprecated.
+hospital_c        | 	Instead, use the `flower-supernode` CLI command to start a SuperNode as shown below:
+hospital_c        | 
+hospital_c        | 		$ flower-supernode --insecure --superlink='<IP>:<PORT>'
+hospital_c        | 
+hospital_c        | 	To view all available options, run:
+hospital_c        | 
+hospital_c        | 		$ flower-supernode --help
+hospital_c        | 
+hospital_c        | 	Using `start_client()` is deprecated.
+hospital_c        | 
+hospital_c        |             This is a deprecated feature. It will be removed
+hospital_c        |             entirely in future versions of Flower.
+hospital_c        |         
+malicious_client  | [93mWARNING [0m:   DEPRECATED FEATURE: flwr.client.start_client() is deprecated.
+malicious_client  | 	Instead, use the `flower-supernode` CLI command to start a SuperNode as shown below:
+malicious_client  | 
+malicious_client  | 		$ flower-supernode --insecure --superlink='<IP>:<PORT>'
+malicious_client  | 
+malicious_client  | 	To view all available options, run:
+malicious_client  | 
+malicious_client  | 		$ flower-supernode --help
+malicious_client  | 
+malicious_client  | 	Using `start_client()` is deprecated.
+malicious_client  | 
+malicious_client  |             This is a deprecated feature. It will be removed
+malicious_client  |             entirely in future versions of Flower.
+malicious_client  |         
+hospital_b        | [92mINFO [0m:      
+hospital_b        | [92mINFO [0m:      Received: get_parameters message 8bc7661b-f06e-44b5-a6af-b7eadba5984f
+hospital_b        | [92mINFO [0m:      Sent reply
+fl-server         | [92mINFO [0m:      Received initial parameters from one random client
+fl-server         | [92mINFO [0m:      Evaluating initial global parameters
+fl-server         | [92mINFO [0m:      
+fl-server         | [92mINFO [0m:      [ROUND 1]
+fl-server         | [92mINFO [0m:      configure_fit: strategy sampled 4 clients (out of 4)
+hospital_c        | [92mINFO [0m:      
+hospital_c        | [92mINFO [0m:      Received: train message 66f81916-6b18-4a0d-8925-6191d7774dde
+hospital_c        | 2026-05-06 14:52:54,295 [hospital_c] INFO fit_start
+hospital_a        | [92mINFO [0m:      
+hospital_a        | [92mINFO [0m:      Received: train message cc46da6f-d219-4de8-942c-c064ce64b0b6
+hospital_a        | 2026-05-06 14:52:54,301 [hospital_a] INFO fit_start
+hospital_b        | [92mINFO [0m:      
+hospital_b        | [92mINFO [0m:      Received: train message b59e90b4-6934-4147-ab53-f7c94d9c17d6
+hospital_b        | 2026-05-06 14:52:54,304 [hospital_b] INFO fit_start
+malicious_client  | [92mINFO [0m:      
+malicious_client  | [92mINFO [0m:      Received: train message 37da7f53-1fea-4d67-b3af-dbdab77b91f9
+malicious_client  | 2026-05-06 14:52:54,316 [malicious_client] WARNING [ATTACK:noise] Injecting noise with scale=8.3847
+hospital_c        | 2026-05-06 14:52:54,849 [hospital_c] INFO fit_complete
+hospital_c        | [92mINFO [0m:      Sent reply
+malicious_client  | 2026-05-06 14:52:55,067 [malicious_client] WARNING [malicious_client] fit (MALICIOUS) round=1: mode=noise, loss=2.2860, acc=0.5045
+malicious_client  | 2026-05-06 14:52:55,067 [malicious_client] INFO attack_applied
+malicious_client  | [92mINFO [0m:      Sent reply
+hospital_a        | 2026-05-06 14:52:55,347 [hospital_a] INFO fit_complete
+hospital_a        | [92mINFO [0m:      Sent reply
+hospital_b        | 2026-05-06 14:52:55,656 [hospital_b] INFO fit_complete
+hospital_b        | [92mINFO [0m:      Sent reply
+fl-server         | [92mINFO [0m:      aggregate_fit: received 4 results and 0 failures
+fl-server         | 2026-05-06 14:52:55,666 [server] INFO round_start
+fl-server         | 2026-05-06 14:52:55,666 [server] INFO weights_received
+fl-server         | 2026-05-06 14:52:55,672 [trust] INFO trust_updated
+fl-server         | 2026-05-06 14:52:55,672 [server] INFO weights_received
+fl-server         | 2026-05-06 14:52:55,676 [trust] INFO trust_updated
+fl-server         | 2026-05-06 14:52:55,676 [server] INFO weights_received
+fl-server         | 2026-05-06 14:52:55,680 [trust] INFO trust_updated
+fl-server         | 2026-05-06 14:52:55,680 [server] INFO weights_received
+fl-server         | 2026-05-06 14:52:55,684 [trust] INFO trust_updated
+fl-server         | 2026-05-06 14:52:55,684 [server] INFO trust_weighting_applied
+fl-server         | 2026-05-06 14:52:55,688 [server] INFO aggregation_complete
+fl-server         | [92mINFO [0m:      configure_evaluate: strategy sampled 4 clients (out of 4)
+hospital_c        | [92mINFO [0m:      
+hospital_c        | [92mINFO [0m:      Received: evaluate message 8670f30f-d455-4585-81de-59595c239d73
+hospital_c        | 2026-05-06 14:52:55,696 [hospital_c] INFO evaluate_complete
+hospital_c        | [92mINFO [0m:      Sent reply
+hospital_b        | [92mINFO [0m:      
+hospital_b        | [92mINFO [0m:      Received: evaluate message c3ca0b8e-9bbd-44fc-9fa4-0afa118016b4
+hospital_b        | 2026-05-06 14:52:55,697 [hospital_b] INFO evaluate_complete
+hospital_b        | [92mINFO [0m:      Sent reply
+malicious_client  | [92mINFO [0m:      
+malicious_client  | [92mINFO [0m:      Received: evaluate message 640724df-1bdb-45cc-b1c2-806d6659e1ee
+malicious_client  | 2026-05-06 14:52:55,701 [malicious_client] INFO [malicious_client] eval: loss=1.8502, acc=0.5196
+malicious_client  | [92mINFO [0m:      Sent reply
+hospital_a        | [92mINFO [0m:      
+hospital_a        | [92mINFO [0m:      Received: evaluate message e476ffc9-3a51-4542-8758-e4aa57ee111e
+hospital_a        | 2026-05-06 14:52:55,704 [hospital_a] INFO evaluate_complete
+hospital_a        | [92mINFO [0m:      Sent reply
+fl-server         | [92mINFO [0m:      aggregate_evaluate: received 4 results and 0 failures
+fl-server         | 2026-05-06 14:52:55,705 [server] INFO round_complete
+fl-server         | 2026-05-06 14:52:55,705 [server] INFO round_gate_decision
+fl-server         | [92mINFO [0m:      
+fl-server         | [92mINFO [0m:      [ROUND 2]
+fl-server         | [92mINFO [0m:      configure_fit: strategy sampled 4 clients (out of 4)
+hospital_b        | [92mINFO [0m:      
+hospital_b        | [92mINFO [0m:      Received: train message c021206a-dbe9-4a5a-9b6d-ca39bfcd01f2
+hospital_b        | 2026-05-06 14:52:55,711 [hospital_b] INFO fit_start
+hospital_c        | [92mINFO [0m:      
+hospital_c        | [92mINFO [0m:      Received: train message e9d11dd7-7848-4652-8b16-dcd871318af1
+malicious_client  | [92mINFO [0m:      
+malicious_client  | [92mINFO [0m:      Received: train message 58b9d615-8d3c-47a9-8395-5caa2b2a6a9e
+hospital_c        | 2026-05-06 14:52:55,713 [hospital_c] INFO fit_start
+hospital_a        | [92mINFO [0m:      
+hospital_a        | [92mINFO [0m:      Received: train message 91e78129-ee82-4b65-8054-548efabffa88
+hospital_a        | 2026-05-06 14:52:55,716 [hospital_a] INFO fit_start
+malicious_client  | 2026-05-06 14:52:55,718 [malicious_client] WARNING [ATTACK:noise] Injecting noise with scale=1751.1247
+hospital_a        | 2026-05-06 14:52:56,374 [hospital_a] INFO fit_complete
+hospital_a        | [92mINFO [0m:      Sent reply
+malicious_client  | 2026-05-06 14:52:56,575 [malicious_client] WARNING [malicious_client] fit (MALICIOUS) round=2: mode=noise, loss=2.0575, acc=0.5797
+malicious_client  | 2026-05-06 14:52:56,575 [malicious_client] INFO attack_applied
+malicious_client  | [92mINFO [0m:      Sent reply
+hospital_c        | 2026-05-06 14:52:56,606 [hospital_c] INFO fit_complete
+hospital_c        | [92mINFO [0m:      Sent reply
+hospital_b        | 2026-05-06 14:52:56,651 [hospital_b] INFO fit_complete
+hospital_b        | [92mINFO [0m:      Sent reply
+fl-server         | [92mINFO [0m:      aggregate_fit: received 4 results and 0 failures
+fl-server         | 2026-05-06 14:52:56,656 [server] INFO round_start
+fl-server         | 2026-05-06 14:52:56,656 [server] INFO weights_received
+fl-server         | 2026-05-06 14:52:56,659 [trust] INFO trust_updated
+fl-server         | 2026-05-06 14:52:56,659 [server] INFO weights_received
+fl-server         | 2026-05-06 14:52:56,662 [trust] INFO trust_updated
+fl-server         | 2026-05-06 14:52:56,662 [server] INFO weights_received
+fl-server         | 2026-05-06 14:52:56,665 [trust] INFO trust_updated
+fl-server         | 2026-05-06 14:52:56,665 [server] INFO weights_received
+fl-server         | 2026-05-06 14:52:56,667 [trust] INFO trust_updated
+fl-server         | 2026-05-06 14:52:56,667 [server] INFO trust_weighting_applied
+fl-server         | 2026-05-06 14:52:56,669 [server] INFO aggregation_complete
+fl-server         | [92mINFO [0m:      configure_evaluate: strategy sampled 4 clients (out of 4)
+hospital_c        | [92mINFO [0m:      
+hospital_c        | [92mINFO [0m:      Received: evaluate message 3ace7081-7e1e-41f6-bf72-dbbaf96be272
+hospital_c        | 2026-05-06 14:52:56,675 [hospital_c] INFO evaluate_complete
+hospital_b        | [92mINFO [0m:      
+hospital_b        | [92mINFO [0m:      Received: evaluate message 494237ba-5245-445c-b502-0d5d0871de52
+hospital_c        | [92mINFO [0m:      Sent reply
+hospital_b        | 2026-05-06 14:52:56,676 [hospital_b] INFO evaluate_complete
+hospital_b        | [92mINFO [0m:      Sent reply
+hospital_a        | [92mINFO [0m:      
+hospital_a        | [92mINFO [0m:      Received: evaluate message 3c1ac3e1-daad-494c-86f6-713c0f111e4e
+hospital_a        | 2026-05-06 14:52:56,678 [hospital_a] INFO evaluate_complete
+hospital_a        | [92mINFO [0m:      Sent reply
+malicious_client  | [92mINFO [0m:      
+malicious_client  | [92mINFO [0m:      Received: evaluate message 520d8a07-f120-4cf5-8477-2c485ee660e8
+malicious_client  | 2026-05-06 14:52:56,681 [malicious_client] INFO [malicious_client] eval: loss=1.3656, acc=0.5896
+malicious_client  | [92mINFO [0m:      Sent reply
+fl-server         | [92mINFO [0m:      aggregate_evaluate: received 4 results and 0 failures
+fl-server         | 2026-05-06 14:52:56,682 [server] INFO round_complete
+fl-server         | 2026-05-06 14:52:56,682 [server] INFO round_gate_decision
+fl-server         | [92mINFO [0m:      
+fl-server         | [92mINFO [0m:      [ROUND 3]
+fl-server         | [92mINFO [0m:      configure_fit: strategy sampled 4 clients (out of 4)
+hospital_b        | [92mINFO [0m:      
+hospital_b        | [92mINFO [0m:      Received: train message 827d295b-b16e-4470-af5e-e3ae7f79e56d
+hospital_b        | 2026-05-06 14:52:56,686 [hospital_b] INFO fit_start
+hospital_a        | [92mINFO [0m:      
+hospital_a        | [92mINFO [0m:      Received: train message daa61fd4-cf6b-4f8c-be79-e90bee0b385e
+hospital_a        | 2026-05-06 14:52:56,689 [hospital_a] INFO fit_start
+hospital_c        | [92mINFO [0m:      
+hospital_c        | [92mINFO [0m:      Received: train message 2109aa28-ce6f-42d6-b998-823dd09b0ab7
+hospital_c        | 2026-05-06 14:52:56,691 [hospital_c] INFO fit_start
+malicious_client  | [92mINFO [0m:      
+malicious_client  | [92mINFO [0m:      Received: train message f832640b-d1d4-43ea-b6f0-863808eab4b2
+malicious_client  | 2026-05-06 14:52:56,696 [malicious_client] WARNING [ATTACK:noise] Injecting noise with scale=365884.1406
+opa               | {"client_addr":"[::1]:56248","level":"info","msg":"Received request.","req_id":9,"req_method":"GET","req_path":"/health","time":"2026-05-06T14:52:57Z"}
+opa               | {"client_addr":"[::1]:56248","level":"info","msg":"Sent response.","req_id":9,"req_method":"GET","req_path":"/health","resp_bytes":3,"resp_duration":0.201391,"resp_status":200,"time":"2026-05-06T14:52:57Z"}
+malicious_client  | 2026-05-06 14:52:57,320 [malicious_client] WARNING [malicious_client] fit (MALICIOUS) round=3: mode=noise, loss=1.4801, acc=0.6132
+malicious_client  | 2026-05-06 14:52:57,320 [malicious_client] INFO attack_applied
+malicious_client  | [92mINFO [0m:      Sent reply
+hospital_c        | 2026-05-06 14:52:57,339 [hospital_c] INFO fit_complete
+hospital_c        | [92mINFO [0m:      Sent reply
+hospital_b        | 2026-05-06 14:52:57,801 [hospital_b] INFO fit_complete
+hospital_b        | [92mINFO [0m:      Sent reply
+hospital_a        | 2026-05-06 14:52:57,994 [hospital_a] INFO fit_complete
+hospital_a        | [92mINFO [0m:      Sent reply
+fl-server         | [92mINFO [0m:      aggregate_fit: received 4 results and 0 failures
+fl-server         | 2026-05-06 14:52:58,001 [server] INFO round_start
+fl-server         | 2026-05-06 14:52:58,001 [server] INFO weights_received
+fl-server         | 2026-05-06 14:52:58,004 [trust] INFO trust_updated
+fl-server         | 2026-05-06 14:52:58,004 [server] INFO weights_received
+fl-server         | 2026-05-06 14:52:58,006 [trust] INFO trust_updated
+fl-server         | 2026-05-06 14:52:58,006 [server] INFO weights_received
+fl-server         | 2026-05-06 14:52:58,008 [trust] INFO trust_updated
+fl-server         | 2026-05-06 14:52:58,008 [server] INFO weights_received
+fl-server         | 2026-05-06 14:52:58,010 [trust] INFO trust_updated
+fl-server         | 2026-05-06 14:52:58,010 [server] INFO trust_weighting_applied
+fl-server         | 2026-05-06 14:52:58,012 [server] INFO aggregation_complete
+fl-server         | [92mINFO [0m:      configure_evaluate: strategy sampled 4 clients (out of 4)
+hospital_a        | [92mINFO [0m:      
+hospital_a        | [92mINFO [0m:      Received: evaluate message 92749a24-2c1a-4309-9ac9-701d7cde2c99
+hospital_c        | [92mINFO [0m:      
+hospital_c        | [92mINFO [0m:      Received: evaluate message 3fe943f6-382a-4240-b18f-8d23393b25c7
+hospital_a        | 2026-05-06 14:52:58,019 [hospital_a] INFO evaluate_complete
+hospital_a        | [92mINFO [0m:      Sent reply
+hospital_c        | 2026-05-06 14:52:58,019 [hospital_c] INFO evaluate_complete
+hospital_c        | [92mINFO [0m:      Sent reply
+hospital_b        | [92mINFO [0m:      
+hospital_b        | [92mINFO [0m:      Received: evaluate message 30f9470a-f2b7-4c2b-8bd6-117f408ee944
+hospital_b        | 2026-05-06 14:52:58,021 [hospital_b] INFO evaluate_complete
+hospital_b        | [92mINFO [0m:      Sent reply
+malicious_client  | [92mINFO [0m:      
+malicious_client  | [92mINFO [0m:      Received: evaluate message 2dba3dfb-569a-48ef-a08f-30bd0ecfe843
+malicious_client  | 2026-05-06 14:52:58,022 [malicious_client] INFO [malicious_client] eval: loss=1.1606, acc=0.6765
+malicious_client  | [92mINFO [0m:      Sent reply
+fl-server         | [92mINFO [0m:      aggregate_evaluate: received 4 results and 0 failures
+fl-server         | 2026-05-06 14:52:58,024 [server] INFO round_complete
+fl-server         | 2026-05-06 14:52:58,024 [server] INFO round_gate_decision
+fl-server         | [92mINFO [0m:      
+fl-server         | [92mINFO [0m:      [ROUND 4]
+fl-server         | [92mINFO [0m:      configure_fit: strategy sampled 4 clients (out of 4)
+malicious_client  | [92mINFO [0m:      
+malicious_client  | [92mINFO [0m:      Received: train message a1b78cbe-b277-4f07-9c49-7886f09519d5
+hospital_a        | [92mINFO [0m:      
+hospital_a        | [92mINFO [0m:      Received: train message a3ffc8f8-7683-4eb1-9c7a-48da954e1716
+hospital_a        | 2026-05-06 14:52:58,030 [hospital_a] INFO fit_start
+hospital_c        | [92mINFO [0m:      
+hospital_c        | [92mINFO [0m:      Received: train message c443725a-2960-4982-a9fa-2954ea91b7e1
+hospital_b        | [92mINFO [0m:      
+hospital_b        | [92mINFO [0m:      Received: train message cde36ef1-1175-4e7d-8d35-efb16c2ce71c
+hospital_c        | 2026-05-06 14:52:58,031 [hospital_c] INFO fit_start
+malicious_client  | 2026-05-06 14:52:58,031 [malicious_client] WARNING [ATTACK:noise] Injecting noise with scale=76719370.0000
+hospital_b        | 2026-05-06 14:52:58,032 [hospital_b] INFO fit_start
+hospital_c        | 2026-05-06 14:52:58,570 [hospital_c] INFO fit_complete
+hospital_c        | [92mINFO [0m:      Sent reply
+hospital_b        | 2026-05-06 14:52:58,573 [hospital_b] INFO fit_complete
+malicious_client  | 2026-05-06 14:52:58,574 [malicious_client] WARNING [malicious_client] fit (MALICIOUS) round=4: mode=noise, loss=1.3056, acc=0.7041
+malicious_client  | 2026-05-06 14:52:58,574 [malicious_client] INFO attack_applied
+hospital_b        | [92mINFO [0m:      Sent reply
+malicious_client  | [92mINFO [0m:      Sent reply
+hospital_a        | 2026-05-06 14:52:58,646 [hospital_a] INFO fit_complete
+hospital_a        | [92mINFO [0m:      Sent reply
+fl-server         | [92mINFO [0m:      aggregate_fit: received 4 results and 0 failures
+fl-server         | 2026-05-06 14:52:58,652 [server] INFO round_start
+fl-server         | 2026-05-06 14:52:58,652 [server] INFO weights_received
+fl-server         | 2026-05-06 14:52:58,657 [trust] INFO trust_updated
+fl-server         | 2026-05-06 14:52:58,657 [server] INFO weights_received
+fl-server         | 2026-05-06 14:52:58,660 [trust] INFO trust_updated
+fl-server         | 2026-05-06 14:52:58,660 [server] INFO weights_received
+fl-server         | 2026-05-06 14:52:58,662 [trust] INFO trust_updated
+fl-server         | 2026-05-06 14:52:58,662 [server] INFO weights_received
+fl-server         | 2026-05-06 14:52:58,664 [trust] INFO trust_updated
+fl-server         | 2026-05-06 14:52:58,665 [server] INFO trust_weighting_applied
+fl-server         | 2026-05-06 14:52:58,667 [server] INFO aggregation_complete
+fl-server         | [92mINFO [0m:      configure_evaluate: strategy sampled 4 clients (out of 4)
+hospital_c        | [92mINFO [0m:      
+hospital_c        | [92mINFO [0m:      Received: evaluate message d0b8c0d4-d270-4524-9f9b-9d163f1ef862
+hospital_c        | 2026-05-06 14:52:58,671 [hospital_c] INFO evaluate_complete
+hospital_c        | [92mINFO [0m:      Sent reply
+hospital_b        | [92mINFO [0m:      
+hospital_b        | [92mINFO [0m:      Received: evaluate message 0a4a5f35-b9dc-46f2-9a4d-039f88c2d920
+hospital_a        | [92mINFO [0m:      
+hospital_a        | [92mINFO [0m:      Received: evaluate message 38f2f910-5ec9-47bd-be27-064520b66ca1
+hospital_b        | 2026-05-06 14:52:58,674 [hospital_b] INFO evaluate_complete
+hospital_b        | [92mINFO [0m:      Sent reply
+hospital_a        | 2026-05-06 14:52:58,674 [hospital_a] INFO evaluate_complete
+hospital_a        | [92mINFO [0m:      Sent reply
+malicious_client  | [92mINFO [0m:      
+malicious_client  | [92mINFO [0m:      Received: evaluate message 52fb48bd-9024-4c6f-8fef-9248d0afaec6
+malicious_client  | 2026-05-06 14:52:58,676 [malicious_client] INFO [malicious_client] eval: loss=1.1001, acc=0.7327
+malicious_client  | [92mINFO [0m:      Sent reply
+fl-server         | [92mINFO [0m:      aggregate_evaluate: received 4 results and 0 failures
+fl-server         | 2026-05-06 14:52:58,677 [server] INFO round_complete
+fl-server         | 2026-05-06 14:52:58,677 [server] INFO round_gate_decision
+fl-server         | [92mINFO [0m:      
+fl-server         | [92mINFO [0m:      [ROUND 5]
+fl-server         | [92mINFO [0m:      configure_fit: strategy sampled 4 clients (out of 4)
+hospital_b        | [92mINFO [0m:      
+hospital_b        | [92mINFO [0m:      Received: train message 8ab6ebb5-6c66-4689-a7b8-8962d3edc2c2
+hospital_b        | 2026-05-06 14:52:58,681 [hospital_b] INFO fit_start
+malicious_client  | [92mINFO [0m:      
+malicious_client  | [92mINFO [0m:      Received: train message 6e513b14-10b1-436f-85c9-6808a5f6f459
+hospital_c        | [92mINFO [0m:      
+hospital_c        | [92mINFO [0m:      Received: train message 9f850653-6861-4f95-bb0e-bba9ce158c33
+hospital_c        | 2026-05-06 14:52:58,684 [hospital_c] INFO fit_start
+hospital_a        | [92mINFO [0m:      
+hospital_a        | [92mINFO [0m:      Received: train message 36fcc722-2c16-4240-86d6-cfae64ad9cd2
+hospital_a        | 2026-05-06 14:52:58,686 [hospital_a] INFO fit_start
+malicious_client  | 2026-05-06 14:52:58,686 [malicious_client] WARNING [ATTACK:noise] Injecting noise with scale=16028295680.0000
+malicious_client  | 2026-05-06 14:52:59,291 [malicious_client] WARNING [malicious_client] fit (MALICIOUS) round=5: mode=noise, loss=0.8832, acc=0.8072
+malicious_client  | 2026-05-06 14:52:59,291 [malicious_client] INFO attack_applied
+malicious_client  | [92mINFO [0m:      Sent reply
+hospital_a        | 2026-05-06 14:52:59,419 [hospital_a] INFO fit_complete
+hospital_a        | [92mINFO [0m:      Sent reply
+hospital_b        | 2026-05-06 14:52:59,897 [hospital_b] INFO fit_complete
+hospital_b        | [92mINFO [0m:      Sent reply
+hospital_c        | 2026-05-06 14:53:00,107 [hospital_c] INFO fit_complete
+hospital_c        | [92mINFO [0m:      Sent reply
+fl-server         | [92mINFO [0m:      aggregate_fit: received 4 results and 0 failures
+fl-server         | 2026-05-06 14:53:00,115 [server] INFO round_start
+fl-server         | 2026-05-06 14:53:00,115 [server] INFO weights_received
+fl-server         | 2026-05-06 14:53:00,121 [trust] INFO trust_updated
+fl-server         | 2026-05-06 14:53:00,121 [server] INFO weights_received
+fl-server         | 2026-05-06 14:53:00,125 [trust] INFO trust_updated
+fl-server         | 2026-05-06 14:53:00,125 [server] INFO weights_received
+fl-server         | 2026-05-06 14:53:00,128 [trust] INFO trust_updated
+fl-server         | 2026-05-06 14:53:00,128 [server] INFO weights_received
+fl-server         | 2026-05-06 14:53:00,130 [trust] INFO trust_updated
+fl-server         | 2026-05-06 14:53:00,131 [server] INFO trust_weighting_applied
+fl-server         | 2026-05-06 14:53:00,134 [server] INFO aggregation_complete
+fl-server         | [92mINFO [0m:      configure_evaluate: strategy sampled 4 clients (out of 4)
+hospital_a        | [92mINFO [0m:      
+hospital_a        | [92mINFO [0m:      Received: evaluate message 56bd5ab1-877d-444f-b601-4348f5394d10
+hospital_b        | [92mINFO [0m:      
+hospital_b        | [92mINFO [0m:      Received: evaluate message e2221029-248f-46fb-9de8-79836062e52d
+hospital_a        | 2026-05-06 14:53:00,140 [hospital_a] INFO evaluate_complete
+hospital_a        | [92mINFO [0m:      Sent reply
+hospital_b        | 2026-05-06 14:53:00,141 [hospital_b] INFO evaluate_complete
+hospital_b        | [92mINFO [0m:      Sent reply
+hospital_c        | [92mINFO [0m:      
+hospital_c        | [92mINFO [0m:      Received: evaluate message caa50ebb-0e68-4225-b8df-30be4f1ff98d
+malicious_client  | [92mINFO [0m:      
+malicious_client  | [92mINFO [0m:      Received: evaluate message 56553ece-0303-4c73-bc93-2eb631da4668
+hospital_c        | 2026-05-06 14:53:00,144 [hospital_c] INFO evaluate_complete
+hospital_c        | [92mINFO [0m:      Sent reply
+malicious_client  | 2026-05-06 14:53:00,145 [malicious_client] INFO [malicious_client] eval: loss=0.7757, acc=0.7845
+malicious_client  | [92mINFO [0m:      Sent reply
+fl-server         | [92mINFO [0m:      aggregate_evaluate: received 4 results and 0 failures
+fl-server         | 2026-05-06 14:53:00,146 [server] INFO round_complete
+fl-server         | 2026-05-06 14:53:00,146 [server] INFO round_gate_decision
+fl-server         | [92mINFO [0m:      
+fl-server         | [92mINFO [0m:      [ROUND 6]
+fl-server         | [92mINFO [0m:      configure_fit: strategy sampled 4 clients (out of 4)
+hospital_a        | [92mINFO [0m:      
+hospital_a        | [92mINFO [0m:      Received: train message 6bf42ad5-dda3-4d73-a605-21663b1e0b50
+hospital_a        | 2026-05-06 14:53:00,150 [hospital_a] INFO fit_start
+hospital_b        | [92mINFO [0m:      
+hospital_b        | [92mINFO [0m:      Received: train message 4c1df45b-04a0-457a-8055-05bc883ff0a6
+hospital_b        | 2026-05-06 14:53:00,151 [hospital_b] INFO fit_start
+malicious_client  | [92mINFO [0m:      
+malicious_client  | [92mINFO [0m:      Received: train message 43f8d324-3f1f-445b-b542-4134c53c78ce
+hospital_c        | [92mINFO [0m:      
+hospital_c        | [92mINFO [0m:      Received: train message 204091a1-73ac-4fa1-b8b9-25f9327efe26
+hospital_c        | 2026-05-06 14:53:00,155 [hospital_c] INFO fit_start
+malicious_client  | 2026-05-06 14:53:00,156 [malicious_client] WARNING [ATTACK:noise] Injecting noise with scale=3360869253120.0000
+hospital_a        | 2026-05-06 14:53:00,911 [hospital_a] INFO fit_complete
+hospital_a        | [92mINFO [0m:      Sent reply
+malicious_client  | 2026-05-06 14:53:01,046 [malicious_client] WARNING [malicious_client] fit (MALICIOUS) round=6: mode=noise, loss=0.6616, acc=0.8699
+malicious_client  | 2026-05-06 14:53:01,046 [malicious_client] INFO attack_applied
+malicious_client  | [92mINFO [0m:      Sent reply
+hospital_b        | 2026-05-06 14:53:01,101 [hospital_b] INFO fit_complete
+hospital_b        | [92mINFO [0m:      Sent reply
+hospital_c        | 2026-05-06 14:53:01,594 [hospital_c] INFO fit_complete
+hospital_c        | [92mINFO [0m:      Sent reply
+fl-server         | [92mINFO [0m:      aggregate_fit: received 4 results and 0 failures
+fl-server         | 2026-05-06 14:53:01,599 [server] INFO round_start
+fl-server         | 2026-05-06 14:53:01,599 [server] INFO weights_received
+fl-server         | 2026-05-06 14:53:01,604 [trust] INFO trust_updated
+fl-server         | 2026-05-06 14:53:01,604 [server] INFO weights_received
+fl-server         | 2026-05-06 14:53:01,606 [trust] INFO trust_updated
+fl-server         | 2026-05-06 14:53:01,606 [server] INFO weights_received
+fl-server         | 2026-05-06 14:53:01,608 [trust] INFO trust_updated
+fl-server         | 2026-05-06 14:53:01,608 [server] INFO weights_received
+fl-server         | 2026-05-06 14:53:01,611 [trust] INFO trust_updated
+fl-server         | 2026-05-06 14:53:01,611 [server] INFO trust_weighting_applied
+fl-server         | 2026-05-06 14:53:01,613 [server] INFO aggregation_complete
+fl-server         | [92mINFO [0m:      configure_evaluate: strategy sampled 4 clients (out of 4)
+hospital_c        | [92mINFO [0m:      
+hospital_c        | [92mINFO [0m:      Received: evaluate message 288452a8-41d1-4896-ae59-c76d8c1816e7
+hospital_c        | 2026-05-06 14:53:01,618 [hospital_c] INFO evaluate_complete
+hospital_c        | [92mINFO [0m:      Sent reply
+malicious_client  | [92mINFO [0m:      
+malicious_client  | [92mINFO [0m:      Received: evaluate message f9a02c91-9a85-47d6-bb4e-19236a03d56b
+hospital_a        | [92mINFO [0m:      
+hospital_a        | [92mINFO [0m:      Received: evaluate message e8468a24-c54c-4bee-a2c8-96511d21fbf2
+hospital_b        | [92mINFO [0m:      
+hospital_b        | [92mINFO [0m:      Received: evaluate message 62a18d9d-a3e1-4f68-842f-d18aaea46670
+malicious_client  | 2026-05-06 14:53:01,622 [malicious_client] INFO [malicious_client] eval: loss=0.5081, acc=0.8777
+hospital_a        | 2026-05-06 14:53:01,623 [hospital_a] INFO evaluate_complete
+hospital_a        | [92mINFO [0m:      Sent reply
+malicious_client  | [92mINFO [0m:      Sent reply
+hospital_b        | 2026-05-06 14:53:01,624 [hospital_b] INFO evaluate_complete
+hospital_b        | [92mINFO [0m:      Sent reply
+fl-server         | [92mINFO [0m:      aggregate_evaluate: received 4 results and 0 failures
+fl-server         | 2026-05-06 14:53:01,625 [server] INFO round_complete
+fl-server         | 2026-05-06 14:53:01,625 [server] INFO round_gate_decision
+fl-server         | [92mINFO [0m:      
+fl-server         | [92mINFO [0m:      [ROUND 7]
+fl-server         | [92mINFO [0m:      configure_fit: strategy sampled 4 clients (out of 4)
+hospital_b        | [92mINFO [0m:      
+hospital_b        | [92mINFO [0m:      Received: train message adb65519-3a28-4258-bf88-8646d81308e4
+hospital_b        | 2026-05-06 14:53:01,629 [hospital_b] INFO fit_start
+hospital_a        | [92mINFO [0m:      
+hospital_a        | [92mINFO [0m:      Received: train message 57c0a09b-a46f-4c35-9366-2003bad1fd44
+hospital_c        | [92mINFO [0m:      
+hospital_c        | [92mINFO [0m:      Received: train message 4ac181df-e2ac-4f3c-9ff4-b57e9ed7f719
+hospital_a        | 2026-05-06 14:53:01,631 [hospital_a] INFO fit_start
+hospital_c        | 2026-05-06 14:53:01,632 [hospital_c] INFO fit_start
+malicious_client  | [92mINFO [0m:      
+malicious_client  | [92mINFO [0m:      Received: train message 4e45221d-d079-4a4c-829e-72dd499e8566
+malicious_client  | 2026-05-06 14:53:01,637 [malicious_client] WARNING [ATTACK:noise] Injecting noise with scale=701969790402560.0000
+opa               | {"client_addr":"[::1]:56260","level":"info","msg":"Received request.","req_id":10,"req_method":"GET","req_path":"/health","time":"2026-05-06T14:53:02Z"}
+opa               | {"client_addr":"[::1]:56260","level":"info","msg":"Sent response.","req_id":10,"req_method":"GET","req_path":"/health","resp_bytes":3,"resp_duration":0.204132,"resp_status":200,"time":"2026-05-06T14:53:02Z"}
+hospital_b        | 2026-05-06 14:53:02,205 [hospital_b] INFO fit_complete
+hospital_b        | [92mINFO [0m:      Sent reply
+hospital_a        | 2026-05-06 14:53:02,241 [hospital_a] INFO fit_complete
+hospital_a        | [92mINFO [0m:      Sent reply
+hospital_c        | 2026-05-06 14:53:02,305 [hospital_c] INFO fit_complete
+hospital_c        | [92mINFO [0m:      Sent reply
+malicious_client  | 2026-05-06 14:53:02,461 [malicious_client] WARNING [malicious_client] fit (MALICIOUS) round=7: mode=noise, loss=0.4824, acc=0.9549
+malicious_client  | 2026-05-06 14:53:02,461 [malicious_client] INFO attack_applied
+malicious_client  | [92mINFO [0m:      Sent reply
+fl-server         | [92mINFO [0m:      aggregate_fit: received 4 results and 0 failures
+fl-server         | 2026-05-06 14:53:02,467 [server] INFO round_start
+fl-server         | 2026-05-06 14:53:02,467 [server] INFO weights_received
+fl-server         | 2026-05-06 14:53:02,470 [trust] INFO trust_updated
+fl-server         | 2026-05-06 14:53:02,470 [server] INFO weights_received
+fl-server         | 2026-05-06 14:53:02,473 [trust] INFO trust_updated
+fl-server         | 2026-05-06 14:53:02,473 [server] INFO weights_received
+fl-server         | 2026-05-06 14:53:02,476 [trust] INFO trust_updated
+fl-server         | 2026-05-06 14:53:02,476 [server] INFO weights_received
+fl-server         | 2026-05-06 14:53:02,478 [trust] INFO trust_updated
+fl-server         | 2026-05-06 14:53:02,479 [server] INFO trust_weighting_applied
+fl-server         | 2026-05-06 14:53:02,481 [server] INFO aggregation_complete
+fl-server         | [92mINFO [0m:      configure_evaluate: strategy sampled 4 clients (out of 4)
+hospital_a        | [92mINFO [0m:      
+hospital_a        | [92mINFO [0m:      Received: evaluate message 221461d6-f55f-460b-97c7-966c67594869
+hospital_a        | 2026-05-06 14:53:02,484 [hospital_a] INFO evaluate_complete
+hospital_a        | [92mINFO [0m:      Sent reply
+malicious_client  | [92mINFO [0m:      
+malicious_client  | [92mINFO [0m:      Received: evaluate message 8ed21e2f-3a89-496c-ab86-3fa33751f473
+hospital_b        | [92mINFO [0m:      
+hospital_b        | [92mINFO [0m:      Received: evaluate message 7a28c98d-f0ab-4c3e-baf8-ab4794493443
+malicious_client  | 2026-05-06 14:53:02,487 [malicious_client] INFO [malicious_client] eval: loss=0.1804, acc=0.9292
+malicious_client  | [92mINFO [0m:      Sent reply
+hospital_b        | 2026-05-06 14:53:02,487 [hospital_b] INFO evaluate_complete
+hospital_b        | [92mINFO [0m:      Sent reply
+hospital_c        | [92mINFO [0m:      
+hospital_c        | [92mINFO [0m:      Received: evaluate message 9bfca5c5-9735-410a-9364-735a92d475a3
+hospital_c        | 2026-05-06 14:53:02,489 [hospital_c] INFO evaluate_complete
+hospital_c        | [92mINFO [0m:      Sent reply
+fl-server         | [92mINFO [0m:      aggregate_evaluate: received 4 results and 0 failures
+fl-server         | 2026-05-06 14:53:02,490 [server] INFO round_complete
+fl-server         | 2026-05-06 14:53:02,490 [server] INFO round_gate_decision
+fl-server         | [92mINFO [0m:      
+fl-server         | [92mINFO [0m:      [ROUND 8]
+fl-server         | [92mINFO [0m:      configure_fit: strategy sampled 4 clients (out of 4)
+malicious_client  | [92mINFO [0m:      
+malicious_client  | [92mINFO [0m:      Received: train message 53675a86-1647-4609-862d-ac1a8b35f2fd
+hospital_c        | [92mINFO [0m:      
+hospital_c        | [92mINFO [0m:      Received: train message d43da076-534d-4880-a8a4-72fb5c6464ba
+hospital_c        | 2026-05-06 14:53:02,496 [hospital_c] INFO fit_start
+hospital_a        | [92mINFO [0m:      
+hospital_a        | [92mINFO [0m:      Received: train message 422669c8-be5f-46e5-90bf-aaf08e30a08c
+hospital_a        | 2026-05-06 14:53:02,497 [hospital_a] INFO fit_start
+malicious_client  | 2026-05-06 14:53:02,498 [malicious_client] WARNING [ATTACK:noise] Injecting noise with scale=146727378595348480.0000
+hospital_b        | [92mINFO [0m:      
+hospital_b        | [92mINFO [0m:      Received: train message 0aca3931-d483-415f-a145-6fbdf2962e4f
+hospital_b        | 2026-05-06 14:53:02,499 [hospital_b] INFO fit_start
+hospital_b        | 2026-05-06 14:53:03,037 [hospital_b] INFO fit_complete
+hospital_b        | [92mINFO [0m:      Sent reply
+malicious_client  | /usr/local/lib/python3.10/site-packages/numpy/_core/fromnumeric.py:86: RuntimeWarning: overflow encountered in reduce
+malicious_client  |   return ufunc.reduce(obj, axis, dtype, out, **passkwargs)
+malicious_client  | 2026-05-06 14:53:03,342 [malicious_client] WARNING [malicious_client] fit (MALICIOUS) round=8: mode=noise, loss=0.2467, acc=0.9800
+malicious_client  | 2026-05-06 14:53:03,342 [malicious_client] INFO attack_applied
+malicious_client  | [92mINFO [0m:      Sent reply
+hospital_a        | 2026-05-06 14:53:03,363 [hospital_a] INFO fit_complete
+hospital_a        | [92mINFO [0m:      Sent reply
+hospital_c        | 2026-05-06 14:53:03,689 [hospital_c] INFO fit_complete
+hospital_c        | [92mINFO [0m:      Sent reply
+fl-server         | [92mINFO [0m:      aggregate_fit: received 4 results and 0 failures
+fl-server         | 2026-05-06 14:53:03,699 [server] INFO round_start
+fl-server         | 2026-05-06 14:53:03,699 [server] INFO weights_received
+fl-server         | 2026-05-06 14:53:03,703 [trust] INFO trust_updated
+fl-server         | 2026-05-06 14:53:03,704 [server] INFO weights_received
+fl-server         | 2026-05-06 14:53:03,706 [trust] INFO trust_updated
+fl-server         | 2026-05-06 14:53:03,706 [server] INFO weights_received
+fl-server         | 2026-05-06 14:53:03,708 [trust] INFO trust_updated
+fl-server         | 2026-05-06 14:53:03,708 [server] INFO weights_received
+fl-server         | 2026-05-06 14:53:03,711 [trust] INFO trust_updated
+fl-server         | 2026-05-06 14:53:03,711 [server] INFO trust_weighting_applied
+fl-server         | 2026-05-06 14:53:03,713 [server] INFO aggregation_complete
+fl-server         | [92mINFO [0m:      configure_evaluate: strategy sampled 4 clients (out of 4)
+hospital_b        | [92mINFO [0m:      
+hospital_b        | [92mINFO [0m:      Received: evaluate message 859dd673-c703-49ce-8611-88103462b220
+hospital_b        | 2026-05-06 14:53:03,718 [hospital_b] INFO evaluate_complete
+hospital_b        | [92mINFO [0m:      Sent reply
+malicious_client  | [92mINFO [0m:      
+malicious_client  | [92mINFO [0m:      Received: evaluate message 4e55ea49-aa32-4a9d-bd27-6164d663c2b3
+hospital_c        | [92mINFO [0m:      
+hospital_c        | [92mINFO [0m:      Received: evaluate message 02cbec5b-75df-4f10-a3c1-c60d587fb0cd
+hospital_a        | [92mINFO [0m:      
+malicious_client  | 2026-05-06 14:53:03,721 [malicious_client] INFO [malicious_client] eval: loss=0.0500, acc=0.9835
+hospital_a        | [92mINFO [0m:      Received: evaluate message 25840aa1-df1e-42db-953d-699fc25bd0d1
+malicious_client  | [92mINFO [0m:      Sent reply
+hospital_c        | 2026-05-06 14:53:03,721 [hospital_c] INFO evaluate_complete
+hospital_a        | 2026-05-06 14:53:03,722 [hospital_a] INFO evaluate_complete
+hospital_c        | [92mINFO [0m:      Sent reply
+hospital_a        | [92mINFO [0m:      Sent reply
+fl-server         | [92mINFO [0m:      aggregate_evaluate: received 4 results and 0 failures
+fl-server         | 2026-05-06 14:53:03,723 [server] INFO round_complete
+fl-server         | 2026-05-06 14:53:03,723 [server] INFO round_gate_decision
+fl-server         | [92mINFO [0m:      
+fl-server         | [92mINFO [0m:      [ROUND 9]
+fl-server         | [92mINFO [0m:      configure_fit: strategy sampled 4 clients (out of 4)
+hospital_c        | [92mINFO [0m:      
+hospital_c        | [92mINFO [0m:      Received: train message 5fd0aab9-3a93-4c48-942b-df1c317c8efd
+hospital_c        | 2026-05-06 14:53:03,727 [hospital_c] INFO fit_start
+malicious_client  | [92mINFO [0m:      
+malicious_client  | [92mINFO [0m:      Received: train message ec44005e-87db-4ea9-a274-3df34bab1242
+hospital_b        | [92mINFO [0m:      
+hospital_b        | [92mINFO [0m:      Received: train message 0dc1060c-c498-4ebe-a157-72296ee195de
+hospital_b        | 2026-05-06 14:53:03,730 [hospital_b] INFO fit_start
+hospital_a        | [92mINFO [0m:      
+hospital_a        | [92mINFO [0m:      Received: train message 012d70fb-9716-458a-852f-506db4743ad5
+hospital_a        | 2026-05-06 14:53:03,732 [hospital_a] INFO fit_start
+malicious_client  | 2026-05-06 14:53:03,732 [malicious_client] WARNING [ATTACK:noise] Injecting noise with scale=30629452756235059200.0000
+hospital_a        | 2026-05-06 14:53:04,516 [hospital_a] INFO fit_complete
+hospital_a        | [92mINFO [0m:      Sent reply
+malicious_client  | /app/mock_model.py:30: RuntimeWarning: overflow encountered in square
+malicious_client  |   norm = np.sqrt(sum(np.sum(d ** 2) for d in deltas))
+malicious_client  | 2026-05-06 14:53:04,623 [malicious_client] WARNING [malicious_client] fit (MALICIOUS) round=9: mode=noise, loss=0.1000, acc=0.9800
+malicious_client  | 2026-05-06 14:53:04,623 [malicious_client] INFO attack_applied
+malicious_client  | [92mINFO [0m:      Sent reply
+hospital_c        | 2026-05-06 14:53:04,784 [hospital_c] INFO fit_complete
+hospital_c        | [92mINFO [0m:      Sent reply
+hospital_b        | 2026-05-06 14:53:04,848 [hospital_b] INFO fit_complete
+hospital_b        | [92mINFO [0m:      Sent reply
+fl-server         | [92mINFO [0m:      aggregate_fit: received 4 results and 0 failures
+fl-server         | 2026-05-06 14:53:04,855 [server] INFO round_start
+fl-server         | 2026-05-06 14:53:04,855 [server] INFO weights_received
+fl-server         | 2026-05-06 14:53:04,858 [trust] INFO trust_updated
+fl-server         | 2026-05-06 14:53:04,858 [server] INFO weights_received
+fl-server         | 2026-05-06 14:53:04,860 [trust] INFO trust_updated
+fl-server         | 2026-05-06 14:53:04,860 [server] INFO weights_received
+fl-server         | 2026-05-06 14:53:04,862 [trust] INFO trust_updated
+fl-server         | 2026-05-06 14:53:04,863 [server] INFO weights_received
+fl-server         | 2026-05-06 14:53:04,865 [trust] INFO trust_updated
+fl-server         | 2026-05-06 14:53:04,866 [server] INFO trust_weighting_applied
+fl-server         | 2026-05-06 14:53:04,868 [server] INFO aggregation_complete
+fl-server         | [92mINFO [0m:      configure_evaluate: strategy sampled 4 clients (out of 4)
+hospital_b        | [92mINFO [0m:      
+hospital_b        | [92mINFO [0m:      Received: evaluate message b820df26-95bd-4c5e-bfe5-81a2bebecb68
+hospital_b        | 2026-05-06 14:53:04,872 [hospital_b] INFO evaluate_complete
+hospital_b        | [92mINFO [0m:      Sent reply
+hospital_a        | [92mINFO [0m:      
+hospital_a        | [92mINFO [0m:      Received: evaluate message 8bfd29b8-d33f-4d5d-914f-375d24e6ffb9
+hospital_a        | 2026-05-06 14:53:04,874 [hospital_a] INFO evaluate_complete
+hospital_c        | [92mINFO [0m:      
+hospital_c        | [92mINFO [0m:      Received: evaluate message 1433c16e-9ac2-4f32-a730-056596da0420
+hospital_a        | [92mINFO [0m:      Sent reply
+hospital_c        | 2026-05-06 14:53:04,875 [hospital_c] INFO evaluate_complete
+hospital_c        | [92mINFO [0m:      Sent reply
+malicious_client  | [92mINFO [0m:      
+malicious_client  | [92mINFO [0m:      Received: evaluate message a7b5830f-0c85-45a4-a440-f9fd1cdbd643
+malicious_client  | 2026-05-06 14:53:04,877 [malicious_client] INFO [malicious_client] eval: loss=0.0500, acc=0.9900
+malicious_client  | [92mINFO [0m:      Sent reply
+fl-server         | [92mINFO [0m:      aggregate_evaluate: received 4 results and 0 failures
+fl-server         | 2026-05-06 14:53:04,878 [server] INFO round_complete
+fl-server         | 2026-05-06 14:53:04,878 [server] INFO round_gate_decision
+fl-server         | [92mINFO [0m:      
+fl-server         | [92mINFO [0m:      [ROUND 10]
+fl-server         | [92mINFO [0m:      configure_fit: strategy sampled 4 clients (out of 4)
+hospital_c        | [92mINFO [0m:      
+hospital_c        | [92mINFO [0m:      Received: train message 1200ee57-79dc-4b22-a64d-5fde6cf7d408
+hospital_c        | 2026-05-06 14:53:04,882 [hospital_c] INFO fit_start
+hospital_a        | [92mINFO [0m:      
+hospital_a        | [92mINFO [0m:      Received: train message 7c8c17b5-a3da-467b-afca-b3dcd0d692ff
+hospital_a        | 2026-05-06 14:53:04,884 [hospital_a] INFO fit_start
+malicious_client  | [92mINFO [0m:      
+malicious_client  | [92mINFO [0m:      Received: train message 7148404a-08de-4a02-aa1f-19c14bf61097
+hospital_b        | [92mINFO [0m:      
+hospital_b        | [92mINFO [0m:      Received: train message afb34559-0d74-4d34-84dd-8a517fcabff9
+hospital_b        | 2026-05-06 14:53:04,887 [hospital_b] INFO fit_start
+malicious_client  | 2026-05-06 14:53:04,888 [malicious_client] WARNING [ATTACK:noise] Injecting noise with scale=inf
+hospital_c        | 2026-05-06 14:53:05,484 [hospital_c] INFO fit_complete
+hospital_c        | [92mINFO [0m:      Sent reply
+malicious_client  | 2026-05-06 14:53:05,576 [malicious_client] WARNING [malicious_client] fit (MALICIOUS) round=10: mode=noise, loss=0.1000, acc=0.9800
+malicious_client  | 2026-05-06 14:53:05,576 [malicious_client] INFO attack_applied
+malicious_client  | [92mINFO [0m:      Sent reply
+hospital_a        | 2026-05-06 14:53:05,688 [hospital_a] INFO fit_complete
+hospital_a        | [92mINFO [0m:      Sent reply
+hospital_b        | 2026-05-06 14:53:05,931 [hospital_b] INFO fit_complete
+hospital_b        | [92mINFO [0m:      Sent reply
+fl-server         | [92mINFO [0m:      aggregate_fit: received 4 results and 0 failures
+fl-server         | 2026-05-06 14:53:05,937 [server] INFO round_start
+fl-server         | 2026-05-06 14:53:05,937 [server] INFO weights_received
+fl-server         | 2026-05-06 14:53:05,941 [trust] INFO trust_updated
+fl-server         | 2026-05-06 14:53:05,941 [server] INFO weights_received
+fl-server         | 2026-05-06 14:53:05,943 [trust] INFO trust_updated
+fl-server         | 2026-05-06 14:53:05,943 [server] INFO weights_received
+fl-server         | 2026-05-06 14:53:05,945 [trust] INFO trust_updated
+fl-server         | 2026-05-06 14:53:05,945 [server] INFO weights_received
+fl-server         | 2026-05-06 14:53:05,947 [trust] INFO trust_updated
+fl-server         | 2026-05-06 14:53:05,948 [server] INFO trust_weighting_applied
+fl-server         | 2026-05-06 14:53:05,950 [server] INFO aggregation_complete
+fl-server         | [92mINFO [0m:      configure_evaluate: strategy sampled 4 clients (out of 4)
+hospital_a        | [92mINFO [0m:      
+hospital_a        | [92mINFO [0m:      Received: evaluate message e61ad8e8-5407-447f-bcb9-0542013f9c5d
+hospital_a        | 2026-05-06 14:53:05,955 [hospital_a] INFO evaluate_complete
+hospital_a        | [92mINFO [0m:      Sent reply
+hospital_c        | [92mINFO [0m:      
+hospital_c        | [92mINFO [0m:      Received: evaluate message 25188e56-3d4b-4125-8725-b2ee8fa9e1a0
+hospital_c        | 2026-05-06 14:53:05,958 [hospital_c] INFO evaluate_complete
+hospital_b        | [92mINFO [0m:      
+hospital_b        | [92mINFO [0m:      Received: evaluate message 8d610b25-4807-4e2f-87e1-2cddf836c933
+hospital_c        | [92mINFO [0m:      Sent reply
+malicious_client  | [92mINFO [0m:      
+malicious_client  | [92mINFO [0m:      Received: evaluate message 273f5efe-92f4-4760-9f6c-e5ddf456d54d
+hospital_b        | 2026-05-06 14:53:05,960 [hospital_b] INFO evaluate_complete
+malicious_client  | 2026-05-06 14:53:05,960 [malicious_client] INFO [malicious_client] eval: loss=0.0500, acc=0.9900
+hospital_b        | [92mINFO [0m:      Sent reply
+malicious_client  | [92mINFO [0m:      Sent reply
+fl-server         | [92mINFO [0m:      aggregate_evaluate: received 4 results and 0 failures
+fl-server         | 2026-05-06 14:53:05,961 [server] INFO round_complete
+fl-server         | 2026-05-06 14:53:05,961 [server] INFO round_gate_decision
+fl-server         | [92mINFO [0m:      
+fl-server         | [92mINFO [0m:      [ROUND 11]
+fl-server         | [92mINFO [0m:      configure_fit: strategy sampled 4 clients (out of 4)
+hospital_c        | [92mINFO [0m:      
+hospital_c        | [92mINFO [0m:      Received: train message bacc551c-aaa1-4241-a153-136182c8ccdd
+hospital_c        | 2026-05-06 14:53:05,965 [hospital_c] INFO fit_start
+hospital_b        | [92mINFO [0m:      
+hospital_b        | [92mINFO [0m:      Received: train message 5c6224b7-3ca8-40ab-9a6e-1d63a57d1968
+hospital_b        | 2026-05-06 14:53:05,967 [hospital_b] INFO fit_start
+hospital_a        | [92mINFO [0m:      
+hospital_a        | [92mINFO [0m:      Received: train message 73ab9894-a5c9-49e2-82fa-f195c93f5277
+malicious_client  | [92mINFO [0m:      
+malicious_client  | [92mINFO [0m:      Received: train message 54c5436f-a615-41c0-8f0d-b7bb651fe469
+hospital_a        | 2026-05-06 14:53:05,970 [hospital_a] INFO fit_start
+malicious_client  | 2026-05-06 14:53:05,974 [malicious_client] WARNING [ATTACK:noise] Injecting noise with scale=inf
+malicious_client  | /experiments/malicious_client.py:56: RuntimeWarning: invalid value encountered in add
+malicious_client  |   p + np.random.normal(0, noise_scale, size=p.shape).astype(np.float32)
+hospital_b        | /app/mock_model.py:29: RuntimeWarning: invalid value encountered in subtract
+hospital_b        |   deltas = [n - o for n, o in zip(new_weights, old_weights)]
+hospital_b        | 2026-05-06 14:53:06,515 [hospital_b] INFO fit_complete
+hospital_b        | [92mINFO [0m:      Sent reply
+hospital_a        | /app/mock_model.py:29: RuntimeWarning: invalid value encountered in subtract
+hospital_a        |   deltas = [n - o for n, o in zip(new_weights, old_weights)]
+hospital_a        | 2026-05-06 14:53:06,745 [hospital_a] INFO fit_complete
+hospital_a        | [92mINFO [0m:      Sent reply
+malicious_client  | /app/mock_model.py:29: RuntimeWarning: invalid value encountered in subtract
+malicious_client  |   deltas = [n - o for n, o in zip(new_weights, old_weights)]
+malicious_client  | 2026-05-06 14:53:06,896 [malicious_client] WARNING [malicious_client] fit (MALICIOUS) round=11: mode=noise, loss=0.1000, acc=0.9800
+malicious_client  | 2026-05-06 14:53:06,896 [malicious_client] INFO attack_applied
+malicious_client  | [92mINFO [0m:      Sent reply
+opa               | {"client_addr":"[::1]:33566","level":"info","msg":"Received request.","req_id":11,"req_method":"GET","req_path":"/health","time":"2026-05-06T14:53:07Z"}
+opa               | {"client_addr":"[::1]:33566","level":"info","msg":"Sent response.","req_id":11,"req_method":"GET","req_path":"/health","resp_bytes":3,"resp_duration":0.20889,"resp_status":200,"time":"2026-05-06T14:53:07Z"}
+hospital_c        | /app/mock_model.py:29: RuntimeWarning: invalid value encountered in subtract
+hospital_c        |   deltas = [n - o for n, o in zip(new_weights, old_weights)]
+hospital_c        | 2026-05-06 14:53:07,363 [hospital_c] INFO fit_complete
+hospital_c        | [92mINFO [0m:      Sent reply
+fl-server         | [92mINFO [0m:      aggregate_fit: received 4 results and 0 failures
+fl-server         | 2026-05-06 14:53:07,368 [server] INFO round_start
+fl-server         | 2026-05-06 14:53:07,368 [server] INFO weights_received
+fl-server         | 2026-05-06 14:53:07,372 [trust] INFO trust_updated
+fl-server         | 2026-05-06 14:53:07,372 [server] INFO weights_received
+fl-server         | 2026-05-06 14:53:07,374 [trust] INFO trust_updated
+fl-server         | 2026-05-06 14:53:07,374 [server] INFO weights_received
+fl-server         | 2026-05-06 14:53:07,376 [trust] INFO trust_updated
+fl-server         | 2026-05-06 14:53:07,377 [server] INFO weights_received
+fl-server         | 2026-05-06 14:53:07,379 [trust] INFO trust_updated
+fl-server         | 2026-05-06 14:53:07,379 [server] INFO trust_weighting_applied
+fl-server         | 2026-05-06 14:53:07,381 [server] INFO aggregation_complete
+fl-server         | [92mINFO [0m:      configure_evaluate: strategy sampled 4 clients (out of 4)
+hospital_a        | [92mINFO [0m:      
+hospital_a        | [92mINFO [0m:      Received: evaluate message 4d8c1ad2-faff-457d-a590-7f4de39f73ff
+malicious_client  | [92mINFO [0m:      
+malicious_client  | [92mINFO [0m:      Received: evaluate message fad4fbb5-ead7-45f1-a9ba-d7f6a8ef2d7b
+malicious_client  | 2026-05-06 14:53:07,387 [malicious_client] INFO [malicious_client] eval: loss=0.0500, acc=0.9900
+hospital_a        | 2026-05-06 14:53:07,387 [hospital_a] INFO evaluate_complete
+hospital_a        | [92mINFO [0m:      Sent reply
+malicious_client  | [92mINFO [0m:      Sent reply
+hospital_c        | [92mINFO [0m:      
+hospital_c        | [92mINFO [0m:      Received: evaluate message b1d427b5-7eef-49c6-b0e1-a551cb97ed7c
+hospital_c        | 2026-05-06 14:53:07,390 [hospital_c] INFO evaluate_complete
+hospital_b        | [92mINFO [0m:      
+hospital_b        | [92mINFO [0m:      Received: evaluate message 90000ef0-d216-438d-ad09-0aad8dcc2e11
+hospital_c        | [92mINFO [0m:      Sent reply
+hospital_b        | 2026-05-06 14:53:07,391 [hospital_b] INFO evaluate_complete
+hospital_b        | [92mINFO [0m:      Sent reply
+fl-server         | [92mINFO [0m:      aggregate_evaluate: received 4 results and 0 failures
+fl-server         | 2026-05-06 14:53:07,392 [server] INFO round_complete
+fl-server         | 2026-05-06 14:53:07,392 [server] INFO round_gate_decision
+fl-server         | [92mINFO [0m:      
+fl-server         | [92mINFO [0m:      [ROUND 12]
+fl-server         | [92mINFO [0m:      configure_fit: strategy sampled 4 clients (out of 4)
+hospital_c        | [92mINFO [0m:      
+hospital_c        | [92mINFO [0m:      Received: train message adc688df-8dc5-4ff2-8f23-024600fd1ba0
+hospital_c        | 2026-05-06 14:53:07,396 [hospital_c] INFO fit_start
+malicious_client  | [92mINFO [0m:      
+malicious_client  | [92mINFO [0m:      Received: train message fc5839ef-fe42-4a75-9a51-a498b4949f0a
+hospital_b        | [92mINFO [0m:      
+hospital_b        | [92mINFO [0m:      Received: train message ac532600-87d8-469d-b2b0-fe093583570e
+hospital_b        | 2026-05-06 14:53:07,400 [hospital_b] INFO fit_start
+hospital_a        | [92mINFO [0m:      
+hospital_a        | [92mINFO [0m:      Received: train message e4ceb153-7dde-4492-bfdb-3fe553b860b8
+malicious_client  | 2026-05-06 14:53:07,401 [malicious_client] WARNING [ATTACK:noise] Injecting noise with scale=nan
+hospital_a        | 2026-05-06 14:53:07,401 [hospital_a] INFO fit_start
+malicious_client  | 2026-05-06 14:53:08,030 [malicious_client] WARNING [malicious_client] fit (MALICIOUS) round=12: mode=noise, loss=0.1000, acc=0.9800
+malicious_client  | 2026-05-06 14:53:08,031 [malicious_client] INFO attack_applied
+malicious_client  | [92mINFO [0m:      Sent reply
+hospital_b        | 2026-05-06 14:53:08,205 [hospital_b] INFO fit_complete
+hospital_b        | [92mINFO [0m:      Sent reply
+hospital_c        | 2026-05-06 14:53:08,405 [hospital_c] INFO fit_complete
+hospital_c        | [92mINFO [0m:      Sent reply
+hospital_a        | 2026-05-06 14:53:08,893 [hospital_a] INFO fit_complete
+hospital_a        | [92mINFO [0m:      Sent reply
+fl-server         | [92mINFO [0m:      aggregate_fit: received 4 results and 0 failures
+fl-server         | 2026-05-06 14:53:08,899 [server] INFO round_start
+fl-server         | 2026-05-06 14:53:08,899 [server] INFO weights_received
+fl-server         | 2026-05-06 14:53:08,903 [trust] INFO trust_updated
+fl-server         | 2026-05-06 14:53:08,903 [server] INFO weights_received
+fl-server         | 2026-05-06 14:53:08,905 [trust] INFO trust_updated
+fl-server         | 2026-05-06 14:53:08,905 [server] INFO weights_received
+fl-server         | 2026-05-06 14:53:08,907 [trust] INFO trust_updated
+fl-server         | 2026-05-06 14:53:08,907 [server] INFO weights_received
+fl-server         | 2026-05-06 14:53:08,909 [trust] INFO trust_updated
+fl-server         | 2026-05-06 14:53:08,910 [server] INFO trust_weighting_applied
+fl-server         | 2026-05-06 14:53:08,913 [server] INFO aggregation_complete
+fl-server         | [92mINFO [0m:      configure_evaluate: strategy sampled 4 clients (out of 4)
+hospital_b        | [92mINFO [0m:      
+hospital_b        | [92mINFO [0m:      Received: evaluate message 8112f54b-93a8-4a8f-831b-01429b7d07b8
+hospital_b        | 2026-05-06 14:53:08,918 [hospital_b] INFO evaluate_complete
+hospital_c        | [92mINFO [0m:      
+hospital_c        | [92mINFO [0m:      Received: evaluate message b3bfc7a3-7188-4686-acde-e9ce07f41cbf
+hospital_b        | [92mINFO [0m:      Sent reply
+malicious_client  | [92mINFO [0m:      
+malicious_client  | [92mINFO [0m:      Received: evaluate message 5be80e0a-ba73-4547-bd10-9e8b34f2d16f
+malicious_client  | 2026-05-06 14:53:08,919 [malicious_client] INFO [malicious_client] eval: loss=0.0500, acc=0.9900
+hospital_c        | 2026-05-06 14:53:08,919 [hospital_c] INFO evaluate_complete
+hospital_c        | [92mINFO [0m:      Sent reply
+malicious_client  | [92mINFO [0m:      Sent reply
+hospital_a        | [92mINFO [0m:      
+hospital_a        | [92mINFO [0m:      Received: evaluate message 6b2e31d6-a877-4920-a107-be1ccc33fb81
+hospital_a        | 2026-05-06 14:53:08,921 [hospital_a] INFO evaluate_complete
+hospital_a        | [92mINFO [0m:      Sent reply
+fl-server         | [92mINFO [0m:      aggregate_evaluate: received 4 results and 0 failures
+fl-server         | 2026-05-06 14:53:08,922 [server] INFO round_complete
+fl-server         | 2026-05-06 14:53:08,923 [server] INFO round_gate_decision
+fl-server         | [92mINFO [0m:      
+fl-server         | [92mINFO [0m:      [ROUND 13]
+fl-server         | [92mINFO [0m:      configure_fit: strategy sampled 4 clients (out of 4)
+malicious_client  | [92mINFO [0m:      
+malicious_client  | [92mINFO [0m:      Received: train message 05e9ff4a-afd2-4f6c-8512-013409ef0902
+hospital_c        | [92mINFO [0m:      
+hospital_c        | [92mINFO [0m:      Received: train message f6abb886-2289-425e-b7f7-3816d5b2c361
+hospital_c        | 2026-05-06 14:53:08,928 [hospital_c] INFO fit_start
+hospital_b        | [92mINFO [0m:      
+hospital_b        | [92mINFO [0m:      Received: train message 4527de48-0ad8-4407-8ca5-54e6df7b19de
+malicious_client  | 2026-05-06 14:53:08,930 [malicious_client] WARNING [ATTACK:noise] Injecting noise with scale=nan
+hospital_a        | [92mINFO [0m:      
+hospital_a        | [92mINFO [0m:      Received: train message 6e368130-3d0e-45b7-b4c5-9e1bbbddb7fa
+hospital_b        | 2026-05-06 14:53:08,931 [hospital_b] INFO fit_start
+hospital_a        | 2026-05-06 14:53:08,932 [hospital_a] INFO fit_start
+hospital_a        | 2026-05-06 14:53:09,643 [hospital_a] INFO fit_complete
+hospital_a        | [92mINFO [0m:      Sent reply
+malicious_client  | 2026-05-06 14:53:09,705 [malicious_client] WARNING [malicious_client] fit (MALICIOUS) round=13: mode=noise, loss=0.1000, acc=0.9800
+malicious_client  | 2026-05-06 14:53:09,705 [malicious_client] INFO attack_applied
+malicious_client  | [92mINFO [0m:      Sent reply
+hospital_b        | 2026-05-06 14:53:09,826 [hospital_b] INFO fit_complete
+hospital_b        | [92mINFO [0m:      Sent reply
+hospital_c        | 2026-05-06 14:53:09,878 [hospital_c] INFO fit_complete
+hospital_c        | [92mINFO [0m:      Sent reply
+fl-server         | [92mINFO [0m:      aggregate_fit: received 4 results and 0 failures
+fl-server         | 2026-05-06 14:53:09,883 [server] INFO round_start
+fl-server         | 2026-05-06 14:53:09,883 [server] INFO weights_received
+fl-server         | 2026-05-06 14:53:09,965 [trust] INFO trust_updated
+fl-server         | 2026-05-06 14:53:09,965 [server] INFO weights_received
+fl-server         | 2026-05-06 14:53:09,970 [trust] INFO trust_updated
+fl-server         | 2026-05-06 14:53:09,970 [server] INFO weights_received
+fl-server         | 2026-05-06 14:53:09,973 [trust] INFO trust_updated
+fl-server         | 2026-05-06 14:53:09,973 [server] INFO weights_received
+fl-server         | 2026-05-06 14:53:09,976 [trust] INFO trust_updated
+fl-server         | 2026-05-06 14:53:09,976 [server] INFO trust_weighting_applied
+fl-server         | 2026-05-06 14:53:09,978 [server] INFO aggregation_complete
+fl-server         | [92mINFO [0m:      configure_evaluate: strategy sampled 4 clients (out of 4)
+hospital_c        | [92mINFO [0m:      
+hospital_c        | [92mINFO [0m:      Received: evaluate message 574ea9f3-3194-4368-a3d9-59df68d7de85
+hospital_c        | 2026-05-06 14:53:09,982 [hospital_c] INFO evaluate_complete
+hospital_c        | [92mINFO [0m:      Sent reply
+malicious_client  | [92mINFO [0m:      
+malicious_client  | [92mINFO [0m:      Received: evaluate message 39ea905e-1e40-4273-9e7b-7ea262db15de
+malicious_client  | 2026-05-06 14:53:09,985 [malicious_client] INFO [malicious_client] eval: loss=0.0500, acc=0.9900
+hospital_a        | [92mINFO [0m:      
+hospital_a        | [92mINFO [0m:      Received: evaluate message 232e0808-763b-4b99-bd75-b524f7e65668
+malicious_client  | [92mINFO [0m:      Sent reply
+hospital_a        | 2026-05-06 14:53:09,987 [hospital_a] INFO evaluate_complete
+hospital_a        | [92mINFO [0m:      Sent reply
+hospital_b        | [92mINFO [0m:      
+hospital_b        | [92mINFO [0m:      Received: evaluate message d59fd7bf-ea32-491d-955d-ab73f261b14f
+hospital_b        | 2026-05-06 14:53:09,988 [hospital_b] INFO evaluate_complete
+hospital_b        | [92mINFO [0m:      Sent reply
+fl-server         | [92mINFO [0m:      aggregate_evaluate: received 4 results and 0 failures
+fl-server         | 2026-05-06 14:53:09,989 [server] INFO round_complete
+fl-server         | 2026-05-06 14:53:09,990 [server] INFO round_gate_decision
+fl-server         | [92mINFO [0m:      
+fl-server         | [92mINFO [0m:      [ROUND 14]
+fl-server         | [92mINFO [0m:      configure_fit: strategy sampled 4 clients (out of 4)
+malicious_client  | [92mINFO [0m:      
+malicious_client  | [92mINFO [0m:      Received: train message e747164f-ea12-4353-90ac-0a02c862cd4c
+hospital_a        | [92mINFO [0m:      
+hospital_a        | [92mINFO [0m:      Received: train message 96c0175f-d720-4c08-873c-dfaaa18b9be9
+hospital_a        | 2026-05-06 14:53:09,995 [hospital_a] INFO fit_start
+hospital_b        | [92mINFO [0m:      
+hospital_b        | [92mINFO [0m:      Received: train message 4744fcb0-3c46-442d-93e0-bd55d4c5e40b
+malicious_client  | 2026-05-06 14:53:09,997 [malicious_client] WARNING [ATTACK:noise] Injecting noise with scale=nan
+hospital_b        | 2026-05-06 14:53:09,997 [hospital_b] INFO fit_start
+hospital_c        | [92mINFO [0m:      
+hospital_c        | [92mINFO [0m:      Received: train message f7565f66-7a58-4048-99ce-94dca71a2d2a
+hospital_c        | 2026-05-06 14:53:09,999 [hospital_c] INFO fit_start
+malicious_client  | 2026-05-06 14:53:10,723 [malicious_client] WARNING [malicious_client] fit (MALICIOUS) round=14: mode=noise, loss=0.1000, acc=0.9800
+malicious_client  | 2026-05-06 14:53:10,723 [malicious_client] INFO attack_applied
+malicious_client  | [92mINFO [0m:      Sent reply
+hospital_a        | 2026-05-06 14:53:10,854 [hospital_a] INFO fit_complete
+hospital_a        | [92mINFO [0m:      Sent reply
+hospital_c        | 2026-05-06 14:53:11,042 [hospital_c] INFO fit_complete
+hospital_c        | [92mINFO [0m:      Sent reply
+hospital_b        | 2026-05-06 14:53:11,067 [hospital_b] INFO fit_complete
+hospital_b        | [92mINFO [0m:      Sent reply
+fl-server         | [92mINFO [0m:      aggregate_fit: received 4 results and 0 failures
+fl-server         | 2026-05-06 14:53:11,072 [server] INFO round_start
+fl-server         | 2026-05-06 14:53:11,072 [server] INFO weights_received
+fl-server         | 2026-05-06 14:53:11,075 [trust] INFO trust_updated
+fl-server         | 2026-05-06 14:53:11,075 [server] INFO weights_received
+fl-server         | 2026-05-06 14:53:11,077 [trust] INFO trust_updated
+fl-server         | 2026-05-06 14:53:11,077 [server] INFO weights_received
+fl-server         | 2026-05-06 14:53:11,080 [trust] INFO trust_updated
+fl-server         | 2026-05-06 14:53:11,080 [server] INFO weights_received
+fl-server         | 2026-05-06 14:53:11,082 [trust] INFO trust_updated
+fl-server         | 2026-05-06 14:53:11,083 [server] INFO trust_weighting_applied
+fl-server         | 2026-05-06 14:53:11,085 [server] INFO aggregation_complete
+fl-server         | [92mINFO [0m:      configure_evaluate: strategy sampled 4 clients (out of 4)
+hospital_c        | [92mINFO [0m:      
+hospital_c        | [92mINFO [0m:      Received: evaluate message 9e0fcaf3-124f-492d-8888-71c8b5516853
+hospital_c        | 2026-05-06 14:53:11,089 [hospital_c] INFO evaluate_complete
+malicious_client  | [92mINFO [0m:      
+malicious_client  | [92mINFO [0m:      Received: evaluate message 1971875f-6ea6-48bd-903e-002f5f5e6785
+hospital_c        | [92mINFO [0m:      Sent reply
+hospital_a        | [92mINFO [0m:      
+hospital_a        | [92mINFO [0m:      Received: evaluate message 40697bcc-5713-47d8-955c-597a6ee80558
+malicious_client  | 2026-05-06 14:53:11,091 [malicious_client] INFO [malicious_client] eval: loss=0.0500, acc=0.9900
+malicious_client  | [92mINFO [0m:      Sent reply
+hospital_a        | 2026-05-06 14:53:11,092 [hospital_a] INFO evaluate_complete
+hospital_a        | [92mINFO [0m:      Sent reply
+hospital_b        | [92mINFO [0m:      
+hospital_b        | [92mINFO [0m:      Received: evaluate message 79917dfa-b321-4697-896c-f8ca23a6e84e
+hospital_b        | 2026-05-06 14:53:11,095 [hospital_b] INFO evaluate_complete
+hospital_b        | [92mINFO [0m:      Sent reply
+fl-server         | [92mINFO [0m:      aggregate_evaluate: received 4 results and 0 failures
+fl-server         | 2026-05-06 14:53:11,096 [server] INFO round_complete
+fl-server         | 2026-05-06 14:53:11,096 [server] INFO round_gate_decision
+fl-server         | [92mINFO [0m:      
+fl-server         | [92mINFO [0m:      [ROUND 15]
+fl-server         | [92mINFO [0m:      configure_fit: strategy sampled 4 clients (out of 4)
+hospital_a        | [92mINFO [0m:      
+hospital_a        | [92mINFO [0m:      Received: train message 76657f14-6df0-4864-b9b5-8cbb2a3bd83b
+hospital_a        | 2026-05-06 14:53:11,100 [hospital_a] INFO fit_start
+hospital_c        | [92mINFO [0m:      
+hospital_c        | [92mINFO [0m:      Received: train message 66a416fb-5b30-483b-8c2b-e6e5eb8954b3
+hospital_c        | 2026-05-06 14:53:11,101 [hospital_c] INFO fit_start
+hospital_b        | [92mINFO [0m:      
+hospital_b        | [92mINFO [0m:      Received: train message 6fc58be5-bfb8-49aa-b30d-95afbf2060b1
+hospital_b        | 2026-05-06 14:53:11,104 [hospital_b] INFO fit_start
+malicious_client  | [92mINFO [0m:      
+malicious_client  | [92mINFO [0m:      Received: train message 9dafc0d6-f90f-49c5-b1e9-f2002cf4c675
+malicious_client  | 2026-05-06 14:53:11,109 [malicious_client] WARNING [ATTACK:noise] Injecting noise with scale=nan
+hospital_b        | 2026-05-06 14:53:11,624 [hospital_b] INFO fit_complete
+hospital_b        | [92mINFO [0m:      Sent reply
+hospital_a        | 2026-05-06 14:53:11,663 [hospital_a] INFO fit_complete
+hospital_a        | [92mINFO [0m:      Sent reply
+malicious_client  | 2026-05-06 14:53:11,892 [malicious_client] WARNING [malicious_client] fit (MALICIOUS) round=15: mode=noise, loss=0.1000, acc=0.9800
+malicious_client  | 2026-05-06 14:53:11,892 [malicious_client] INFO attack_applied
+malicious_client  | [92mINFO [0m:      Sent reply
+opa               | {"client_addr":"[::1]:33582","level":"info","msg":"Received request.","req_id":12,"req_method":"GET","req_path":"/health","time":"2026-05-06T14:53:12Z"}
+opa               | {"client_addr":"[::1]:33582","level":"info","msg":"Sent response.","req_id":12,"req_method":"GET","req_path":"/health","resp_bytes":3,"resp_duration":0.193232,"resp_status":200,"time":"2026-05-06T14:53:12Z"}
+hospital_c        | 2026-05-06 14:53:12,250 [hospital_c] INFO fit_complete
+hospital_c        | [92mINFO [0m:      Sent reply
+fl-server         | [92mINFO [0m:      aggregate_fit: received 4 results and 0 failures
+fl-server         | 2026-05-06 14:53:12,255 [server] INFO round_start
+fl-server         | 2026-05-06 14:53:12,255 [server] INFO weights_received
+fl-server         | 2026-05-06 14:53:12,260 [trust] INFO trust_updated
+fl-server         | 2026-05-06 14:53:12,260 [server] INFO weights_received
+fl-server         | 2026-05-06 14:53:12,263 [trust] INFO trust_updated
+fl-server         | 2026-05-06 14:53:12,263 [server] INFO weights_received
+fl-server         | 2026-05-06 14:53:12,265 [trust] INFO trust_updated
+fl-server         | 2026-05-06 14:53:12,265 [server] INFO weights_received
+fl-server         | 2026-05-06 14:53:12,268 [trust] INFO trust_updated
+fl-server         | 2026-05-06 14:53:12,269 [server] INFO trust_weighting_applied
+fl-server         | 2026-05-06 14:53:12,271 [server] INFO aggregation_complete
+fl-server         | [92mINFO [0m:      configure_evaluate: strategy sampled 4 clients (out of 4)
+malicious_client  | [92mINFO [0m:      
+malicious_client  | [92mINFO [0m:      Received: evaluate message 47670fcc-adbb-4e00-8c23-6f56092243c7
+malicious_client  | 2026-05-06 14:53:12,274 [malicious_client] INFO [malicious_client] eval: loss=0.0500, acc=0.9900
+malicious_client  | [92mINFO [0m:      Sent reply
+hospital_c        | [92mINFO [0m:      
+hospital_c        | [92mINFO [0m:      Received: evaluate message d3d71fb9-619e-46bd-8c69-17b2b81b9390
+hospital_c        | 2026-05-06 14:53:12,276 [hospital_c] INFO evaluate_complete
+hospital_c        | [92mINFO [0m:      Sent reply
+hospital_a        | [92mINFO [0m:      
+hospital_a        | [92mINFO [0m:      Received: evaluate message 0e13fe06-d316-4c3f-919f-71e432e5c689
+hospital_a        | 2026-05-06 14:53:12,278 [hospital_a] INFO evaluate_complete
+hospital_a        | [92mINFO [0m:      Sent reply
+hospital_b        | [92mINFO [0m:      
+hospital_b        | [92mINFO [0m:      Received: evaluate message b4e1d3cd-feb2-4a8a-94c2-416272e4981a
+hospital_b        | 2026-05-06 14:53:12,279 [hospital_b] INFO evaluate_complete
+hospital_b        | [92mINFO [0m:      Sent reply
+fl-server         | [92mINFO [0m:      aggregate_evaluate: received 4 results and 0 failures
+fl-server         | 2026-05-06 14:53:12,280 [server] INFO round_complete
+fl-server         | 2026-05-06 14:53:12,280 [server] INFO round_gate_decision
+fl-server         | [92mINFO [0m:      
+fl-server         | [92mINFO [0m:      [SUMMARY]
+fl-server         | [92mINFO [0m:      Run finished 15 rounds in 18.00s
+fl-server         | [92mINFO [0m:      History (loss, distributed):
+fl-server         | [92mINFO [0m:      	('\tround 1: 1.802466630935669\n'
+fl-server         | [92mINFO [0m:      	 '\tround 2: 1.4745522439479828\n'
+fl-server         | [92mINFO [0m:      	 '\tround 3: 1.196160614490509\n'
+fl-server         | [92mINFO [0m:      	 '\tround 4: 1.0491265952587128\n'
+fl-server         | [92mINFO [0m:      	 '\tround 5: 0.7559912204742432\n'
+fl-server         | [92mINFO [0m:      	 '\tround 6: 0.5218852981925011\n'
+fl-server         | [92mINFO [0m:      	 '\tround 7: 0.24872305989265442\n'
+fl-server         | [92mINFO [0m:      	 '\tround 8: 0.09242338500916958\n'
+fl-server         | [92mINFO [0m:      	 '\tround 9: 0.05000000074505806\n'
+fl-server         | [92mINFO [0m:      	 '\tround 10: 0.05000000074505806\n'
+fl-server         | [92mINFO [0m:      	 '\tround 11: 0.05000000074505806\n'
+fl-server         | [92mINFO [0m:      	 '\tround 12: 0.05000000074505806\n'
+fl-server         | [92mINFO [0m:      	 '\tround 13: 0.05000000074505806\n'
+fl-server         | [92mINFO [0m:      	 '\tround 14: 0.05000000074505806\n'
+fl-server         | [92mINFO [0m:      	 '\tround 15: 0.05000000074505806\n')History (metrics, distributed, fit):
+fl-server         | [92mINFO [0m:      	{'loss': [(1, 2.2765562288664567),
+fl-server         | [92mINFO [0m:      	          (2, 1.9240486816402689),
+fl-server         | [92mINFO [0m:      	          (3, 1.5707176088434625),
+fl-server         | [92mINFO [0m:      	          (4, 1.3116680604978188),
+fl-server         | [92mINFO [0m:      	          (5, 0.9817040996805106),
+fl-server         | [92mINFO [0m:      	          (6, 0.6610283458272085),
+fl-server         | [92mINFO [0m:      	          (7, 0.43530612878913033),
+fl-server         | [92mINFO [0m:      	          (8, 0.17521525805149077),
+fl-server         | [92mINFO [0m:      	          (9, 0.1),
+fl-server         | [92mINFO [0m:      	          (10, 0.1),
+fl-server         | [92mINFO [0m:      	          (11, 0.1),
+fl-server         | [92mINFO [0m:      	          (12, 0.1),
+fl-server         | [92mINFO [0m:      	          (13, 0.1),
+fl-server         | [92mINFO [0m:      	          (14, 0.1),
+fl-server         | [92mINFO [0m:      	          (15, 0.1)]}History (metrics, distributed, evaluate):
+fl-server         | [92mINFO [0m:      	{'accuracy': [(1, 0.5220899205102129),
+fl-server         | [92mINFO [0m:      	              (2, 0.5929074917701193),
+fl-server         | [92mINFO [0m:      	              (3, 0.6605958798629242),
+fl-server         | [92mINFO [0m:      	              (4, 0.7414428602569387),
+fl-server         | [92mINFO [0m:      	              (5, 0.7962543892588242),
+fl-server         | [92mINFO [0m:      	              (6, 0.8679673720433332),
+fl-server         | [92mINFO [0m:      	              (7, 0.9366347437313267),
+fl-server         | [92mINFO [0m:      	              (8, 0.988364444160659),
+fl-server         | [92mINFO [0m:      	              (9, 0.99),
+fl-server         | [92mINFO [0m:      	              (10, 0.99),
+fl-server         | [92mINFO [0m:      	              (11, 0.99),
+fl-server         | [92mINFO [0m:      	              (12, 0.99),
+fl-server         | [92mINFO [0m:      	              (13, 0.99),
+fl-server         | [92mINFO [0m:      	              (14, 0.99),
+fl-server         | [92mINFO [0m:      	              (15, 0.99)]}
+fl-server         | [92mINFO [0m:      
+hospital_a        | [92mINFO [0m:      
+hospital_a        | [92mINFO [0m:      Received: reconnect message b45a30d6-c011-4e74-9191-8efc24b952bc
+hospital_b        | [92mINFO [0m:      
+hospital_b        | [92mINFO [0m:      Received: reconnect message c736d168-401c-4c93-b5b5-6b324c49db24
+hospital_c        | [92mINFO [0m:      
+hospital_c        | [92mINFO [0m:      Received: reconnect message da3a6c7e-58b6-4f96-a992-8db31cef38df
+malicious_client  | [92mINFO [0m:      
+malicious_client  | [92mINFO [0m:      Received: reconnect message 80c7fc5c-9db0-4cd4-8dd6-b4348e433cd3
+malicious_client  | [92mINFO [0m:      Disconnect and shut down
+hospital_b        | [92mINFO [0m:      Disconnect and shut down
+hospital_a        | [92mINFO [0m:      Disconnect and shut down
+hospital_c        | [92mINFO [0m:      Disconnect and shut down
+[Kfl-server exited with code 0
+ Compose Stopping Aborting on container exit...
+ Container hospital_b Stopping 
+ Container fl-middleware Stopping 
+ Container malicious_client Stopping 
+ Container hospital_a Stopping 
+ Container hospital_c Stopping 
+ Container malicious_client Stopped 
+[Kmalicious_client exited with code 0
+ Container hospital_a Stopped 
+[Khospital_a exited with code 0
+ Container hospital_c Stopped 
+[Khospital_c exited with code 0
+ Container hospital_b Stopped 
+ Container fl-server Stopping 
+ Container fl-server Stopped 
+[Khospital_b exited with code 0
+ Container fl-middleware Stopped 
+ Container keycloak Stopping 
+ Container opa Stopping 
+[Kfl-middleware exited with code 0
+opa               | {"level":"info","msg":"Shutting down...","time":"2026-05-06T14:53:13Z"}
+opa               | {"level":"info","msg":"Server shutdown.","time":"2026-05-06T14:53:13Z"}
+keycloak          | 2026-05-06 14:53:13,980 INFO  [io.quarkus] (Shutdown thread) Keycloak stopped in 0.034s
+ Container opa Stopped 
+[Kopa exited with code 0
+ Container keycloak Stopped 
+[Kkeycloak exited with code 143
+
+Run complete. Generating assurance report...
+Generating report for: run_2026-05-06_14-52-28
+✅ Report written: /home/yogen/NorthStar/federated-secure-fl/logs/run_2026-05-06_14-52-28/report.html
+Report: logs/run_2026-05-06_14-52-28/report.html
+✅ Run 2026-05-06_14-52-28 complete. Logs → logs/run_2026-05-06_14-52-28/

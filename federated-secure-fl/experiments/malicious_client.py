@@ -105,9 +105,15 @@ class MaliciousClient(fl.client.NumPyClient):
         self.round_num += 1
 
         # Simulate honest training perturbation
+        # Use server_round to seed the noise so clients share a common 'true' gradient direction
+        round_val = int(config.get("server_round", self.round_num))
+        np.random.seed(round_val)
+        delta_noise = [np.random.randn(*p.shape).astype(np.float32) * 0.001 for p in self.params]
+        np.random.seed()  # reset to unseeded
+        
         honest_params = [
-            p + np.random.randn(*p.shape).astype(np.float32) * 0.001
-            for p in self.params
+            p + d
+            for p, d in zip(self.params, delta_noise)
         ]
 
         # Apply attack

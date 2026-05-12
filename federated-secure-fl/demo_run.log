@@ -1,0 +1,580 @@
+▶ Run 2026-03-20_15-05-12 starting...
+ Container fl-middleware Stopping 
+ Container hospital_c Stopping 
+ Container hospital_a Stopping 
+ Container hospital_b Stopping 
+ Container hospital_c Stopped 
+ Container hospital_c Removing 
+ Container hospital_c Removed 
+ Container fl-middleware Stopped 
+ Container fl-middleware Removing 
+ Container fl-middleware Removed 
+ Container opa Stopping 
+ Container opa Stopped 
+ Container opa Removing 
+ Container opa Removed 
+ Container hospital_b Stopped 
+ Container hospital_b Removing 
+ Container hospital_a Stopped 
+ Container hospital_a Removing 
+ Container hospital_a Removed 
+ Container hospital_b Removed 
+ Container fl-server Stopping 
+ Container fl-server Stopped 
+ Container fl-server Removing 
+ Container fl-server Removed 
+ Container keycloak Stopping 
+ Container keycloak Stopped 
+ Container keycloak Removing 
+ Container keycloak Removed 
+ Network infra_fl-net Removing 
+ Network infra_fl-net Removed 
+ Image infra-hospital_a Building 
+ Image infra-fl-server Building 
+ Image infra-hospital_c Building 
+ Image infra-fl-middleware Building 
+ Image infra-hospital_b Building 
+#1 [internal] load local bake definitions
+#1 reading from stdin 2.42kB done
+#1 DONE 0.0s
+
+#2 [hospital_c internal] load build definition from Dockerfile
+#2 transferring dockerfile: 226B done
+#2 DONE 0.0s
+
+#3 [fl-middleware internal] load build definition from Dockerfile
+#3 transferring dockerfile: 226B done
+#3 DONE 0.0s
+
+#4 [fl-middleware internal] load metadata for docker.io/library/python:3.10-slim
+#4 DONE 0.0s
+
+#5 [hospital_a internal] load .dockerignore
+#5 transferring context: 2B done
+#5 DONE 0.0s
+
+#6 [hospital_a 1/6] FROM docker.io/library/python:3.10-slim
+#6 DONE 0.0s
+
+#7 [hospital_a internal] load build context
+#7 transferring context: 11.83kB done
+#7 DONE 0.0s
+
+#8 [fl-middleware internal] load build context
+#8 transferring context: 19.25kB done
+#8 DONE 0.0s
+
+#9 [fl-middleware 3/6] COPY server/requirements.txt .
+#9 CACHED
+
+#10 [fl-middleware 5/6] COPY server/ .
+#10 CACHED
+
+#11 [fl-middleware 4/6] RUN pip install --no-cache-dir -r requirements.txt
+#11 CACHED
+
+#12 [hospital_b 5/6] COPY client/ .
+#12 CACHED
+
+#13 [hospital_b 2/6] WORKDIR /app
+#13 CACHED
+
+#14 [hospital_b 4/6] RUN pip install --no-cache-dir -r requirements.txt
+#14 CACHED
+
+#15 [hospital_b 3/6] COPY client/requirements.txt .
+#15 CACHED
+
+#16 [fl-server 6/6] COPY shared/ ./shared/
+#16 CACHED
+
+#17 [hospital_b 6/6] COPY shared/ ./shared/
+#17 CACHED
+
+#18 [hospital_c] exporting to image
+#18 exporting layers done
+#18 writing image sha256:d7944c6af8dcdf295cdb2b2143b28af388518df661671cec8918e86d02d67d17 done
+#18 naming to docker.io/library/infra-hospital_c done
+#18 DONE 0.0s
+
+#19 [fl-middleware] exporting to image
+#19 exporting layers done
+#19 writing image sha256:d6bc22c1dd654dd548cb2b9e376097dac697c1d318b5cd69800f7c00130a90ff done
+#19 naming to docker.io/library/infra-fl-middleware 0.0s done
+#19 DONE 0.0s
+
+#20 [hospital_b] exporting to image
+#20 exporting layers done
+#20 writing image sha256:edd4e67c4a61f93c9ead07e5927e290f86a951b72c13137a852e79c28ff3e4bc done
+#20 naming to docker.io/library/infra-hospital_b done
+#20 DONE 0.0s
+
+#21 [hospital_a] exporting to image
+#21 exporting layers done
+#21 writing image sha256:da1bec2a83be32453f35980e8ca5fe7b0041a3f10c94ed015270e0519b913bc0 done
+#21 naming to docker.io/library/infra-hospital_a 0.0s done
+#21 DONE 0.0s
+
+#22 [fl-server] exporting to image
+#22 exporting layers done
+#22 writing image sha256:22e7ef5ff3f843eda34f5a28e7a786260ed4f606ee6dcb9a544a2ef8048808eb done
+#22 naming to docker.io/library/infra-fl-server 0.0s done
+#22 DONE 0.0s
+
+#23 [fl-server] resolving provenance for metadata file
+#23 DONE 0.0s
+
+#24 [hospital_c] resolving provenance for metadata file
+#24 DONE 0.0s
+
+#25 [hospital_a] resolving provenance for metadata file
+#25 DONE 0.0s
+
+#26 [fl-middleware] resolving provenance for metadata file
+#26 DONE 0.0s
+
+#27 [hospital_b] resolving provenance for metadata file
+#27 DONE 0.0s
+ Image infra-fl-server Built 
+ Image infra-hospital_b Built 
+ Image infra-hospital_c Built 
+ Image infra-fl-middleware Built 
+ Image infra-hospital_a Built 
+ Network infra_fl-net Creating 
+ Network infra_fl-net Created 
+ Container keycloak Creating 
+ Container opa Creating 
+ Container opa Created 
+ Container keycloak Created 
+ Container fl-middleware Creating 
+ Container fl-server Creating 
+ Container fl-middleware Created 
+ Container fl-server Created 
+ Container hospital_b Creating 
+ Container hospital_c Creating 
+ Container hospital_a Creating 
+ Container hospital_c Created 
+ Container hospital_b Created 
+ Container hospital_a Created 
+Attaching to fl-middleware, fl-server, hospital_a, hospital_b, hospital_c, keycloak, opa
+ Container opa Starting 
+ Container keycloak Starting 
+ Container keycloak Started 
+ Container keycloak Waiting 
+ Container opa Started 
+ Container opa Waiting 
+ Container keycloak Waiting 
+opa  | {"addrs":[":8181"],"diagnostic-addrs":[],"level":"info","msg":"Initializing server.","time":"2026-03-20T15:05:25Z"}
+keycloak  | Updating the configuration and installing your custom providers, if any. Please wait.
+opa       | {"client_addr":"[::1]:49174","level":"info","msg":"Received request.","req_id":1,"req_method":"GET","req_path":"/health","time":"2026-03-20T15:05:30Z"}
+opa       | {"client_addr":"[::1]:49174","level":"info","msg":"Sent response.","req_id":1,"req_method":"GET","req_path":"/health","resp_bytes":3,"resp_duration":1.029902,"resp_status":200,"time":"2026-03-20T15:05:30Z"}
+ Container opa Healthy 
+keycloak  | 2026-03-20 15:05:32,679 WARN  [io.qua.dep.ind.IndexWrapper] (build-19) Failed to index org.springframework.core.io.DefaultResourceLoader: Class does not exist in ClassLoader QuarkusClassLoader:Deployment Class Loader: PROD for keycloak@12365c88
+keycloak  | 2026-03-20 15:05:32,681 WARN  [io.qua.dep.ind.IndexWrapper] (build-19) Failed to index org.springframework.core.io.ResourceLoader: Class does not exist in ClassLoader QuarkusClassLoader:Deployment Class Loader: PROD for keycloak@12365c88
+keycloak  | 2026-03-20 15:05:32,684 WARN  [io.qua.dep.ind.IndexWrapper] (build-19) Failed to index org.apache.tools.ant.Task: Class does not exist in ClassLoader QuarkusClassLoader:Deployment Class Loader: PROD for keycloak@12365c88
+keycloak  | 2026-03-20 15:05:32,703 WARN  [io.qua.dep.ind.IndexWrapper] (build-19) Failed to index org.springframework.core.io.Resource: Class does not exist in ClassLoader QuarkusClassLoader:Deployment Class Loader: PROD for keycloak@12365c88
+keycloak  | 2026-03-20 15:05:32,708 WARN  [io.qua.dep.ind.IndexWrapper] (build-19) Failed to index jakarta.jms.Connection: Class does not exist in ClassLoader QuarkusClassLoader:Deployment Class Loader: PROD for keycloak@12365c88
+keycloak  | 2026-03-20 15:05:32,711 WARN  [io.qua.dep.ind.IndexWrapper] (build-19) Failed to index jakarta.jms.XAConnection: Class does not exist in ClassLoader QuarkusClassLoader:Deployment Class Loader: PROD for keycloak@12365c88
+keycloak  | 2026-03-20 15:05:32,712 WARN  [io.qua.dep.ind.IndexWrapper] (build-19) Failed to index jakarta.jms.XASession: Class does not exist in ClassLoader QuarkusClassLoader:Deployment Class Loader: PROD for keycloak@12365c88
+keycloak  | 2026-03-20 15:05:32,712 WARN  [io.qua.dep.ind.IndexWrapper] (build-19) Failed to index jakarta.jms.XAConnectionFactory: Class does not exist in ClassLoader QuarkusClassLoader:Deployment Class Loader: PROD for keycloak@12365c88
+keycloak  | 2026-03-20 15:05:32,714 WARN  [io.qua.dep.ind.IndexWrapper] (build-19) Failed to index org.apache.activemq.artemis.core.journal.RecordInfo: Class does not exist in ClassLoader QuarkusClassLoader:Deployment Class Loader: PROD for keycloak@12365c88
+keycloak  | 2026-03-20 15:05:32,715 WARN  [io.qua.dep.ind.IndexWrapper] (build-19) Failed to index org.apache.activemq.artemis.core.journal.Journal: Class does not exist in ClassLoader QuarkusClassLoader:Deployment Class Loader: PROD for keycloak@12365c88
+keycloak  | 2026-03-20 15:05:32,721 WARN  [io.qua.dep.ind.IndexWrapper] (build-19) Failed to index io.mashona.logwriting.ArrayStore: Class does not exist in ClassLoader QuarkusClassLoader:Deployment Class Loader: PROD for keycloak@12365c88
+opa       | {"client_addr":"[::1]:37648","level":"info","msg":"Received request.","req_id":2,"req_method":"GET","req_path":"/health","time":"2026-03-20T15:05:35Z"}
+opa       | {"client_addr":"[::1]:37648","level":"info","msg":"Sent response.","req_id":2,"req_method":"GET","req_path":"/health","resp_bytes":3,"resp_duration":0.820534,"resp_status":200,"time":"2026-03-20T15:05:35Z"}
+keycloak  | 2026-03-20 15:05:36,476 INFO  [io.qua.dep.QuarkusAugmentor] (main) Quarkus augmentation completed in 7979ms
+keycloak  | 2026-03-20 15:05:37,823 INFO  [org.keycloak.quarkus.runtime.hostname.DefaultHostnameProvider] (main) Hostname settings: Base URL: <unset>, Hostname: <request>, Strict HTTPS: false, Path: <request>, Strict BackChannel: false, Admin URL: <unset>, Admin: <request>, Port: -1, Proxied: false
+keycloak  | 2026-03-20 15:05:39,070 WARN  [io.quarkus.agroal.runtime.DataSources] (JPA Startup Thread) Datasource <default> enables XA but transaction recovery is not enabled. Please enable transaction recovery by setting quarkus.transaction-manager.enable-recovery=true, otherwise data may be lost if the application is terminated abruptly
+keycloak  | 2026-03-20 15:05:39,389 WARN  [org.infinispan.CONFIG] (keycloak-cache-init) ISPN000569: Unable to persist Infinispan internal caches as no global state enabled
+keycloak  | 2026-03-20 15:05:39,460 INFO  [org.infinispan.CONTAINER] (keycloak-cache-init) ISPN000556: Starting user marshaller 'org.infinispan.jboss.marshalling.core.JBossUserMarshaller'
+keycloak  | 2026-03-20 15:05:39,997 INFO  [org.keycloak.broker.provider.AbstractIdentityProviderMapper] (main) Registering class org.keycloak.broker.provider.mappersync.ConfigSyncEventListener
+keycloak  | 2026-03-20 15:05:40,903 INFO  [org.keycloak.quarkus.runtime.storage.legacy.liquibase.QuarkusJpaUpdaterProvider] (main) Initializing database schema. Using changelog META-INF/jpa-changelog-master.xml
+opa       | {"client_addr":"[::1]:37656","level":"info","msg":"Received request.","req_id":3,"req_method":"GET","req_path":"/health","time":"2026-03-20T15:05:41Z"}
+opa       | {"client_addr":"[::1]:37656","level":"info","msg":"Sent response.","req_id":3,"req_method":"GET","req_path":"/health","resp_bytes":3,"resp_duration":0.423899,"resp_status":200,"time":"2026-03-20T15:05:41Z"}
+keycloak  | 
+keycloak  | UPDATE SUMMARY
+keycloak  | Run:                        124
+keycloak  | Previously run:               0
+keycloak  | Filtered out:                 0
+keycloak  | -------------------------------
+keycloak  | Total change sets:          124
+keycloak  | 
+keycloak  | 2026-03-20 15:05:42,759 INFO  [org.keycloak.connections.infinispan.DefaultInfinispanConnectionProviderFactory] (main) Node name: node_650875, Site name: null
+keycloak  | 2026-03-20 15:05:42,938 INFO  [org.keycloak.services] (main) KC-SERVICES0050: Initializing master realm
+keycloak  | 2026-03-20 15:05:44,025 INFO  [org.keycloak.exportimport.singlefile.SingleFileImportProvider] (main) Full importing from file /opt/keycloak/bin/../data/import/realm-export.json
+keycloak  | 2026-03-20 15:05:45,258 INFO  [org.keycloak.exportimport.util.ImportUtils] (main) Realm 'fl-realm' imported
+keycloak  | 2026-03-20 15:05:45,309 INFO  [org.keycloak.exportimport.dir.DirImportProvider] (main) Importing from directory /opt/keycloak/bin/../data/import
+keycloak  | 2026-03-20 15:05:45,309 INFO  [org.keycloak.services] (main) KC-SERVICES0030: Full model import requested. Strategy: IGNORE_EXISTING
+keycloak  | 2026-03-20 15:05:45,310 INFO  [org.keycloak.services] (main) KC-SERVICES0032: Import finished successfully
+keycloak  | 2026-03-20 15:05:45,536 INFO  [org.keycloak.services] (main) KC-SERVICES0009: Added user 'admin' to realm 'master'
+keycloak  | 2026-03-20 15:05:45,620 INFO  [io.quarkus] (main) Keycloak 24.0.5 on JVM (powered by Quarkus 3.8.4) started in 9.010s. Listening on: http://0.0.0.0:8080
+keycloak  | 2026-03-20 15:05:45,622 INFO  [io.quarkus] (main) Profile dev activated. 
+keycloak  | 2026-03-20 15:05:45,622 INFO  [io.quarkus] (main) Installed features: [agroal, cdi, hibernate-orm, jdbc-h2, keycloak, logging-gelf, narayana-jta, reactive-routes, resteasy-reactive, resteasy-reactive-jackson, smallrye-context-propagation, smallrye-health, vertx]
+keycloak  | 2026-03-20 15:05:45,625 WARN  [org.keycloak.quarkus.runtime.KeycloakMain] (main) Running the server in development mode. DO NOT use this configuration in production.
+opa       | {"client_addr":"[::1]:37056","level":"info","msg":"Received request.","req_id":4,"req_method":"GET","req_path":"/health","time":"2026-03-20T15:05:46Z"}
+opa       | {"client_addr":"[::1]:37056","level":"info","msg":"Sent response.","req_id":4,"req_method":"GET","req_path":"/health","resp_bytes":3,"resp_duration":0.39473,"resp_status":200,"time":"2026-03-20T15:05:46Z"}
+ Container keycloak Healthy 
+ Container fl-server Starting 
+ Container keycloak Healthy 
+ Container fl-middleware Starting 
+ Container fl-middleware Started 
+ Container fl-server Started 
+ Container fl-server Waiting 
+ Container fl-server Waiting 
+ Container fl-server Waiting 
+fl-middleware  | INFO:     Started server process [1]
+fl-middleware  | INFO:     Waiting for application startup.
+fl-middleware  | INFO:     Application startup complete.
+fl-middleware  | INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+fl-server      | 2026-03-20 15:05:47,138 [server] INFO server_start
+fl-server      | [92mINFO [0m:      Starting Flower server, config: num_rounds=5, no round_timeout
+fl-server      | [92mINFO [0m:      Flower ECE: gRPC server running (5 rounds), SSL is disabled
+fl-server      | [92mINFO [0m:      [INIT]
+fl-server      | [92mINFO [0m:      Requesting initial parameters from one random client
+opa            | {"client_addr":"[::1]:37070","level":"info","msg":"Received request.","req_id":5,"req_method":"GET","req_path":"/health","time":"2026-03-20T15:05:51Z"}
+opa            | {"client_addr":"[::1]:37070","level":"info","msg":"Sent response.","req_id":5,"req_method":"GET","req_path":"/health","resp_bytes":3,"resp_duration":0.467658,"resp_status":200,"time":"2026-03-20T15:05:51Z"}
+ Container fl-server Healthy 
+ Container hospital_a Starting 
+ Container fl-server Healthy 
+ Container hospital_b Starting 
+ Container fl-server Healthy 
+ Container hospital_c Starting 
+ Container hospital_b Started 
+ Container hospital_a Started 
+ Container hospital_c Started 
+opa            | {"client_addr":"172.19.0.4:34592","level":"info","msg":"Received request.","req_id":6,"req_method":"POST","req_path":"/v1/data/fl/allow","time":"2026-03-20T15:05:53Z"}
+opa            | {"client_addr":"172.19.0.4:34592","level":"info","msg":"Sent response.","req_id":6,"req_method":"POST","req_path":"/v1/data/fl/allow","resp_bytes":16,"resp_duration":1.508817,"resp_status":200,"time":"2026-03-20T15:05:53Z"}
+fl-middleware  | 2026-03-20 15:05:53,656 [middleware] INFO admit_decision
+fl-middleware  | 2026-03-20 15:05:53,657 [middleware] INFO http_request
+fl-middleware  | INFO:     172.19.0.6:45574 - "POST /admit HTTP/1.1" 200 OK
+opa            | {"client_addr":"172.19.0.4:34602","level":"info","msg":"Received request.","req_id":7,"req_method":"POST","req_path":"/v1/data/fl/allow","time":"2026-03-20T15:05:53Z"}
+opa            | {"client_addr":"172.19.0.4:34602","level":"info","msg":"Sent response.","req_id":7,"req_method":"POST","req_path":"/v1/data/fl/allow","resp_bytes":16,"resp_duration":0.291973,"resp_status":200,"time":"2026-03-20T15:05:53Z"}
+fl-middleware  | 2026-03-20 15:05:53,664 [middleware] INFO admit_decision
+opa            | {"client_addr":"172.19.0.4:34618","level":"info","msg":"Received request.","req_id":8,"req_method":"POST","req_path":"/v1/data/fl/allow","time":"2026-03-20T15:05:53Z"}
+opa            | {"client_addr":"172.19.0.4:34618","level":"info","msg":"Sent response.","req_id":8,"req_method":"POST","req_path":"/v1/data/fl/allow","resp_bytes":16,"resp_duration":0.172827,"resp_status":200,"time":"2026-03-20T15:05:53Z"}
+fl-middleware  | 2026-03-20 15:05:53,672 [middleware] INFO admit_decision
+fl-middleware  | 2026-03-20 15:05:53,672 [middleware] INFO http_request
+fl-middleware  | INFO:     172.19.0.8:55786 - "POST /admit HTTP/1.1" 200 OK
+fl-middleware  | 2026-03-20 15:05:53,672 [middleware] INFO http_request
+fl-middleware  | INFO:     172.19.0.7:39926 - "POST /admit HTTP/1.1" 200 OK
+hospital_b     | 2026-03-20 15:05:53,672 [hospital_b] INFO admission_success
+hospital_b     | 2026-03-20 15:05:53,672 [hospital_b] INFO client_start
+hospital_a     | 2026-03-20 15:05:53,673 [hospital_a] INFO admission_success
+hospital_a     | 2026-03-20 15:05:53,673 [hospital_a] INFO client_start
+hospital_c     | 2026-03-20 15:05:53,673 [hospital_c] INFO admission_success
+hospital_c     | 2026-03-20 15:05:53,673 [hospital_c] INFO client_start
+hospital_c     | [93mWARNING [0m:   DEPRECATED FEATURE: flwr.client.start_client() is deprecated.
+hospital_c     | 	Instead, use the `flower-supernode` CLI command to start a SuperNode as shown below:
+hospital_c     | 
+hospital_c     | 		$ flower-supernode --insecure --superlink='<IP>:<PORT>'
+hospital_c     | 
+hospital_c     | 	To view all available options, run:
+hospital_c     | 
+hospital_c     | 		$ flower-supernode --help
+hospital_c     | 
+hospital_c     | 	Using `start_client()` is deprecated.
+hospital_c     | 
+hospital_c     |             This is a deprecated feature. It will be removed
+hospital_c     |             entirely in future versions of Flower.
+hospital_c     |         
+hospital_b     | [93mWARNING [0m:   DEPRECATED FEATURE: flwr.client.start_client() is deprecated.
+hospital_b     | 	Instead, use the `flower-supernode` CLI command to start a SuperNode as shown below:
+hospital_b     | 
+hospital_b     | 		$ flower-supernode --insecure --superlink='<IP>:<PORT>'
+hospital_b     | 
+hospital_b     | 	To view all available options, run:
+hospital_b     | 
+hospital_b     | 		$ flower-supernode --help
+hospital_b     | 
+hospital_b     | 	Using `start_client()` is deprecated.
+hospital_b     | 
+hospital_b     |             This is a deprecated feature. It will be removed
+hospital_b     |             entirely in future versions of Flower.
+hospital_b     |         
+hospital_a     | [93mWARNING [0m:   DEPRECATED FEATURE: flwr.client.start_client() is deprecated.
+hospital_a     | 	Instead, use the `flower-supernode` CLI command to start a SuperNode as shown below:
+hospital_a     | 
+hospital_a     | 		$ flower-supernode --insecure --superlink='<IP>:<PORT>'
+hospital_a     | 
+hospital_a     | 	To view all available options, run:
+hospital_a     | 
+hospital_a     | 		$ flower-supernode --help
+hospital_a     | 
+hospital_a     | 	Using `start_client()` is deprecated.
+hospital_a     | 
+hospital_a     |             This is a deprecated feature. It will be removed
+hospital_a     |             entirely in future versions of Flower.
+hospital_a     |         
+hospital_b     | [92mINFO [0m:      
+hospital_b     | [92mINFO [0m:      Received: get_parameters message 35458b7e-3d09-4192-9b1e-28d6b4c39cd2
+hospital_b     | [92mINFO [0m:      Sent reply
+fl-server      | [92mINFO [0m:      Received initial parameters from one random client
+fl-server      | [92mINFO [0m:      Evaluating initial global parameters
+fl-server      | [92mINFO [0m:      
+fl-server      | [92mINFO [0m:      [ROUND 1]
+fl-server      | [92mINFO [0m:      configure_fit: strategy sampled 3 clients (out of 3)
+hospital_a     | [92mINFO [0m:      
+hospital_a     | [92mINFO [0m:      Received: train message 1504581f-9e6a-4bf4-888e-645442984802
+hospital_a     | 2026-03-20 15:05:53,742 [hospital_a] INFO fit_start
+hospital_c     | [92mINFO [0m:      
+hospital_c     | [92mINFO [0m:      Received: train message 0fb569ba-306e-4ea3-8f41-e85133ab48a7
+hospital_c     | 2026-03-20 15:05:53,744 [hospital_c] INFO fit_start
+hospital_b     | [92mINFO [0m:      
+hospital_b     | [92mINFO [0m:      Received: train message 3796dc46-f542-4ca9-a1f2-cdb410826e92
+hospital_b     | 2026-03-20 15:05:53,747 [hospital_b] INFO fit_start
+hospital_c     | 2026-03-20 15:05:54,661 [hospital_c] INFO fit_complete
+hospital_c     | [92mINFO [0m:      Sent reply
+hospital_a     | 2026-03-20 15:05:54,689 [hospital_a] INFO fit_complete
+hospital_a     | [92mINFO [0m:      Sent reply
+hospital_b     | 2026-03-20 15:05:54,723 [hospital_b] INFO fit_complete
+hospital_b     | [92mINFO [0m:      Sent reply
+fl-server      | [92mINFO [0m:      aggregate_fit: received 3 results and 0 failures
+fl-server      | 2026-03-20 15:05:54,730 [server] INFO round_start
+fl-server      | 2026-03-20 15:05:54,730 [server] INFO weights_received
+fl-server      | 2026-03-20 15:05:54,730 [server] INFO weights_received
+fl-server      | 2026-03-20 15:05:54,730 [server] INFO weights_received
+fl-server      | 2026-03-20 15:05:54,735 [server] INFO aggregation_complete
+fl-server      | [92mINFO [0m:      configure_evaluate: strategy sampled 3 clients (out of 3)
+hospital_b     | [92mINFO [0m:      
+hospital_b     | [92mINFO [0m:      Received: evaluate message 02d695dd-73b2-4faa-b131-cb21c1b78373
+hospital_b     | 2026-03-20 15:05:54,741 [hospital_b] INFO evaluate_complete
+hospital_b     | [92mINFO [0m:      Sent reply
+hospital_a     | [92mINFO [0m:      
+hospital_a     | [92mINFO [0m:      Received: evaluate message 9d8daa74-05fc-43be-87a0-62ecb0313e47
+hospital_a     | 2026-03-20 15:05:54,745 [hospital_a] INFO evaluate_complete
+hospital_a     | [92mINFO [0m:      Sent reply
+hospital_c     | [92mINFO [0m:      
+hospital_c     | [92mINFO [0m:      Received: evaluate message e3513ae2-7e00-412d-beec-549ed98ecbaa
+hospital_c     | 2026-03-20 15:05:54,747 [hospital_c] INFO evaluate_complete
+hospital_c     | [92mINFO [0m:      Sent reply
+fl-server      | [92mINFO [0m:      aggregate_evaluate: received 3 results and 0 failures
+fl-server      | 2026-03-20 15:05:54,748 [server] INFO round_complete
+fl-server      | 2026-03-20 15:05:54,748 [server] INFO round_gate_decision
+fl-server      | [92mINFO [0m:      
+fl-server      | [92mINFO [0m:      [ROUND 2]
+fl-server      | [92mINFO [0m:      configure_fit: strategy sampled 3 clients (out of 3)
+hospital_b     | [92mINFO [0m:      
+hospital_b     | [92mINFO [0m:      Received: train message f92befab-c542-4495-9ce5-fd9dab3d2a19
+hospital_c     | [92mINFO [0m:      
+hospital_c     | [92mINFO [0m:      Received: train message 24dce9ec-deec-4c85-94c7-a9dfdccabd62
+hospital_a     | [92mINFO [0m:      
+hospital_a     | [92mINFO [0m:      Received: train message cf41d653-4ef1-487e-a48c-5003bbc14df8
+hospital_c     | 2026-03-20 15:05:54,755 [hospital_c] INFO fit_start
+hospital_b     | 2026-03-20 15:05:54,756 [hospital_b] INFO fit_start
+hospital_a     | 2026-03-20 15:05:54,756 [hospital_a] INFO fit_start
+hospital_b     | 2026-03-20 15:05:55,387 [hospital_b] INFO fit_complete
+hospital_b     | [92mINFO [0m:      Sent reply
+hospital_c     | 2026-03-20 15:05:55,561 [hospital_c] INFO fit_complete
+hospital_c     | [92mINFO [0m:      Sent reply
+hospital_a     | 2026-03-20 15:05:55,700 [hospital_a] INFO fit_complete
+hospital_a     | [92mINFO [0m:      Sent reply
+fl-server      | [92mINFO [0m:      aggregate_fit: received 3 results and 0 failures
+fl-server      | 2026-03-20 15:05:55,705 [server] INFO round_start
+fl-server      | 2026-03-20 15:05:55,705 [server] INFO weights_received
+fl-server      | 2026-03-20 15:05:55,705 [server] INFO weights_received
+fl-server      | 2026-03-20 15:05:55,705 [server] INFO weights_received
+fl-server      | 2026-03-20 15:05:55,708 [server] INFO aggregation_complete
+fl-server      | [92mINFO [0m:      configure_evaluate: strategy sampled 3 clients (out of 3)
+hospital_a     | [92mINFO [0m:      
+hospital_a     | [92mINFO [0m:      Received: evaluate message e576f775-7494-4dc9-9c2c-cbf2aa985d0d
+hospital_a     | 2026-03-20 15:05:55,713 [hospital_a] INFO evaluate_complete
+hospital_c     | [92mINFO [0m:      
+hospital_c     | [92mINFO [0m:      Received: evaluate message ef29921b-ca42-4124-b058-f504d6409fa3
+hospital_a     | [92mINFO [0m:      Sent reply
+hospital_c     | 2026-03-20 15:05:55,714 [hospital_c] INFO evaluate_complete
+hospital_c     | [92mINFO [0m:      Sent reply
+hospital_b     | [92mINFO [0m:      
+hospital_b     | [92mINFO [0m:      Received: evaluate message 0ccd20c0-fcd8-4c4d-accc-12042d9e6f92
+hospital_b     | 2026-03-20 15:05:55,716 [hospital_b] INFO evaluate_complete
+hospital_b     | [92mINFO [0m:      Sent reply
+fl-server      | [92mINFO [0m:      aggregate_evaluate: received 3 results and 0 failures
+fl-server      | 2026-03-20 15:05:55,718 [server] INFO round_complete
+fl-server      | 2026-03-20 15:05:55,718 [server] INFO round_gate_decision
+fl-server      | [92mINFO [0m:      
+fl-server      | [92mINFO [0m:      [ROUND 3]
+fl-server      | [92mINFO [0m:      configure_fit: strategy sampled 3 clients (out of 3)
+hospital_c     | [92mINFO [0m:      
+hospital_c     | [92mINFO [0m:      Received: train message 3056b60e-2de6-4c4d-9b32-79b1e4ada3eb
+hospital_a     | [92mINFO [0m:      
+hospital_a     | [92mINFO [0m:      Received: train message 49ae8ec3-00f6-442e-91c8-a38bdcee34f3
+hospital_c     | 2026-03-20 15:05:55,722 [hospital_c] INFO fit_start
+hospital_a     | 2026-03-20 15:05:55,723 [hospital_a] INFO fit_start
+hospital_b     | [92mINFO [0m:      
+hospital_b     | [92mINFO [0m:      Received: train message 9714b3b1-2572-4793-96aa-217412c674ed
+hospital_b     | 2026-03-20 15:05:55,725 [hospital_b] INFO fit_start
+opa            | {"client_addr":"[::1]:54010","level":"info","msg":"Received request.","req_id":9,"req_method":"GET","req_path":"/health","time":"2026-03-20T15:05:56Z"}
+opa            | {"client_addr":"[::1]:54010","level":"info","msg":"Sent response.","req_id":9,"req_method":"GET","req_path":"/health","resp_bytes":3,"resp_duration":0.414323,"resp_status":200,"time":"2026-03-20T15:05:56Z"}
+hospital_a     | 2026-03-20 15:05:56,516 [hospital_a] INFO fit_complete
+hospital_a     | [92mINFO [0m:      Sent reply
+hospital_b     | 2026-03-20 15:05:56,681 [hospital_b] INFO fit_complete
+hospital_b     | [92mINFO [0m:      Sent reply
+hospital_c     | 2026-03-20 15:05:57,100 [hospital_c] INFO fit_complete
+hospital_c     | [92mINFO [0m:      Sent reply
+fl-server      | [92mINFO [0m:      aggregate_fit: received 3 results and 0 failures
+fl-server      | 2026-03-20 15:05:57,105 [server] INFO round_start
+fl-server      | 2026-03-20 15:05:57,105 [server] INFO weights_received
+fl-server      | 2026-03-20 15:05:57,105 [server] INFO weights_received
+fl-server      | 2026-03-20 15:05:57,105 [server] INFO weights_received
+fl-server      | 2026-03-20 15:05:57,107 [server] INFO aggregation_complete
+fl-server      | [92mINFO [0m:      configure_evaluate: strategy sampled 3 clients (out of 3)
+hospital_a     | [92mINFO [0m:      
+hospital_a     | [92mINFO [0m:      Received: evaluate message 3f91f630-b2e6-4f85-be32-f5887c4ab4b1
+hospital_a     | 2026-03-20 15:05:57,112 [hospital_a] INFO evaluate_complete
+hospital_b     | [92mINFO [0m:      
+hospital_b     | [92mINFO [0m:      Received: evaluate message f4b5a801-1a32-46ec-b87a-7ff6c54e72f7
+hospital_a     | [92mINFO [0m:      Sent reply
+hospital_b     | 2026-03-20 15:05:57,114 [hospital_b] INFO evaluate_complete
+hospital_c     | [92mINFO [0m:      
+hospital_c     | [92mINFO [0m:      Received: evaluate message f1bcb250-ecdf-4da8-abd4-55fe5b5add06
+hospital_b     | [92mINFO [0m:      Sent reply
+hospital_c     | 2026-03-20 15:05:57,115 [hospital_c] INFO evaluate_complete
+hospital_c     | [92mINFO [0m:      Sent reply
+fl-server      | [92mINFO [0m:      aggregate_evaluate: received 3 results and 0 failures
+fl-server      | 2026-03-20 15:05:57,117 [server] INFO round_complete
+fl-server      | 2026-03-20 15:05:57,117 [server] INFO round_gate_decision
+fl-server      | [92mINFO [0m:      
+fl-server      | [92mINFO [0m:      [ROUND 4]
+fl-server      | [92mINFO [0m:      configure_fit: strategy sampled 3 clients (out of 3)
+hospital_c     | [92mINFO [0m:      
+hospital_c     | [92mINFO [0m:      Received: train message 3cd73276-be06-4ec5-ab96-874bfab9c2b6
+hospital_b     | [92mINFO [0m:      
+hospital_b     | [92mINFO [0m:      Received: train message 77093822-a93a-4765-b76d-8fb32e082fcc
+hospital_c     | 2026-03-20 15:05:57,122 [hospital_c] INFO fit_start
+hospital_b     | 2026-03-20 15:05:57,123 [hospital_b] INFO fit_start
+hospital_a     | [92mINFO [0m:      
+hospital_a     | [92mINFO [0m:      Received: train message ab94b487-001e-4adb-8425-63215f4ddde9
+hospital_a     | 2026-03-20 15:05:57,125 [hospital_a] INFO fit_start
+hospital_a     | 2026-03-20 15:05:57,837 [hospital_a] INFO fit_complete
+hospital_a     | [92mINFO [0m:      Sent reply
+hospital_b     | 2026-03-20 15:05:58,508 [hospital_b] INFO fit_complete
+hospital_b     | [92mINFO [0m:      Sent reply
+hospital_c     | 2026-03-20 15:05:58,578 [hospital_c] INFO fit_complete
+hospital_c     | [92mINFO [0m:      Sent reply
+fl-server      | [92mINFO [0m:      aggregate_fit: received 3 results and 0 failures
+fl-server      | 2026-03-20 15:05:58,583 [server] INFO round_start
+fl-server      | 2026-03-20 15:05:58,583 [server] INFO weights_received
+fl-server      | 2026-03-20 15:05:58,583 [server] INFO weights_received
+fl-server      | 2026-03-20 15:05:58,583 [server] INFO weights_received
+fl-server      | 2026-03-20 15:05:58,585 [server] INFO aggregation_complete
+fl-server      | [92mINFO [0m:      configure_evaluate: strategy sampled 3 clients (out of 3)
+hospital_a     | [92mINFO [0m:      
+hospital_a     | [92mINFO [0m:      Received: evaluate message 90424745-c805-477c-82e3-eef551344fe1
+hospital_a     | 2026-03-20 15:05:58,591 [hospital_a] INFO evaluate_complete
+hospital_a     | [92mINFO [0m:      Sent reply
+hospital_b     | [92mINFO [0m:      
+hospital_b     | [92mINFO [0m:      Received: evaluate message 08e80c94-f544-49be-8393-c8f9ad83f8bb
+hospital_b     | 2026-03-20 15:05:58,593 [hospital_b] INFO evaluate_complete
+hospital_b     | [92mINFO [0m:      Sent reply
+hospital_c     | [92mINFO [0m:      
+hospital_c     | [92mINFO [0m:      Received: evaluate message 1982af94-594f-486b-91c4-f40429ee52b4
+hospital_c     | 2026-03-20 15:05:58,594 [hospital_c] INFO evaluate_complete
+hospital_c     | [92mINFO [0m:      Sent reply
+fl-server      | [92mINFO [0m:      aggregate_evaluate: received 3 results and 0 failures
+fl-server      | 2026-03-20 15:05:58,595 [server] INFO round_complete
+fl-server      | 2026-03-20 15:05:58,595 [server] INFO round_gate_decision
+fl-server      | [92mINFO [0m:      
+fl-server      | [92mINFO [0m:      [ROUND 5]
+fl-server      | [92mINFO [0m:      configure_fit: strategy sampled 3 clients (out of 3)
+hospital_c     | [92mINFO [0m:      
+hospital_c     | [92mINFO [0m:      Received: train message 4b2bd7a3-9081-4374-b89e-4ced1554f5ce
+hospital_c     | 2026-03-20 15:05:58,599 [hospital_c] INFO fit_start
+hospital_a     | [92mINFO [0m:      
+hospital_a     | [92mINFO [0m:      Received: train message 913dbe26-e6a0-4a05-bd67-e3589b5e9675
+hospital_a     | 2026-03-20 15:05:58,601 [hospital_a] INFO fit_start
+hospital_b     | [92mINFO [0m:      
+hospital_b     | [92mINFO [0m:      Received: train message 84e1d406-5fcd-4308-96b9-7f464555d9df
+hospital_b     | 2026-03-20 15:05:58,604 [hospital_b] INFO fit_start
+hospital_c     | 2026-03-20 15:05:59,312 [hospital_c] INFO fit_complete
+hospital_c     | [92mINFO [0m:      Sent reply
+hospital_b     | 2026-03-20 15:05:59,500 [hospital_b] INFO fit_complete
+hospital_b     | [92mINFO [0m:      Sent reply
+hospital_a     | 2026-03-20 15:05:59,860 [hospital_a] INFO fit_complete
+hospital_a     | [92mINFO [0m:      Sent reply
+fl-server      | [92mINFO [0m:      aggregate_fit: received 3 results and 0 failures
+fl-server      | 2026-03-20 15:05:59,865 [server] INFO round_start
+fl-server      | 2026-03-20 15:05:59,865 [server] INFO weights_received
+fl-server      | 2026-03-20 15:05:59,865 [server] INFO weights_received
+fl-server      | 2026-03-20 15:05:59,865 [server] INFO weights_received
+fl-server      | 2026-03-20 15:05:59,867 [server] INFO aggregation_complete
+fl-server      | [92mINFO [0m:      configure_evaluate: strategy sampled 3 clients (out of 3)
+hospital_a     | [92mINFO [0m:      
+hospital_a     | [92mINFO [0m:      Received: evaluate message a07b31fe-85c7-493a-ae5a-a90722c23a3f
+hospital_c     | [92mINFO [0m:      
+hospital_c     | [92mINFO [0m:      Received: evaluate message 3b49cb47-53e7-4fcf-8d6d-6c3c4c1c64d1
+hospital_a     | 2026-03-20 15:05:59,872 [hospital_a] INFO evaluate_complete
+hospital_a     | [92mINFO [0m:      Sent reply
+hospital_c     | 2026-03-20 15:05:59,873 [hospital_c] INFO evaluate_complete
+hospital_c     | [92mINFO [0m:      Sent reply
+hospital_b     | [92mINFO [0m:      
+hospital_b     | [92mINFO [0m:      Received: evaluate message 133890c8-c265-4f1f-85be-e2d016590ee0
+hospital_b     | 2026-03-20 15:05:59,876 [hospital_b] INFO evaluate_complete
+hospital_b     | [92mINFO [0m:      Sent reply
+fl-server      | [92mINFO [0m:      aggregate_evaluate: received 3 results and 0 failures
+fl-server      | 2026-03-20 15:05:59,877 [server] INFO round_complete
+fl-server      | 2026-03-20 15:05:59,877 [server] INFO round_gate_decision
+fl-server      | [92mINFO [0m:      
+fl-server      | [92mINFO [0m:      [SUMMARY]
+fl-server      | [92mINFO [0m:      Run finished 5 rounds in 6.15s
+fl-server      | [92mINFO [0m:      History (loss, distributed):
+fl-server      | [92mINFO [0m:      	('\tround 1: 1.8068135579427083\n'
+fl-server      | [92mINFO [0m:      	 '\tround 2: 1.4478570222854614\n'
+fl-server      | [92mINFO [0m:      	 '\tround 3: 1.2765466769536336\n'
+fl-server      | [92mINFO [0m:      	 '\tround 4: 0.9681025147438049\n'
+fl-server      | [92mINFO [0m:      	 '\tround 5: 0.7382628917694092\n')History (metrics, distributed, fit):
+fl-server      | [92mINFO [0m:      	{'loss': [(1, 2.1642152525508096),
+fl-server      | [92mINFO [0m:      	          (2, 1.7811865222552947),
+fl-server      | [92mINFO [0m:      	          (3, 1.502003931815238),
+fl-server      | [92mINFO [0m:      	          (4, 1.313587331775934),
+fl-server      | [92mINFO [0m:      	          (5, 1.0122585784056306)]}History (metrics, distributed, evaluate):
+fl-server      | [92mINFO [0m:      	{'accuracy': [(1, 0.5256543617374361),
+fl-server      | [92mINFO [0m:      	              (2, 0.6062145986099879),
+fl-server      | [92mINFO [0m:      	              (3, 0.6563545916089122),
+fl-server      | [92mINFO [0m:      	              (4, 0.7353877409733475),
+fl-server      | [92mINFO [0m:      	              (5, 0.79939514891242)]}
+fl-server      | [92mINFO [0m:      
+hospital_b     | [92mINFO [0m:      
+hospital_b     | [92mINFO [0m:      Received: reconnect message abb96f08-13b7-4c4a-bead-767585d079d1
+hospital_a     | [92mINFO [0m:      
+hospital_a     | [92mINFO [0m:      Received: reconnect message b9fcd1f3-c748-4924-885a-b882b38d9fa4
+hospital_c     | [92mINFO [0m:      
+hospital_c     | [92mINFO [0m:      Received: reconnect message bbaaa6fb-dc96-4fe0-a007-b9caf9cef31b
+hospital_b     | [92mINFO [0m:      Disconnect and shut down
+hospital_a     | [92mINFO [0m:      Disconnect and shut down
+hospital_c     | [92mINFO [0m:      Disconnect and shut down
+[Kfl-server exited with code 0
+[Khospital_a exited with code 0
+[Khospital_c exited with code 0
+[Khospital_b exited with code 0
+opa            | {"client_addr":"[::1]:54026","level":"info","msg":"Received request.","req_id":10,"req_method":"GET","req_path":"/health","time":"2026-03-20T15:06:01Z"}
+opa            | {"client_addr":"[::1]:54026","level":"info","msg":"Sent response.","req_id":10,"req_method":"GET","req_path":"/health","resp_bytes":3,"resp_duration":0.346042,"resp_status":200,"time":"2026-03-20T15:06:01Z"}
+opa            | {"client_addr":"[::1]:43846","level":"info","msg":"Received request.","req_id":11,"req_method":"GET","req_path":"/health","time":"2026-03-20T15:06:06Z"}
+opa            | {"client_addr":"[::1]:43846","level":"info","msg":"Sent response.","req_id":11,"req_method":"GET","req_path":"/health","resp_bytes":3,"resp_duration":0.259978,"resp_status":200,"time":"2026-03-20T15:06:06Z"}
+opa            | {"client_addr":"[::1]:43854","level":"info","msg":"Received request.","req_id":12,"req_method":"GET","req_path":"/health","time":"2026-03-20T15:06:11Z"}
+opa            | {"client_addr":"[::1]:43854","level":"info","msg":"Sent response.","req_id":12,"req_method":"GET","req_path":"/health","resp_bytes":3,"resp_duration":0.203655,"resp_status":200,"time":"2026-03-20T15:06:11Z"}
+opa            | {"client_addr":"[::1]:57692","level":"info","msg":"Received request.","req_id":13,"req_method":"GET","req_path":"/health","time":"2026-03-20T15:06:16Z"}
+opa            | {"client_addr":"[::1]:57692","level":"info","msg":"Sent response.","req_id":13,"req_method":"GET","req_path":"/health","resp_bytes":3,"resp_duration":0.249385,"resp_status":200,"time":"2026-03-20T15:06:16Z"}
+opa            | {"client_addr":"[::1]:57700","level":"info","msg":"Received request.","req_id":14,"req_method":"GET","req_path":"/health","time":"2026-03-20T15:06:21Z"}
+opa            | {"client_addr":"[::1]:57700","level":"info","msg":"Sent response.","req_id":14,"req_method":"GET","req_path":"/health","resp_bytes":3,"resp_duration":0.305347,"resp_status":200,"time":"2026-03-20T15:06:21Z"}
+opa            | {"client_addr":"[::1]:48658","level":"info","msg":"Received request.","req_id":15,"req_method":"GET","req_path":"/health","time":"2026-03-20T15:06:26Z"}
+opa            | {"client_addr":"[::1]:48658","level":"info","msg":"Sent response.","req_id":15,"req_method":"GET","req_path":"/health","resp_bytes":3,"resp_duration":0.304291,"resp_status":200,"time":"2026-03-20T15:06:26Z"}
+opa            | {"client_addr":"[::1]:48662","level":"info","msg":"Received request.","req_id":16,"req_method":"GET","req_path":"/health","time":"2026-03-20T15:06:31Z"}
+opa            | {"client_addr":"[::1]:48662","level":"info","msg":"Sent response.","req_id":16,"req_method":"GET","req_path":"/health","resp_bytes":3,"resp_duration":0.243507,"resp_status":200,"time":"2026-03-20T15:06:31Z"}
+opa            | {"client_addr":"[::1]:39010","level":"info","msg":"Received request.","req_id":17,"req_method":"GET","req_path":"/health","time":"2026-03-20T15:06:36Z"}
+opa            | {"client_addr":"[::1]:39010","level":"info","msg":"Sent response.","req_id":17,"req_method":"GET","req_path":"/health","resp_bytes":3,"resp_duration":0.229494,"resp_status":200,"time":"2026-03-20T15:06:36Z"}
+opa            | {"client_addr":"[::1]:39020","level":"info","msg":"Received request.","req_id":18,"req_method":"GET","req_path":"/health","time":"2026-03-20T15:06:41Z"}
+opa            | {"client_addr":"[::1]:39020","level":"info","msg":"Sent response.","req_id":18,"req_method":"GET","req_path":"/health","resp_bytes":3,"resp_duration":0.224773,"resp_status":200,"time":"2026-03-20T15:06:41Z"}
+opa            | {"client_addr":"[::1]:59020","level":"info","msg":"Received request.","req_id":19,"req_method":"GET","req_path":"/health","time":"2026-03-20T15:06:46Z"}
+opa            | {"client_addr":"[::1]:59020","level":"info","msg":"Sent response.","req_id":19,"req_method":"GET","req_path":"/health","resp_bytes":3,"resp_duration":0.205119,"resp_status":200,"time":"2026-03-20T15:06:46Z"}
+opa            | {"client_addr":"[::1]:59032","level":"info","msg":"Received request.","req_id":20,"req_method":"GET","req_path":"/health","time":"2026-03-20T15:06:51Z"}
+opa            | {"client_addr":"[::1]:59032","level":"info","msg":"Sent response.","req_id":20,"req_method":"GET","req_path":"/health","resp_bytes":3,"resp_duration":0.208581,"resp_status":200,"time":"2026-03-20T15:06:51Z"}
+fl-middleware  | INFO:     Shutting down
+fl-middleware  | INFO:     Waiting for application shutdown.
+fl-middleware  | INFO:     Application shutdown complete.
+fl-middleware  | INFO:     Finished server process [1]
+[Kfl-middleware exited with code 0
+opa            | {"level":"info","msg":"Shutting down...","time":"2026-03-20T15:06:53Z"}
+opa            | {"level":"info","msg":"Server shutdown.","time":"2026-03-20T15:06:53Z"}
+keycloak       | 2026-03-20 15:06:53,566 INFO  [io.quarkus] (Shutdown thread) Keycloak stopped in 0.026s
+[Kopa exited with code 0
+[Kkeycloak exited with code 143
+✅ Run 2026-03-20_15-05-12 complete. Logs → logs/run_2026-03-20_15-05-12/

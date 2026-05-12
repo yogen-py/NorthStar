@@ -1,0 +1,863 @@
+▶ Run 2026-05-06_14-04-17 starting...
+ Container hospital_c Stopping 
+ Container malicious_client Stopping 
+ Container fl-middleware Stopping 
+ Container hospital_b Stopping 
+ Container hospital_a Stopping 
+ Container fl-middleware Stopped 
+ Container fl-middleware Removing 
+ Container hospital_a Stopped 
+ Container malicious_client Stopped 
+ Container malicious_client Removing 
+ Container hospital_c Stopped 
+ Container hospital_c Removing 
+ Container hospital_a Removing 
+ Container hospital_b Stopped 
+ Container hospital_b Removing 
+ Container hospital_c Removed 
+ Container fl-middleware Removed 
+ Container hospital_a Removed 
+ Container opa Stopping 
+ Container malicious_client Removed 
+ Container hospital_b Removed 
+ Container fl-server Stopping 
+ Container fl-server Stopped 
+ Container fl-server Removing 
+ Container opa Stopped 
+ Container opa Removing 
+ Container opa Removed 
+ Container fl-server Removed 
+ Container keycloak Stopping 
+ Container keycloak Stopped 
+ Container keycloak Removing 
+ Container keycloak Removed 
+ Network infra_fl-net Removing 
+ Network infra_fl-net Removed 
+ Image infra-fl-server Building 
+ Image infra-hospital_a Building 
+ Image infra-malicious_client Building 
+ Image infra-fl-middleware Building 
+ Image infra-hospital_c Building 
+ Image infra-hospital_b Building 
+#1 [internal] load local bake definitions
+#1 reading from stdin 2.92kB done
+#1 DONE 0.0s
+
+#2 [fl-server internal] load build definition from Dockerfile
+#2 transferring dockerfile: 247B done
+#2 DONE 0.0s
+
+#3 [hospital_a internal] load build definition from Dockerfile
+#3 transferring dockerfile: 226B done
+#3 DONE 0.0s
+
+#4 [hospital_a internal] load metadata for docker.io/library/python:3.10-slim
+#4 DONE 0.0s
+
+#5 [malicious_client internal] load .dockerignore
+#5 transferring context: 2B done
+#5 DONE 0.0s
+
+#6 [hospital_c 1/6] FROM docker.io/library/python:3.10-slim
+#6 DONE 0.0s
+
+#7 [fl-middleware internal] load build context
+#7 transferring context: 570B done
+#7 DONE 0.0s
+
+#8 [hospital_b internal] load build context
+#8 transferring context: 316B done
+#8 DONE 0.0s
+
+#9 [fl-server 4/7] RUN pip install --no-cache-dir -r requirements.txt
+#9 CACHED
+
+#10 [fl-server 6/7] COPY shared/ ./shared/
+#10 CACHED
+
+#11 [fl-server 5/7] COPY server/ .
+#11 CACHED
+
+#12 [fl-server 3/7] COPY server/requirements.txt .
+#12 CACHED
+
+#13 [fl-middleware 7/7] COPY trust/ ./trust/
+#13 CACHED
+
+#14 [hospital_a 3/6] COPY client/requirements.txt .
+#14 CACHED
+
+#15 [fl-server 2/6] WORKDIR /app
+#15 CACHED
+
+#16 [hospital_a 4/6] RUN pip install --no-cache-dir -r requirements.txt
+#16 CACHED
+
+#17 [hospital_a 5/6] COPY client/ .
+#17 CACHED
+
+#18 [hospital_a 6/6] COPY shared/ ./shared/
+#18 CACHED
+
+#19 [fl-server] exporting to image
+#19 exporting layers done
+#19 writing image sha256:f3ff620d4306ddd0ef194f030419bbf54aa459a4352d7847f23a9f6f0a2734dd done
+#19 naming to docker.io/library/infra-fl-server
+#19 naming to docker.io/library/infra-fl-server 0.0s done
+#19 DONE 0.0s
+
+#20 [hospital_c] exporting to image
+#20 exporting layers done
+#20 writing image sha256:257245c878f48fc1068d397a110b185569e1a4e2fc4b9eba9c2f1f5ad575f060 done
+#20 naming to docker.io/library/infra-hospital_c 0.0s done
+#20 DONE 0.0s
+
+#21 [malicious_client] exporting to image
+#21 exporting layers done
+#21 writing image sha256:823d936bc021382e89a8ee0704dd6ddd3f9583f00a56a57fc6e1af87479f8949 done
+#21 naming to docker.io/library/infra-malicious_client done
+#21 DONE 0.0s
+
+#22 [fl-middleware] exporting to image
+#22 exporting layers done
+#22 writing image sha256:50023fc14782a6b379f3cefc01bba98fe4141402f3878eb9c245b74b0fd9dae5 done
+#22 naming to docker.io/library/infra-fl-middleware 0.0s done
+#22 DONE 0.0s
+
+#23 [hospital_b] exporting to image
+#23 exporting layers done
+#23 writing image sha256:dc0bbe3c1d1b31df5774fa96f0017b52d59c4fd61812cfe781120456d0824733 done
+#23 naming to docker.io/library/infra-hospital_b done
+#23 DONE 0.0s
+
+#24 [hospital_a] exporting to image
+#24 exporting layers done
+#24 writing image sha256:ddba05cd9133893a3545f523a52f42417b24a432ee8138e4f615e89d839159cc 0.0s done
+#24 naming to docker.io/library/infra-hospital_a done
+#24 DONE 0.0s
+
+#25 [hospital_c] resolving provenance for metadata file
+#25 DONE 0.0s
+
+#26 [fl-middleware] resolving provenance for metadata file
+#26 DONE 0.0s
+
+#27 [malicious_client] resolving provenance for metadata file
+#27 DONE 0.0s
+
+#28 [hospital_b] resolving provenance for metadata file
+#28 DONE 0.0s
+
+#29 [hospital_a] resolving provenance for metadata file
+#29 DONE 0.0s
+
+#30 [fl-server] resolving provenance for metadata file
+#30 DONE 0.0s
+ Image infra-fl-server Built 
+ Image infra-hospital_b Built 
+ Image infra-hospital_c Built 
+ Image infra-malicious_client Built 
+ Image infra-fl-middleware Built 
+ Image infra-hospital_a Built 
+ Network infra_fl-net Creating 
+ Network infra_fl-net Created 
+ Container keycloak Creating 
+ Container opa Creating 
+ Container opa Created 
+ Container keycloak Created 
+ Container fl-middleware Creating 
+ Container fl-server Creating 
+ Container fl-server Created 
+ Container malicious_client Creating 
+ Container hospital_a Creating 
+ Container hospital_c Creating 
+ Container hospital_b Creating 
+ Container hospital_c Created 
+ Container hospital_b Created 
+ Container malicious_client Created 
+ Container hospital_a Created 
+ Container fl-middleware Created 
+Attaching to fl-middleware, fl-server, hospital_a, hospital_b, hospital_c, keycloak, malicious_client, opa
+ Container opa Starting 
+ Container keycloak Starting 
+ Container opa Started 
+ Container keycloak Started 
+ Container keycloak Waiting 
+ Container opa Waiting 
+ Container keycloak Waiting 
+opa  | {"addrs":[":8181"],"diagnostic-addrs":[],"level":"info","msg":"Initializing server.","time":"2026-05-06T14:04:19Z"}
+opa  | {"current_version":"1.14.1","download_opa":"https://openpolicyagent.org/downloads/v1.16.1/opa_linux_amd64","latest_version":"1.16.1","level":"info","msg":"OPA is out of date.","release_notes":"https://github.com/open-policy-agent/opa/releases/tag/v1.16.1","time":"2026-05-06T14:04:20Z"}
+keycloak  | Updating the configuration and installing your custom providers, if any. Please wait.
+opa       | {"client_addr":"[::1]:48952","level":"info","msg":"Received request.","req_id":1,"req_method":"GET","req_path":"/health","time":"2026-05-06T14:04:24Z"}
+opa       | {"client_addr":"[::1]:48952","level":"info","msg":"Sent response.","req_id":1,"req_method":"GET","req_path":"/health","resp_bytes":3,"resp_duration":4.088579,"resp_status":200,"time":"2026-05-06T14:04:24Z"}
+ Container opa Healthy 
+keycloak  | 2026-05-06 14:04:25,662 WARN  [io.qua.dep.ind.IndexWrapper] (build-11) Failed to index org.springframework.core.io.DefaultResourceLoader: Class does not exist in ClassLoader QuarkusClassLoader:Deployment Class Loader: PROD for keycloak@4c432866
+keycloak  | 2026-05-06 14:04:25,665 WARN  [io.qua.dep.ind.IndexWrapper] (build-11) Failed to index org.springframework.core.io.ResourceLoader: Class does not exist in ClassLoader QuarkusClassLoader:Deployment Class Loader: PROD for keycloak@4c432866
+keycloak  | 2026-05-06 14:04:25,676 WARN  [io.qua.dep.ind.IndexWrapper] (build-11) Failed to index org.apache.tools.ant.Task: Class does not exist in ClassLoader QuarkusClassLoader:Deployment Class Loader: PROD for keycloak@4c432866
+keycloak  | 2026-05-06 14:04:25,705 WARN  [io.qua.dep.ind.IndexWrapper] (build-11) Failed to index org.springframework.core.io.Resource: Class does not exist in ClassLoader QuarkusClassLoader:Deployment Class Loader: PROD for keycloak@4c432866
+keycloak  | 2026-05-06 14:04:25,888 WARN  [io.qua.dep.ind.IndexWrapper] (build-11) Failed to index org.apache.activemq.artemis.core.journal.RecordInfo: Class does not exist in ClassLoader QuarkusClassLoader:Deployment Class Loader: PROD for keycloak@4c432866
+keycloak  | 2026-05-06 14:04:25,889 WARN  [io.qua.dep.ind.IndexWrapper] (build-11) Failed to index org.apache.activemq.artemis.core.journal.Journal: Class does not exist in ClassLoader QuarkusClassLoader:Deployment Class Loader: PROD for keycloak@4c432866
+keycloak  | 2026-05-06 14:04:25,891 WARN  [io.qua.dep.ind.IndexWrapper] (build-11) Failed to index io.mashona.logwriting.ArrayStore: Class does not exist in ClassLoader QuarkusClassLoader:Deployment Class Loader: PROD for keycloak@4c432866
+keycloak  | 2026-05-06 14:04:25,977 WARN  [io.qua.dep.ind.IndexWrapper] (build-11) Failed to index jakarta.jms.XAConnection: Class does not exist in ClassLoader QuarkusClassLoader:Deployment Class Loader: PROD for keycloak@4c432866
+keycloak  | 2026-05-06 14:04:25,978 WARN  [io.qua.dep.ind.IndexWrapper] (build-11) Failed to index jakarta.jms.XASession: Class does not exist in ClassLoader QuarkusClassLoader:Deployment Class Loader: PROD for keycloak@4c432866
+keycloak  | 2026-05-06 14:04:25,979 WARN  [io.qua.dep.ind.IndexWrapper] (build-11) Failed to index jakarta.jms.XAConnectionFactory: Class does not exist in ClassLoader QuarkusClassLoader:Deployment Class Loader: PROD for keycloak@4c432866
+keycloak  | 2026-05-06 14:04:26,031 WARN  [io.qua.dep.ind.IndexWrapper] (build-11) Failed to index jakarta.jms.Connection: Class does not exist in ClassLoader QuarkusClassLoader:Deployment Class Loader: PROD for keycloak@4c432866
+opa       | {"client_addr":"[::1]:40946","level":"info","msg":"Received request.","req_id":2,"req_method":"GET","req_path":"/health","time":"2026-05-06T14:04:29Z"}
+opa       | {"client_addr":"[::1]:40946","level":"info","msg":"Sent response.","req_id":2,"req_method":"GET","req_path":"/health","resp_bytes":3,"resp_duration":0.566566,"resp_status":200,"time":"2026-05-06T14:04:29Z"}
+keycloak  | 2026-05-06 14:04:30,122 INFO  [io.qua.dep.QuarkusAugmentor] (main) Quarkus augmentation completed in 8319ms
+keycloak  | 2026-05-06 14:04:31,194 INFO  [org.keycloak.quarkus.runtime.hostname.DefaultHostnameProvider] (main) Hostname settings: Base URL: <unset>, Hostname: <request>, Strict HTTPS: false, Path: <request>, Strict BackChannel: false, Admin URL: <unset>, Admin: <request>, Port: -1, Proxied: false
+keycloak  | 2026-05-06 14:04:32,878 WARN  [io.quarkus.agroal.runtime.DataSources] (JPA Startup Thread) Datasource <default> enables XA but transaction recovery is not enabled. Please enable transaction recovery by setting quarkus.transaction-manager.enable-recovery=true, otherwise data may be lost if the application is terminated abruptly
+keycloak  | 2026-05-06 14:04:33,287 WARN  [org.infinispan.CONFIG] (keycloak-cache-init) ISPN000569: Unable to persist Infinispan internal caches as no global state enabled
+keycloak  | 2026-05-06 14:04:33,362 INFO  [org.infinispan.CONTAINER] (keycloak-cache-init) ISPN000556: Starting user marshaller 'org.infinispan.jboss.marshalling.core.JBossUserMarshaller'
+opa       | {"client_addr":"[::1]:40952","level":"info","msg":"Received request.","req_id":3,"req_method":"GET","req_path":"/health","time":"2026-05-06T14:04:34Z"}
+opa       | {"client_addr":"[::1]:40952","level":"info","msg":"Sent response.","req_id":3,"req_method":"GET","req_path":"/health","resp_bytes":3,"resp_duration":0.451036,"resp_status":200,"time":"2026-05-06T14:04:34Z"}
+keycloak  | 2026-05-06 14:04:34,988 INFO  [org.keycloak.quarkus.runtime.storage.legacy.liquibase.QuarkusJpaUpdaterProvider] (main) Initializing database schema. Using changelog META-INF/jpa-changelog-master.xml
+keycloak  | 
+keycloak  | UPDATE SUMMARY
+keycloak  | Run:                        124
+keycloak  | Previously run:               0
+keycloak  | Filtered out:                 0
+keycloak  | -------------------------------
+keycloak  | Total change sets:          124
+keycloak  | 
+keycloak  | 2026-05-06 14:04:38,422 INFO  [org.keycloak.connections.infinispan.DefaultInfinispanConnectionProviderFactory] (main) Node name: node_846165, Site name: null
+keycloak  | 2026-05-06 14:04:38,588 INFO  [org.keycloak.broker.provider.AbstractIdentityProviderMapper] (main) Registering class org.keycloak.broker.provider.mappersync.ConfigSyncEventListener
+keycloak  | 2026-05-06 14:04:38,645 INFO  [org.keycloak.services] (main) KC-SERVICES0050: Initializing master realm
+keycloak  | 2026-05-06 14:04:39,753 INFO  [org.keycloak.exportimport.singlefile.SingleFileImportProvider] (main) Full importing from file /opt/keycloak/bin/../data/import/realm-export.json
+opa       | {"client_addr":"[::1]:54754","level":"info","msg":"Received request.","req_id":4,"req_method":"GET","req_path":"/health","time":"2026-05-06T14:04:41Z"}
+opa       | {"client_addr":"[::1]:54754","level":"info","msg":"Sent response.","req_id":4,"req_method":"GET","req_path":"/health","resp_bytes":3,"resp_duration":0.330442,"resp_status":200,"time":"2026-05-06T14:04:41Z"}
+keycloak  | 2026-05-06 14:04:41,361 INFO  [org.keycloak.exportimport.util.ImportUtils] (main) Realm 'fl-realm' imported
+keycloak  | 2026-05-06 14:04:41,407 INFO  [org.keycloak.exportimport.dir.DirImportProvider] (main) Importing from directory /opt/keycloak/bin/../data/import
+keycloak  | 2026-05-06 14:04:41,408 INFO  [org.keycloak.services] (main) KC-SERVICES0030: Full model import requested. Strategy: IGNORE_EXISTING
+keycloak  | 2026-05-06 14:04:41,409 INFO  [org.keycloak.services] (main) KC-SERVICES0032: Import finished successfully
+keycloak  | 2026-05-06 14:04:41,624 INFO  [org.keycloak.services] (main) KC-SERVICES0009: Added user 'admin' to realm 'master'
+keycloak  | 2026-05-06 14:04:41,700 INFO  [io.quarkus] (main) Keycloak 24.0.5 on JVM (powered by Quarkus 3.8.4) started in 10.158s. Listening on: http://0.0.0.0:8080
+keycloak  | 2026-05-06 14:04:41,701 INFO  [io.quarkus] (main) Profile dev activated. 
+keycloak  | 2026-05-06 14:04:41,701 INFO  [io.quarkus] (main) Installed features: [agroal, cdi, hibernate-orm, jdbc-h2, keycloak, logging-gelf, narayana-jta, reactive-routes, resteasy-reactive, resteasy-reactive-jackson, smallrye-context-propagation, smallrye-health, vertx]
+keycloak  | 2026-05-06 14:04:41,704 WARN  [org.keycloak.quarkus.runtime.KeycloakMain] (main) Running the server in development mode. DO NOT use this configuration in production.
+opa       | {"client_addr":"[::1]:54768","level":"info","msg":"Received request.","req_id":5,"req_method":"GET","req_path":"/health","time":"2026-05-06T14:04:46Z"}
+opa       | {"client_addr":"[::1]:54768","level":"info","msg":"Sent response.","req_id":5,"req_method":"GET","req_path":"/health","resp_bytes":3,"resp_duration":0.227154,"resp_status":200,"time":"2026-05-06T14:04:46Z"}
+ Container keycloak Healthy 
+ Container fl-server Starting 
+ Container keycloak Healthy 
+ Container fl-middleware Starting 
+ Container fl-middleware Started 
+ Container fl-server Started 
+ Container fl-server Waiting 
+ Container fl-server Waiting 
+ Container fl-server Waiting 
+ Container fl-server Waiting 
+fl-server  | 2026-05-06 14:04:47,431 [trust] INFO trust_db_initialized
+fl-server  | 2026-05-06 14:04:47,431 [server] INFO server_start
+fl-server  | [92mINFO [0m:      Starting Flower server, config: num_rounds=5, no round_timeout
+fl-server  | [92mINFO [0m:      Flower ECE: gRPC server running (5 rounds), SSL is disabled
+fl-server  | [92mINFO [0m:      [INIT]
+fl-server  | [92mINFO [0m:      Requesting initial parameters from one random client
+opa        | {"client_addr":"[::1]:57430","level":"info","msg":"Received request.","req_id":6,"req_method":"GET","req_path":"/health","time":"2026-05-06T14:04:51Z"}
+opa        | {"client_addr":"[::1]:57430","level":"info","msg":"Sent response.","req_id":6,"req_method":"GET","req_path":"/health","resp_bytes":3,"resp_duration":1.282192,"resp_status":200,"time":"2026-05-06T14:04:51Z"}
+ Container fl-server Healthy 
+ Container hospital_b Starting 
+ Container fl-server Healthy 
+ Container hospital_c Starting 
+ Container fl-server Healthy 
+ Container hospital_a Starting 
+ Container fl-server Healthy 
+ Container malicious_client Starting 
+ Container hospital_b Started 
+ Container hospital_c Started 
+ Container hospital_a Started 
+ Container malicious_client Started 
+opa        | {"client_addr":"172.19.0.4:38518","level":"info","msg":"Received request.","req_id":7,"req_method":"POST","req_path":"/v1/data/fl/allow","time":"2026-05-06T14:04:54Z"}
+opa        | {"client_addr":"172.19.0.4:38518","level":"info","msg":"Sent response.","req_id":7,"req_method":"POST","req_path":"/v1/data/fl/allow","resp_bytes":16,"resp_duration":1.590952,"resp_status":200,"time":"2026-05-06T14:04:54Z"}
+fl-middleware  | 2026-05-06 14:04:54,219 [middleware] INFO admit_decision
+opa            | {"client_addr":"172.19.0.4:38528","level":"info","msg":"Received request.","req_id":8,"req_method":"POST","req_path":"/v1/data/fl/allow","time":"2026-05-06T14:04:54Z"}
+opa            | {"client_addr":"172.19.0.4:38528","level":"info","msg":"Sent response.","req_id":8,"req_method":"POST","req_path":"/v1/data/fl/allow","resp_bytes":16,"resp_duration":0.303816,"resp_status":200,"time":"2026-05-06T14:04:54Z"}
+fl-middleware  | 2026-05-06 14:04:54,231 [middleware] INFO admit_decision
+fl-middleware  | 2026-05-06 14:04:54,233 [middleware] INFO http_request
+fl-middleware  | 2026-05-06 14:04:54,235 [middleware] INFO http_request
+opa            | {"client_addr":"172.19.0.4:38532","level":"info","msg":"Received request.","req_id":9,"req_method":"POST","req_path":"/v1/data/fl/allow","time":"2026-05-06T14:04:54Z"}
+opa            | {"client_addr":"172.19.0.4:38532","level":"info","msg":"Sent response.","req_id":9,"req_method":"POST","req_path":"/v1/data/fl/allow","resp_bytes":16,"resp_duration":0.239945,"resp_status":200,"time":"2026-05-06T14:04:54Z"}
+fl-middleware  | 2026-05-06 14:04:54,245 [middleware] INFO admit_decision
+fl-middleware  | 2026-05-06 14:04:54,246 [middleware] INFO http_request
+malicious_client  | 2026-05-06 14:04:54,245 [malicious_client] INFO malicious_client_start
+malicious_client  | 2026-05-06 14:04:54,246 [malicious_client] WARNING ⚠ Starting MALICIOUS client malicious_client, attack_mode=noise, partition=0
+hospital_a        | 2026-05-06 14:04:54,246 [hospital_a] INFO admission_success
+hospital_a        | 2026-05-06 14:04:54,246 [hospital_a] INFO client_start
+hospital_c        | 2026-05-06 14:04:54,247 [hospital_c] INFO admission_success
+hospital_c        | 2026-05-06 14:04:54,247 [hospital_c] INFO client_start
+opa               | {"client_addr":"172.19.0.4:38538","level":"info","msg":"Received request.","req_id":10,"req_method":"POST","req_path":"/v1/data/fl/allow","time":"2026-05-06T14:04:54Z"}
+opa               | {"client_addr":"172.19.0.4:38538","level":"info","msg":"Sent response.","req_id":10,"req_method":"POST","req_path":"/v1/data/fl/allow","resp_bytes":16,"resp_duration":0.324968,"resp_status":200,"time":"2026-05-06T14:04:54Z"}
+fl-middleware     | 2026-05-06 14:04:54,255 [middleware] INFO admit_decision
+fl-middleware     | 2026-05-06 14:04:54,256 [middleware] INFO http_request
+hospital_b        | 2026-05-06 14:04:54,257 [hospital_b] INFO admission_success
+hospital_b        | 2026-05-06 14:04:54,257 [hospital_b] INFO client_start
+hospital_b        | [93mWARNING [0m:   DEPRECATED FEATURE: flwr.client.start_client() is deprecated.
+hospital_b        | 	Instead, use the `flower-supernode` CLI command to start a SuperNode as shown below:
+hospital_b        | 
+hospital_b        | 		$ flower-supernode --insecure --superlink='<IP>:<PORT>'
+hospital_b        | 
+hospital_b        | 	To view all available options, run:
+hospital_b        | 
+hospital_b        | 		$ flower-supernode --help
+hospital_b        | 
+hospital_b        | 	Using `start_client()` is deprecated.
+hospital_b        | 
+hospital_b        |             This is a deprecated feature. It will be removed
+hospital_b        |             entirely in future versions of Flower.
+hospital_b        |         
+hospital_c        | [93mWARNING [0m:   DEPRECATED FEATURE: flwr.client.start_client() is deprecated.
+hospital_c        | 	Instead, use the `flower-supernode` CLI command to start a SuperNode as shown below:
+hospital_c        | 
+hospital_c        | 		$ flower-supernode --insecure --superlink='<IP>:<PORT>'
+hospital_c        | 
+hospital_c        | 	To view all available options, run:
+hospital_c        | 
+hospital_c        | 		$ flower-supernode --help
+hospital_c        | 
+hospital_c        | 	Using `start_client()` is deprecated.
+hospital_c        | 
+hospital_c        |             This is a deprecated feature. It will be removed
+hospital_c        |             entirely in future versions of Flower.
+hospital_c        |         
+malicious_client  | [93mWARNING [0m:   DEPRECATED FEATURE: flwr.client.start_client() is deprecated.
+malicious_client  | 	Instead, use the `flower-supernode` CLI command to start a SuperNode as shown below:
+malicious_client  | 
+malicious_client  | 		$ flower-supernode --insecure --superlink='<IP>:<PORT>'
+malicious_client  | 
+malicious_client  | 	To view all available options, run:
+malicious_client  | 
+malicious_client  | 		$ flower-supernode --help
+malicious_client  | 
+malicious_client  | 	Using `start_client()` is deprecated.
+malicious_client  | 
+malicious_client  |             This is a deprecated feature. It will be removed
+malicious_client  |             entirely in future versions of Flower.
+malicious_client  |         
+hospital_a        | [93mWARNING [0m:   DEPRECATED FEATURE: flwr.client.start_client() is deprecated.
+hospital_a        | 	Instead, use the `flower-supernode` CLI command to start a SuperNode as shown below:
+hospital_a        | 
+hospital_a        | 		$ flower-supernode --insecure --superlink='<IP>:<PORT>'
+hospital_a        | 
+hospital_a        | 	To view all available options, run:
+hospital_a        | 
+hospital_a        | 		$ flower-supernode --help
+hospital_a        | 
+hospital_a        | 	Using `start_client()` is deprecated.
+hospital_a        | 
+hospital_a        |             This is a deprecated feature. It will be removed
+hospital_a        |             entirely in future versions of Flower.
+hospital_a        |         
+hospital_c        | [92mINFO [0m:      
+hospital_c        | [92mINFO [0m:      Received: get_parameters message 7de81725-ec93-46db-9e35-3df46c6ecb46
+hospital_c        | [92mINFO [0m:      Sent reply
+fl-server         | [92mINFO [0m:      Received initial parameters from one random client
+fl-server         | [92mINFO [0m:      Evaluating initial global parameters
+fl-server         | [92mINFO [0m:      
+fl-server         | [92mINFO [0m:      [ROUND 1]
+fl-server         | [92mINFO [0m:      configure_fit: strategy sampled 4 clients (out of 4)
+malicious_client  | [92mINFO [0m:      
+malicious_client  | [92mINFO [0m:      Received: train message e0ddde15-7042-4282-a65e-3c788d14c48b
+hospital_a        | [92mINFO [0m:      
+hospital_a        | [92mINFO [0m:      Received: train message fed8e385-2716-43cd-a812-0a5254f641cb
+hospital_a        | 2026-05-06 14:04:54,382 [hospital_a] INFO fit_start
+malicious_client  | 2026-05-06 14:04:54,382 [malicious_client] WARNING [ATTACK:noise] Injecting noise with scale=8.4005
+hospital_c        | [92mINFO [0m:      
+hospital_c        | [92mINFO [0m:      Received: train message f25ac984-ef4b-4a22-b708-9668a68ca1bc
+hospital_c        | 2026-05-06 14:04:54,384 [hospital_c] INFO fit_start
+hospital_b        | [92mINFO [0m:      
+hospital_b        | [92mINFO [0m:      Received: train message 0e53155b-616f-464d-b847-cee0cf25d48a
+hospital_b        | 2026-05-06 14:04:54,394 [hospital_b] INFO fit_start
+hospital_a        | 2026-05-06 14:04:54,908 [hospital_a] INFO fit_complete
+hospital_a        | [92mINFO [0m:      Sent reply
+malicious_client  | 2026-05-06 14:04:55,151 [malicious_client] WARNING [malicious_client] fit (MALICIOUS) round=1: mode=noise, loss=2.1109, acc=0.4832
+malicious_client  | 2026-05-06 14:04:55,151 [malicious_client] INFO attack_applied
+malicious_client  | [92mINFO [0m:      Sent reply
+hospital_c        | 2026-05-06 14:04:55,316 [hospital_c] INFO fit_complete
+hospital_c        | [92mINFO [0m:      Sent reply
+hospital_b        | 2026-05-06 14:04:55,638 [hospital_b] INFO fit_complete
+hospital_b        | [92mINFO [0m:      Sent reply
+fl-server         | [92mINFO [0m:      aggregate_fit: received 4 results and 0 failures
+fl-server         | 2026-05-06 14:04:55,644 [server] INFO round_start
+fl-server         | 2026-05-06 14:04:55,644 [server] INFO weights_received
+fl-server         | 2026-05-06 14:04:55,650 [trust] INFO trust_updated
+fl-server         | 2026-05-06 14:04:55,650 [server] INFO weights_received
+fl-server         | 2026-05-06 14:04:55,654 [trust] INFO trust_updated
+fl-server         | 2026-05-06 14:04:55,654 [server] INFO weights_received
+fl-server         | 2026-05-06 14:04:55,660 [trust] INFO trust_updated
+fl-server         | 2026-05-06 14:04:55,660 [server] INFO weights_received
+fl-server         | 2026-05-06 14:04:55,664 [trust] INFO trust_updated
+fl-server         | 2026-05-06 14:04:55,665 [server] INFO trust_weighting_applied
+fl-server         | 2026-05-06 14:04:55,670 [server] INFO aggregation_complete
+fl-server         | [92mINFO [0m:      configure_evaluate: strategy sampled 4 clients (out of 4)
+malicious_client  | [92mINFO [0m:      
+malicious_client  | [92mINFO [0m:      Received: evaluate message b599a05c-e004-49a7-aab0-983385fa43ad
+malicious_client  | 2026-05-06 14:04:55,677 [malicious_client] INFO [malicious_client] eval: loss=1.6877, acc=0.5201
+malicious_client  | [92mINFO [0m:      Sent reply
+hospital_a        | [92mINFO [0m:      
+hospital_a        | [92mINFO [0m:      Received: evaluate message 91ec6efa-1730-4e28-b97c-ef7abbb122f6
+hospital_a        | 2026-05-06 14:04:55,683 [hospital_a] INFO evaluate_complete
+hospital_a        | [92mINFO [0m:      Sent reply
+hospital_b        | [92mINFO [0m:      
+hospital_b        | [92mINFO [0m:      Received: evaluate message 98b1c603-8a13-47ec-9466-e4f7a3226899
+hospital_b        | 2026-05-06 14:04:55,686 [hospital_b] INFO evaluate_complete
+hospital_c        | [92mINFO [0m:      
+hospital_c        | [92mINFO [0m:      Received: evaluate message 7684148a-b2e1-4f16-bd1c-367d50882090
+hospital_b        | [92mINFO [0m:      Sent reply
+hospital_c        | 2026-05-06 14:04:55,688 [hospital_c] INFO evaluate_complete
+hospital_c        | [92mINFO [0m:      Sent reply
+fl-server         | [92mINFO [0m:      aggregate_evaluate: received 4 results and 0 failures
+fl-server         | 2026-05-06 14:04:55,690 [server] INFO round_complete
+fl-server         | 2026-05-06 14:04:55,690 [server] INFO round_gate_decision
+fl-server         | [92mINFO [0m:      
+fl-server         | [92mINFO [0m:      [ROUND 2]
+fl-server         | [92mINFO [0m:      configure_fit: strategy sampled 4 clients (out of 4)
+hospital_a        | [92mINFO [0m:      
+hospital_a        | [92mINFO [0m:      Received: train message 7fd200f6-4bf5-4465-82e3-4fc477dec0f5
+hospital_a        | 2026-05-06 14:04:55,695 [hospital_a] INFO fit_start
+malicious_client  | [92mINFO [0m:      
+malicious_client  | [92mINFO [0m:      Received: train message c9bcb4e3-5acc-4f80-a21c-74756c663ff9
+hospital_b        | [92mINFO [0m:      
+hospital_b        | [92mINFO [0m:      Received: train message 0a4c2e0c-6eab-4644-9b9a-704d370d9d4a
+hospital_c        | [92mINFO [0m:      
+hospital_c        | [92mINFO [0m:      Received: train message b540e365-63f6-4c11-ae18-a8237c207397
+hospital_b        | 2026-05-06 14:04:55,702 [hospital_b] INFO fit_start
+hospital_c        | 2026-05-06 14:04:55,703 [hospital_c] INFO fit_start
+malicious_client  | 2026-05-06 14:04:55,703 [malicious_client] WARNING [ATTACK:noise] Injecting noise with scale=1756.5009
+opa               | {"client_addr":"[::1]:57432","level":"info","msg":"Received request.","req_id":11,"req_method":"GET","req_path":"/health","time":"2026-05-06T14:04:56Z"}
+opa               | {"client_addr":"[::1]:57432","level":"info","msg":"Sent response.","req_id":11,"req_method":"GET","req_path":"/health","resp_bytes":3,"resp_duration":0.250803,"resp_status":200,"time":"2026-05-06T14:04:56Z"}
+malicious_client  | 2026-05-06 14:04:56,524 [malicious_client] WARNING [malicious_client] fit (MALICIOUS) round=2: mode=noise, loss=1.8630, acc=0.5627
+malicious_client  | 2026-05-06 14:04:56,525 [malicious_client] INFO attack_applied
+malicious_client  | [92mINFO [0m:      Sent reply
+hospital_c        | 2026-05-06 14:04:56,607 [hospital_c] INFO fit_complete
+hospital_c        | [92mINFO [0m:      Sent reply
+hospital_a        | 2026-05-06 14:04:56,993 [hospital_a] INFO fit_complete
+hospital_a        | [92mINFO [0m:      Sent reply
+hospital_b        | 2026-05-06 14:04:57,129 [hospital_b] INFO fit_complete
+hospital_b        | [92mINFO [0m:      Sent reply
+fl-server         | [92mINFO [0m:      aggregate_fit: received 4 results and 0 failures
+fl-server         | 2026-05-06 14:04:57,138 [server] INFO round_start
+fl-server         | 2026-05-06 14:04:57,138 [server] INFO weights_received
+fl-server         | 2026-05-06 14:04:57,141 [trust] INFO trust_updated
+fl-server         | 2026-05-06 14:04:57,141 [server] INFO weights_received
+fl-server         | 2026-05-06 14:04:57,143 [trust] INFO trust_updated
+fl-server         | 2026-05-06 14:04:57,143 [server] INFO weights_received
+fl-server         | 2026-05-06 14:04:57,146 [trust] INFO trust_updated
+fl-server         | 2026-05-06 14:04:57,146 [server] INFO weights_received
+fl-server         | 2026-05-06 14:04:57,148 [trust] INFO trust_updated
+fl-server         | 2026-05-06 14:04:57,148 [server] INFO trust_weighting_applied
+fl-server         | 2026-05-06 14:04:57,151 [server] INFO aggregation_complete
+fl-server         | [92mINFO [0m:      configure_evaluate: strategy sampled 4 clients (out of 4)
+hospital_a        | [92mINFO [0m:      
+hospital_a        | [92mINFO [0m:      Received: evaluate message c18229d7-b3b0-407d-abe4-eedcd9dd4c99
+hospital_a        | 2026-05-06 14:04:57,160 [hospital_a] INFO evaluate_complete
+hospital_a        | [92mINFO [0m:      Sent reply
+hospital_c        | [92mINFO [0m:      
+hospital_c        | [92mINFO [0m:      Received: evaluate message 095fefe2-6510-49aa-b2bb-971f41f14d71
+hospital_c        | 2026-05-06 14:04:57,162 [hospital_c] INFO evaluate_complete
+hospital_c        | [92mINFO [0m:      Sent reply
+hospital_b        | [92mINFO [0m:      
+hospital_b        | [92mINFO [0m:      Received: evaluate message 4b75b265-3367-448f-9b9d-b2add6e46368
+hospital_b        | 2026-05-06 14:04:57,164 [hospital_b] INFO evaluate_complete
+hospital_b        | [92mINFO [0m:      Sent reply
+malicious_client  | [92mINFO [0m:      
+malicious_client  | [92mINFO [0m:      Received: evaluate message 9dfb5576-febc-41e0-8770-7d8e96f61a97
+malicious_client  | 2026-05-06 14:04:57,166 [malicious_client] INFO [malicious_client] eval: loss=1.5005, acc=0.6125
+malicious_client  | [92mINFO [0m:      Sent reply
+fl-server         | [92mINFO [0m:      aggregate_evaluate: received 4 results and 0 failures
+fl-server         | 2026-05-06 14:04:57,167 [server] INFO round_complete
+fl-server         | 2026-05-06 14:04:57,168 [server] INFO round_gate_decision
+fl-server         | [92mINFO [0m:      
+fl-server         | [92mINFO [0m:      [ROUND 3]
+fl-server         | [92mINFO [0m:      configure_fit: strategy sampled 4 clients (out of 4)
+hospital_a        | [92mINFO [0m:      
+hospital_a        | [92mINFO [0m:      Received: train message 43bfc245-a2a7-4a6b-a0f8-cb442326c0e4
+hospital_a        | 2026-05-06 14:04:57,174 [hospital_a] INFO fit_start
+hospital_b        | [92mINFO [0m:      
+hospital_b        | [92mINFO [0m:      Received: train message 86c68807-9bd2-47c1-b50a-7530de998166
+hospital_c        | [92mINFO [0m:      
+hospital_b        | 2026-05-06 14:04:57,177 [hospital_b] INFO fit_start
+hospital_c        | [92mINFO [0m:      Received: train message 09efcfc1-d1cf-4187-8807-e8a65484d1f7
+malicious_client  | [92mINFO [0m:      
+malicious_client  | [92mINFO [0m:      Received: train message b0d78fa7-6aca-46ae-953f-b98d539d4fbc
+hospital_c        | 2026-05-06 14:04:57,178 [hospital_c] INFO fit_start
+malicious_client  | 2026-05-06 14:04:57,184 [malicious_client] WARNING [ATTACK:noise] Injecting noise with scale=367157.1094
+malicious_client  | 2026-05-06 14:04:57,806 [malicious_client] WARNING [malicious_client] fit (MALICIOUS) round=3: mode=noise, loss=1.7073, acc=0.6409
+malicious_client  | 2026-05-06 14:04:57,806 [malicious_client] INFO attack_applied
+malicious_client  | [92mINFO [0m:      Sent reply
+hospital_a        | 2026-05-06 14:04:57,935 [hospital_a] INFO fit_complete
+hospital_a        | [92mINFO [0m:      Sent reply
+hospital_c        | 2026-05-06 14:04:58,279 [hospital_c] INFO fit_complete
+hospital_c        | [92mINFO [0m:      Sent reply
+hospital_b        | 2026-05-06 14:04:58,394 [hospital_b] INFO fit_complete
+hospital_b        | [92mINFO [0m:      Sent reply
+fl-server         | [92mINFO [0m:      aggregate_fit: received 4 results and 0 failures
+fl-server         | 2026-05-06 14:04:58,399 [server] INFO round_start
+fl-server         | 2026-05-06 14:04:58,399 [server] INFO weights_received
+fl-server         | 2026-05-06 14:04:58,403 [trust] INFO trust_updated
+fl-server         | 2026-05-06 14:04:58,403 [server] INFO weights_received
+fl-server         | 2026-05-06 14:04:58,405 [trust] INFO trust_updated
+fl-server         | 2026-05-06 14:04:58,405 [server] INFO weights_received
+fl-server         | 2026-05-06 14:04:58,408 [trust] INFO trust_updated
+fl-server         | 2026-05-06 14:04:58,408 [server] INFO weights_received
+fl-server         | 2026-05-06 14:04:58,411 [trust] INFO trust_updated
+fl-server         | 2026-05-06 14:04:58,411 [server] INFO trust_weighting_applied
+fl-server         | 2026-05-06 14:04:58,413 [server] INFO aggregation_complete
+fl-server         | [92mINFO [0m:      configure_evaluate: strategy sampled 4 clients (out of 4)
+hospital_c        | [92mINFO [0m:      
+hospital_c        | [92mINFO [0m:      Received: evaluate message e820b785-9d2a-463b-9bf6-0bb1ecc39f7f
+hospital_c        | 2026-05-06 14:04:58,419 [hospital_c] INFO evaluate_complete
+malicious_client  | [92mINFO [0m:      
+malicious_client  | [92mINFO [0m:      Received: evaluate message 9885eab7-18c8-4710-8942-c75edb4417fe
+hospital_c        | [92mINFO [0m:      Sent reply
+malicious_client  | 2026-05-06 14:04:58,420 [malicious_client] INFO [malicious_client] eval: loss=1.2107, acc=0.6608
+malicious_client  | [92mINFO [0m:      Sent reply
+hospital_b        | [92mINFO [0m:      
+hospital_b        | [92mINFO [0m:      Received: evaluate message fe828447-70e7-4aaa-8240-a7b7d729768e
+hospital_a        | [92mINFO [0m:      
+hospital_a        | [92mINFO [0m:      Received: evaluate message fa64ef42-42e9-41f5-8701-4baa8bf55b56
+hospital_b        | 2026-05-06 14:04:58,424 [hospital_b] INFO evaluate_complete
+hospital_a        | 2026-05-06 14:04:58,424 [hospital_a] INFO evaluate_complete
+hospital_a        | [92mINFO [0m:      Sent reply
+hospital_b        | [92mINFO [0m:      Sent reply
+fl-server         | [92mINFO [0m:      aggregate_evaluate: received 4 results and 0 failures
+fl-server         | 2026-05-06 14:04:58,426 [server] INFO round_complete
+fl-server         | 2026-05-06 14:04:58,426 [server] INFO round_gate_decision
+fl-server         | [92mINFO [0m:      
+fl-server         | [92mINFO [0m:      [ROUND 4]
+fl-server         | [92mINFO [0m:      configure_fit: strategy sampled 4 clients (out of 4)
+hospital_b        | [92mINFO [0m:      
+hospital_b        | [92mINFO [0m:      Received: train message 310e8365-61ea-4116-aa13-02deb8769d66
+hospital_b        | 2026-05-06 14:04:58,433 [hospital_b] INFO fit_start
+hospital_a        | [92mINFO [0m:      
+hospital_a        | [92mINFO [0m:      Received: train message 4cfd00e2-af91-4fac-bfb9-736ef7459d13
+hospital_a        | 2026-05-06 14:04:58,435 [hospital_a] INFO fit_start
+hospital_c        | [92mINFO [0m:      
+hospital_c        | [92mINFO [0m:      Received: train message 475b2741-d6bc-42eb-ba90-5382c1d8d516
+hospital_c        | 2026-05-06 14:04:58,437 [hospital_c] INFO fit_start
+malicious_client  | [92mINFO [0m:      
+malicious_client  | [92mINFO [0m:      Received: train message 1c95e017-fea8-4c46-8791-e393cd486add
+malicious_client  | 2026-05-06 14:04:58,441 [malicious_client] WARNING [ATTACK:noise] Injecting noise with scale=76848180.0000
+malicious_client  | 2026-05-06 14:04:59,123 [malicious_client] WARNING [malicious_client] fit (MALICIOUS) round=4: mode=noise, loss=1.2967, acc=0.7094
+malicious_client  | 2026-05-06 14:04:59,124 [malicious_client] INFO attack_applied
+malicious_client  | [92mINFO [0m:      Sent reply
+hospital_b        | 2026-05-06 14:04:59,155 [hospital_b] INFO fit_complete
+hospital_b        | [92mINFO [0m:      Sent reply
+hospital_a        | 2026-05-06 14:04:59,224 [hospital_a] INFO fit_complete
+hospital_a        | [92mINFO [0m:      Sent reply
+hospital_c        | 2026-05-06 14:04:59,795 [hospital_c] INFO fit_complete
+hospital_c        | [92mINFO [0m:      Sent reply
+fl-server         | [92mINFO [0m:      aggregate_fit: received 4 results and 0 failures
+fl-server         | 2026-05-06 14:04:59,800 [server] INFO round_start
+fl-server         | 2026-05-06 14:04:59,801 [server] INFO weights_received
+fl-server         | 2026-05-06 14:04:59,804 [trust] INFO trust_updated
+fl-server         | 2026-05-06 14:04:59,804 [server] INFO weights_received
+fl-server         | 2026-05-06 14:04:59,808 [trust] INFO trust_updated
+fl-server         | 2026-05-06 14:04:59,808 [server] INFO weights_received
+fl-server         | 2026-05-06 14:04:59,810 [trust] INFO trust_updated
+fl-server         | 2026-05-06 14:04:59,810 [server] INFO weights_received
+fl-server         | 2026-05-06 14:04:59,813 [trust] INFO trust_updated
+fl-server         | 2026-05-06 14:04:59,813 [server] INFO trust_weighting_applied
+fl-server         | 2026-05-06 14:04:59,816 [server] INFO aggregation_complete
+fl-server         | [92mINFO [0m:      configure_evaluate: strategy sampled 4 clients (out of 4)
+hospital_c        | [92mINFO [0m:      
+hospital_c        | [92mINFO [0m:      Received: evaluate message 96bcf62e-331f-4d82-a4ac-578c874c581b
+hospital_c        | 2026-05-06 14:04:59,820 [hospital_c] INFO evaluate_complete
+hospital_c        | [92mINFO [0m:      Sent reply
+malicious_client  | [92mINFO [0m:      
+malicious_client  | [92mINFO [0m:      Received: evaluate message 96e9d17c-a3dd-4f4d-b0b7-fc6a366bf1da
+malicious_client  | 2026-05-06 14:04:59,823 [malicious_client] INFO [malicious_client] eval: loss=1.1663, acc=0.7320
+malicious_client  | [92mINFO [0m:      Sent reply
+hospital_b        | [92mINFO [0m:      
+hospital_b        | [92mINFO [0m:      Received: evaluate message 4a803333-978c-40d6-9ce0-65aef212da75
+hospital_a        | [92mINFO [0m:      
+hospital_a        | [92mINFO [0m:      Received: evaluate message d3597f7a-0227-4bda-8a31-d8029fb46d62
+hospital_b        | 2026-05-06 14:04:59,826 [hospital_b] INFO evaluate_complete
+hospital_b        | [92mINFO [0m:      Sent reply
+hospital_a        | 2026-05-06 14:04:59,826 [hospital_a] INFO evaluate_complete
+hospital_a        | [92mINFO [0m:      Sent reply
+fl-server         | [92mINFO [0m:      aggregate_evaluate: received 4 results and 0 failures
+fl-server         | 2026-05-06 14:04:59,828 [server] INFO round_complete
+fl-server         | 2026-05-06 14:04:59,828 [server] INFO round_gate_decision
+fl-server         | [92mINFO [0m:      
+fl-server         | [92mINFO [0m:      [ROUND 5]
+fl-server         | [92mINFO [0m:      configure_fit: strategy sampled 4 clients (out of 4)
+hospital_c        | [92mINFO [0m:      
+hospital_c        | [92mINFO [0m:      Received: train message 62aefc37-8ae3-4453-ad23-9d9e1a2a656e
+hospital_c        | 2026-05-06 14:04:59,832 [hospital_c] INFO fit_start
+malicious_client  | [92mINFO [0m:      
+malicious_client  | [92mINFO [0m:      Received: train message 0650e00c-a1d3-471b-b3a6-2644f86b040a
+hospital_a        | [92mINFO [0m:      
+hospital_a        | [92mINFO [0m:      Received: train message aa6c3b89-2c3b-4a1e-b8cb-eb5049f049be
+hospital_a        | 2026-05-06 14:04:59,837 [hospital_a] INFO fit_start
+hospital_b        | [92mINFO [0m:      
+hospital_b        | [92mINFO [0m:      Received: train message 8e50defa-67d7-4954-9892-f2c99d8cadea
+malicious_client  | 2026-05-06 14:04:59,838 [malicious_client] WARNING [ATTACK:noise] Injecting noise with scale=16031321600.0000
+hospital_b        | 2026-05-06 14:04:59,839 [hospital_b] INFO fit_start
+malicious_client  | 2026-05-06 14:05:00,388 [malicious_client] WARNING [malicious_client] fit (MALICIOUS) round=5: mode=noise, loss=1.0359, acc=0.7987
+malicious_client  | 2026-05-06 14:05:00,388 [malicious_client] INFO attack_applied
+malicious_client  | [92mINFO [0m:      Sent reply
+hospital_a        | 2026-05-06 14:05:00,502 [hospital_a] INFO fit_complete
+hospital_a        | [92mINFO [0m:      Sent reply
+hospital_c        | 2026-05-06 14:05:01,065 [hospital_c] INFO fit_complete
+hospital_c        | [92mINFO [0m:      Sent reply
+hospital_b        | 2026-05-06 14:05:01,207 [hospital_b] INFO fit_complete
+hospital_b        | [92mINFO [0m:      Sent reply
+fl-server         | [92mINFO [0m:      aggregate_fit: received 4 results and 0 failures
+fl-server         | 2026-05-06 14:05:01,211 [server] INFO round_start
+fl-server         | 2026-05-06 14:05:01,211 [server] INFO weights_received
+fl-server         | 2026-05-06 14:05:01,215 [trust] INFO trust_updated
+fl-server         | 2026-05-06 14:05:01,215 [server] INFO weights_received
+fl-server         | 2026-05-06 14:05:01,217 [trust] INFO trust_updated
+fl-server         | 2026-05-06 14:05:01,217 [server] INFO weights_received
+fl-server         | 2026-05-06 14:05:01,220 [trust] INFO trust_updated
+fl-server         | 2026-05-06 14:05:01,220 [server] INFO weights_received
+fl-server         | 2026-05-06 14:05:01,223 [trust] INFO trust_updated
+fl-server         | 2026-05-06 14:05:01,223 [server] INFO trust_weighting_applied
+fl-server         | 2026-05-06 14:05:01,225 [server] INFO aggregation_complete
+fl-server         | [92mINFO [0m:      configure_evaluate: strategy sampled 4 clients (out of 4)
+hospital_c        | [92mINFO [0m:      
+hospital_c        | [92mINFO [0m:      Received: evaluate message 9201a540-7f82-462d-877f-bc7c0c1477dd
+hospital_b        | [92mINFO [0m:      
+hospital_b        | [92mINFO [0m:      Received: evaluate message cb8b4098-7d9f-4c39-8286-bd91d15e53f7
+hospital_c        | 2026-05-06 14:05:01,233 [hospital_c] INFO evaluate_complete
+hospital_c        | [92mINFO [0m:      Sent reply
+hospital_b        | 2026-05-06 14:05:01,234 [hospital_b] INFO evaluate_complete
+hospital_b        | [92mINFO [0m:      Sent reply
+hospital_a        | [92mINFO [0m:      
+hospital_a        | [92mINFO [0m:      Received: evaluate message 3d942f60-9df1-4ff5-9c68-8b474a0a317a
+malicious_client  | [92mINFO [0m:      
+malicious_client  | [92mINFO [0m:      Received: evaluate message 14264468-a857-41a6-8ea4-aff808e3516f
+hospital_a        | 2026-05-06 14:05:01,238 [hospital_a] INFO evaluate_complete
+hospital_a        | [92mINFO [0m:      Sent reply
+malicious_client  | 2026-05-06 14:05:01,239 [malicious_client] INFO [malicious_client] eval: loss=0.7464, acc=0.8044
+malicious_client  | [92mINFO [0m:      Sent reply
+fl-server         | [92mINFO [0m:      aggregate_evaluate: received 4 results and 0 failures
+fl-server         | 2026-05-06 14:05:01,240 [server] INFO round_complete
+fl-server         | 2026-05-06 14:05:01,240 [server] INFO round_gate_decision
+fl-server         | [92mINFO [0m:      
+fl-server         | [92mINFO [0m:      [SUMMARY]
+fl-server         | [92mINFO [0m:      Run finished 5 rounds in 6.88s
+fl-server         | [92mINFO [0m:      History (loss, distributed):
+fl-server         | [92mINFO [0m:      	('\tround 1: 1.6625567376613617\n'
+fl-server         | [92mINFO [0m:      	 '\tround 2: 1.5305777490139008\n'
+fl-server         | [92mINFO [0m:      	 '\tround 3: 1.2491511106491089\n'
+fl-server         | [92mINFO [0m:      	 '\tround 4: 1.0526658743619919\n'
+fl-server         | [92mINFO [0m:      	 '\tround 5: 0.7421581149101257\n')History (metrics, distributed, fit):
+fl-server         | [92mINFO [0m:      	{'loss': [(1, 2.1687367865930405),
+fl-server         | [92mINFO [0m:      	          (2, 1.958118898568736),
+fl-server         | [92mINFO [0m:      	          (3, 1.6284762861541924),
+fl-server         | [92mINFO [0m:      	          (4, 1.250407631045647),
+fl-server         | [92mINFO [0m:      	          (5, 1.0500703821104194)]}History (metrics, distributed, evaluate):
+fl-server         | [92mINFO [0m:      	{'accuracy': [(1, 0.5243948474625728),
+fl-server         | [92mINFO [0m:      	              (2, 0.5974610352050308),
+fl-server         | [92mINFO [0m:      	              (3, 0.6580813581883571),
+fl-server         | [92mINFO [0m:      	              (4, 0.7235777535131761),
+fl-server         | [92mINFO [0m:      	              (5, 0.8001406540881364)]}
+fl-server         | [92mINFO [0m:      
+hospital_c        | [92mINFO [0m:      
+hospital_c        | [92mINFO [0m:      Received: reconnect message d810065e-ad20-41a9-b9c4-176b943cf21c
+hospital_a        | [92mINFO [0m:      
+hospital_a        | [92mINFO [0m:      Received: reconnect message 0cdcbd94-9e67-4c2b-b688-550d0c3200c6
+malicious_client  | [92mINFO [0m:      
+malicious_client  | [92mINFO [0m:      Received: reconnect message 7c3492a0-78e7-4864-b629-9649383bd66d
+hospital_b        | [92mINFO [0m:      
+hospital_b        | [92mINFO [0m:      Received: reconnect message eb11586c-6a9f-4527-bded-751656764402
+hospital_a        | [92mINFO [0m:      Disconnect and shut down
+malicious_client  | [92mINFO [0m:      Disconnect and shut down
+hospital_b        | [92mINFO [0m:      Disconnect and shut down
+hospital_c        | [92mINFO [0m:      Disconnect and shut down
+opa               | {"client_addr":"[::1]:35326","level":"info","msg":"Received request.","req_id":12,"req_method":"GET","req_path":"/health","time":"2026-05-06T14:05:01Z"}
+opa               | {"client_addr":"[::1]:35326","level":"info","msg":"Sent response.","req_id":12,"req_method":"GET","req_path":"/health","resp_bytes":3,"resp_duration":0.224693,"resp_status":200,"time":"2026-05-06T14:05:01Z"}
+[Khospital_b exited with code 0
+[Kfl-server exited with code 0
+[Khospital_c exited with code 0
+[Kmalicious_client exited with code 0
+[Khospital_a exited with code 0
+opa               | {"client_addr":"[::1]:35328","level":"info","msg":"Received request.","req_id":13,"req_method":"GET","req_path":"/health","time":"2026-05-06T14:05:06Z"}
+opa               | {"client_addr":"[::1]:35328","level":"info","msg":"Sent response.","req_id":13,"req_method":"GET","req_path":"/health","resp_bytes":3,"resp_duration":0.341292,"resp_status":200,"time":"2026-05-06T14:05:06Z"}
+opa               | {"client_addr":"[::1]:48108","level":"info","msg":"Received request.","req_id":14,"req_method":"GET","req_path":"/health","time":"2026-05-06T14:05:12Z"}
+opa               | {"client_addr":"[::1]:48108","level":"info","msg":"Sent response.","req_id":14,"req_method":"GET","req_path":"/health","resp_bytes":3,"resp_duration":0.343831,"resp_status":200,"time":"2026-05-06T14:05:12Z"}
+opa               | {"client_addr":"[::1]:48122","level":"info","msg":"Received request.","req_id":15,"req_method":"GET","req_path":"/health","time":"2026-05-06T14:05:18Z"}
+opa               | {"client_addr":"[::1]:48122","level":"info","msg":"Sent response.","req_id":15,"req_method":"GET","req_path":"/health","resp_bytes":3,"resp_duration":0.195361,"resp_status":200,"time":"2026-05-06T14:05:18Z"}
+opa               | {"client_addr":"[::1]:34702","level":"info","msg":"Received request.","req_id":16,"req_method":"GET","req_path":"/health","time":"2026-05-06T14:05:23Z"}
+opa               | {"client_addr":"[::1]:34702","level":"info","msg":"Sent response.","req_id":16,"req_method":"GET","req_path":"/health","resp_bytes":3,"resp_duration":0.190269,"resp_status":200,"time":"2026-05-06T14:05:23Z"}
+opa               | {"client_addr":"[::1]:34706","level":"info","msg":"Received request.","req_id":17,"req_method":"GET","req_path":"/health","time":"2026-05-06T14:05:28Z"}
+opa               | {"client_addr":"[::1]:34706","level":"info","msg":"Sent response.","req_id":17,"req_method":"GET","req_path":"/health","resp_bytes":3,"resp_duration":1.530581,"resp_status":200,"time":"2026-05-06T14:05:28Z"}
+opa               | {"client_addr":"[::1]:38952","level":"info","msg":"Received request.","req_id":18,"req_method":"GET","req_path":"/health","time":"2026-05-06T14:05:33Z"}
+opa               | {"client_addr":"[::1]:38952","level":"info","msg":"Sent response.","req_id":18,"req_method":"GET","req_path":"/health","resp_bytes":3,"resp_duration":0.252644,"resp_status":200,"time":"2026-05-06T14:05:33Z"}
+opa               | {"client_addr":"[::1]:38954","level":"info","msg":"Received request.","req_id":19,"req_method":"GET","req_path":"/health","time":"2026-05-06T14:05:38Z"}
+opa               | {"client_addr":"[::1]:38954","level":"info","msg":"Sent response.","req_id":19,"req_method":"GET","req_path":"/health","resp_bytes":3,"resp_duration":0.352074,"resp_status":200,"time":"2026-05-06T14:05:38Z"}
+opa               | {"client_addr":"[::1]:47436","level":"info","msg":"Received request.","req_id":20,"req_method":"GET","req_path":"/health","time":"2026-05-06T14:05:44Z"}
+opa               | {"client_addr":"[::1]:47436","level":"info","msg":"Sent response.","req_id":20,"req_method":"GET","req_path":"/health","resp_bytes":3,"resp_duration":0.278335,"resp_status":200,"time":"2026-05-06T14:05:44Z"}
+opa               | {"client_addr":"[::1]:47448","level":"info","msg":"Received request.","req_id":21,"req_method":"GET","req_path":"/health","time":"2026-05-06T14:05:49Z"}
+opa               | {"client_addr":"[::1]:47448","level":"info","msg":"Sent response.","req_id":21,"req_method":"GET","req_path":"/health","resp_bytes":3,"resp_duration":0.371274,"resp_status":200,"time":"2026-05-06T14:05:49Z"}
+opa               | {"client_addr":"[::1]:55684","level":"info","msg":"Received request.","req_id":22,"req_method":"GET","req_path":"/health","time":"2026-05-06T14:05:54Z"}
+opa               | {"client_addr":"[::1]:55684","level":"info","msg":"Sent response.","req_id":22,"req_method":"GET","req_path":"/health","resp_bytes":3,"resp_duration":0.38057,"resp_status":200,"time":"2026-05-06T14:05:54Z"}
+opa               | {"client_addr":"[::1]:55700","level":"info","msg":"Received request.","req_id":23,"req_method":"GET","req_path":"/health","time":"2026-05-06T14:05:59Z"}
+opa               | {"client_addr":"[::1]:55700","level":"info","msg":"Sent response.","req_id":23,"req_method":"GET","req_path":"/health","resp_bytes":3,"resp_duration":0.40583,"resp_status":200,"time":"2026-05-06T14:05:59Z"}
+opa               | {"client_addr":"[::1]:33434","level":"info","msg":"Received request.","req_id":24,"req_method":"GET","req_path":"/health","time":"2026-05-06T14:06:04Z"}
+opa               | {"client_addr":"[::1]:33434","level":"info","msg":"Sent response.","req_id":24,"req_method":"GET","req_path":"/health","resp_bytes":3,"resp_duration":0.294684,"resp_status":200,"time":"2026-05-06T14:06:04Z"}
+opa               | {"client_addr":"[::1]:33440","level":"info","msg":"Received request.","req_id":25,"req_method":"GET","req_path":"/health","time":"2026-05-06T14:06:09Z"}
+opa               | {"client_addr":"[::1]:33440","level":"info","msg":"Sent response.","req_id":25,"req_method":"GET","req_path":"/health","resp_bytes":3,"resp_duration":0.42311,"resp_status":200,"time":"2026-05-06T14:06:09Z"}
+opa               | {"client_addr":"[::1]:39052","level":"info","msg":"Received request.","req_id":26,"req_method":"GET","req_path":"/health","time":"2026-05-06T14:06:14Z"}
+opa               | {"client_addr":"[::1]:39052","level":"info","msg":"Sent response.","req_id":26,"req_method":"GET","req_path":"/health","resp_bytes":3,"resp_duration":0.622824,"resp_status":200,"time":"2026-05-06T14:06:14Z"}
+opa               | {"client_addr":"[::1]:39054","level":"info","msg":"Received request.","req_id":27,"req_method":"GET","req_path":"/health","time":"2026-05-06T14:06:21Z"}
+opa               | {"client_addr":"[::1]:39054","level":"info","msg":"Sent response.","req_id":27,"req_method":"GET","req_path":"/health","resp_bytes":3,"resp_duration":0.774869,"resp_status":200,"time":"2026-05-06T14:06:21Z"}
+opa               | {"client_addr":"[::1]:58720","level":"info","msg":"Received request.","req_id":28,"req_method":"GET","req_path":"/health","time":"2026-05-06T14:06:26Z"}
+opa               | {"client_addr":"[::1]:58720","level":"info","msg":"Sent response.","req_id":28,"req_method":"GET","req_path":"/health","resp_bytes":3,"resp_duration":0.577979,"resp_status":200,"time":"2026-05-06T14:06:26Z"}
+opa               | {"client_addr":"[::1]:58732","level":"info","msg":"Received request.","req_id":29,"req_method":"GET","req_path":"/health","time":"2026-05-06T14:06:31Z"}
+opa               | {"client_addr":"[::1]:58732","level":"info","msg":"Sent response.","req_id":29,"req_method":"GET","req_path":"/health","resp_bytes":3,"resp_duration":0.883271,"resp_status":200,"time":"2026-05-06T14:06:31Z"}
+opa               | {"client_addr":"[::1]:51298","level":"info","msg":"Received request.","req_id":30,"req_method":"GET","req_path":"/health","time":"2026-05-06T14:06:36Z"}
+opa               | {"client_addr":"[::1]:51298","level":"info","msg":"Sent response.","req_id":30,"req_method":"GET","req_path":"/health","resp_bytes":3,"resp_duration":0.443449,"resp_status":200,"time":"2026-05-06T14:06:36Z"}
+opa               | {"client_addr":"[::1]:51310","level":"info","msg":"Received request.","req_id":31,"req_method":"GET","req_path":"/health","time":"2026-05-06T14:06:41Z"}
+opa               | {"client_addr":"[::1]:51310","level":"info","msg":"Sent response.","req_id":31,"req_method":"GET","req_path":"/health","resp_bytes":3,"resp_duration":1.065728,"resp_status":200,"time":"2026-05-06T14:06:41Z"}
+opa               | {"client_addr":"[::1]:42828","level":"info","msg":"Received request.","req_id":32,"req_method":"GET","req_path":"/health","time":"2026-05-06T14:06:46Z"}
+opa               | {"client_addr":"[::1]:42828","level":"info","msg":"Sent response.","req_id":32,"req_method":"GET","req_path":"/health","resp_bytes":3,"resp_duration":0.498913,"resp_status":200,"time":"2026-05-06T14:06:46Z"}
+opa               | {"client_addr":"[::1]:42840","level":"info","msg":"Received request.","req_id":33,"req_method":"GET","req_path":"/health","time":"2026-05-06T14:06:53Z"}
+opa               | {"client_addr":"[::1]:42840","level":"info","msg":"Sent response.","req_id":33,"req_method":"GET","req_path":"/health","resp_bytes":3,"resp_duration":0.417052,"resp_status":200,"time":"2026-05-06T14:06:53Z"}
+opa               | {"client_addr":"[::1]:33472","level":"info","msg":"Received request.","req_id":34,"req_method":"GET","req_path":"/health","time":"2026-05-06T14:06:58Z"}
+opa               | {"client_addr":"[::1]:33472","level":"info","msg":"Sent response.","req_id":34,"req_method":"GET","req_path":"/health","resp_bytes":3,"resp_duration":0.762414,"resp_status":200,"time":"2026-05-06T14:06:58Z"}
+opa               | {"client_addr":"[::1]:33480","level":"info","msg":"Received request.","req_id":35,"req_method":"GET","req_path":"/health","time":"2026-05-06T14:07:03Z"}
+opa               | {"client_addr":"[::1]:33480","level":"info","msg":"Sent response.","req_id":35,"req_method":"GET","req_path":"/health","resp_bytes":3,"resp_duration":0.297898,"resp_status":200,"time":"2026-05-06T14:07:03Z"}
+opa               | {"client_addr":"[::1]:51460","level":"info","msg":"Received request.","req_id":36,"req_method":"GET","req_path":"/health","time":"2026-05-06T14:07:08Z"}
+opa               | {"client_addr":"[::1]:51460","level":"info","msg":"Sent response.","req_id":36,"req_method":"GET","req_path":"/health","resp_bytes":3,"resp_duration":0.49731,"resp_status":200,"time":"2026-05-06T14:07:08Z"}
+opa               | {"client_addr":"[::1]:51462","level":"info","msg":"Received request.","req_id":37,"req_method":"GET","req_path":"/health","time":"2026-05-06T14:07:13Z"}
+opa               | {"client_addr":"[::1]:51462","level":"info","msg":"Sent response.","req_id":37,"req_method":"GET","req_path":"/health","resp_bytes":3,"resp_duration":0.253915,"resp_status":200,"time":"2026-05-06T14:07:13Z"}
+opa               | {"client_addr":"[::1]:57626","level":"info","msg":"Received request.","req_id":38,"req_method":"GET","req_path":"/health","time":"2026-05-06T14:07:18Z"}
+opa               | {"client_addr":"[::1]:57626","level":"info","msg":"Sent response.","req_id":38,"req_method":"GET","req_path":"/health","resp_bytes":3,"resp_duration":0.689173,"resp_status":200,"time":"2026-05-06T14:07:18Z"}
+opa               | {"client_addr":"[::1]:57634","level":"info","msg":"Received request.","req_id":39,"req_method":"GET","req_path":"/health","time":"2026-05-06T14:07:24Z"}
+opa               | {"client_addr":"[::1]:57634","level":"info","msg":"Sent response.","req_id":39,"req_method":"GET","req_path":"/health","resp_bytes":3,"resp_duration":0.477653,"resp_status":200,"time":"2026-05-06T14:07:24Z"}
+opa               | {"client_addr":"[::1]:42530","level":"info","msg":"Received request.","req_id":40,"req_method":"GET","req_path":"/health","time":"2026-05-06T14:07:29Z"}
+opa               | {"client_addr":"[::1]:42530","level":"info","msg":"Sent response.","req_id":40,"req_method":"GET","req_path":"/health","resp_bytes":3,"resp_duration":0.342757,"resp_status":200,"time":"2026-05-06T14:07:29Z"}
+opa               | {"client_addr":"[::1]:42542","level":"info","msg":"Received request.","req_id":41,"req_method":"GET","req_path":"/health","time":"2026-05-06T14:07:34Z"}
+opa               | {"client_addr":"[::1]:42542","level":"info","msg":"Sent response.","req_id":41,"req_method":"GET","req_path":"/health","resp_bytes":3,"resp_duration":0.379272,"resp_status":200,"time":"2026-05-06T14:07:34Z"}
+opa               | {"client_addr":"[::1]:44068","level":"info","msg":"Received request.","req_id":42,"req_method":"GET","req_path":"/health","time":"2026-05-06T14:07:39Z"}
+opa               | {"client_addr":"[::1]:44068","level":"info","msg":"Sent response.","req_id":42,"req_method":"GET","req_path":"/health","resp_bytes":3,"resp_duration":0.420305,"resp_status":200,"time":"2026-05-06T14:07:39Z"}
+opa               | {"client_addr":"[::1]:44084","level":"info","msg":"Received request.","req_id":43,"req_method":"GET","req_path":"/health","time":"2026-05-06T14:07:45Z"}
+opa               | {"client_addr":"[::1]:44084","level":"info","msg":"Sent response.","req_id":43,"req_method":"GET","req_path":"/health","resp_bytes":3,"resp_duration":0.230567,"resp_status":200,"time":"2026-05-06T14:07:45Z"}
+opa               | {"client_addr":"[::1]:46102","level":"info","msg":"Received request.","req_id":44,"req_method":"GET","req_path":"/health","time":"2026-05-06T14:07:50Z"}
+opa               | {"client_addr":"[::1]:46102","level":"info","msg":"Sent response.","req_id":44,"req_method":"GET","req_path":"/health","resp_bytes":3,"resp_duration":0.189677,"resp_status":200,"time":"2026-05-06T14:07:50Z"}
+opa               | {"client_addr":"[::1]:46116","level":"info","msg":"Received request.","req_id":45,"req_method":"GET","req_path":"/health","time":"2026-05-06T14:07:55Z"}
+opa               | {"client_addr":"[::1]:46116","level":"info","msg":"Sent response.","req_id":45,"req_method":"GET","req_path":"/health","resp_bytes":3,"resp_duration":0.799323,"resp_status":200,"time":"2026-05-06T14:07:55Z"}
+opa               | {"client_addr":"[::1]:56888","level":"info","msg":"Received request.","req_id":46,"req_method":"GET","req_path":"/health","time":"2026-05-06T14:08:01Z"}
+opa               | {"client_addr":"[::1]:56888","level":"info","msg":"Sent response.","req_id":46,"req_method":"GET","req_path":"/health","resp_bytes":3,"resp_duration":0.244173,"resp_status":200,"time":"2026-05-06T14:08:01Z"}
+opa               | {"client_addr":"[::1]:56892","level":"info","msg":"Received request.","req_id":47,"req_method":"GET","req_path":"/health","time":"2026-05-06T14:08:06Z"}
+opa               | {"client_addr":"[::1]:56892","level":"info","msg":"Sent response.","req_id":47,"req_method":"GET","req_path":"/health","resp_bytes":3,"resp_duration":0.199904,"resp_status":200,"time":"2026-05-06T14:08:06Z"}
+opa               | {"client_addr":"[::1]:34338","level":"info","msg":"Received request.","req_id":48,"req_method":"GET","req_path":"/health","time":"2026-05-06T14:08:11Z"}
+opa               | {"client_addr":"[::1]:34338","level":"info","msg":"Sent response.","req_id":48,"req_method":"GET","req_path":"/health","resp_bytes":3,"resp_duration":0.322697,"resp_status":200,"time":"2026-05-06T14:08:11Z"}
+opa               | {"client_addr":"[::1]:34344","level":"info","msg":"Received request.","req_id":49,"req_method":"GET","req_path":"/health","time":"2026-05-06T14:08:16Z"}
+opa               | {"client_addr":"[::1]:34344","level":"info","msg":"Sent response.","req_id":49,"req_method":"GET","req_path":"/health","resp_bytes":3,"resp_duration":0.622806,"resp_status":200,"time":"2026-05-06T14:08:16Z"}
+opa               | {"client_addr":"[::1]:42916","level":"info","msg":"Received request.","req_id":50,"req_method":"GET","req_path":"/health","time":"2026-05-06T14:08:21Z"}
+opa               | {"client_addr":"[::1]:42916","level":"info","msg":"Sent response.","req_id":50,"req_method":"GET","req_path":"/health","resp_bytes":3,"resp_duration":1.099023,"resp_status":200,"time":"2026-05-06T14:08:21Z"}
+opa               | {"client_addr":"[::1]:42928","level":"info","msg":"Received request.","req_id":51,"req_method":"GET","req_path":"/health","time":"2026-05-06T14:08:26Z"}
+opa               | {"client_addr":"[::1]:42928","level":"info","msg":"Sent response.","req_id":51,"req_method":"GET","req_path":"/health","resp_bytes":3,"resp_duration":0.190451,"resp_status":200,"time":"2026-05-06T14:08:26Z"}
+opa               | {"client_addr":"[::1]:33638","level":"info","msg":"Received request.","req_id":52,"req_method":"GET","req_path":"/health","time":"2026-05-06T14:08:33Z"}
+opa               | {"client_addr":"[::1]:33638","level":"info","msg":"Sent response.","req_id":52,"req_method":"GET","req_path":"/health","resp_bytes":3,"resp_duration":1.728154,"resp_status":200,"time":"2026-05-06T14:08:33Z"}
+opa               | {"client_addr":"[::1]:33654","level":"info","msg":"Received request.","req_id":53,"req_method":"GET","req_path":"/health","time":"2026-05-06T14:08:38Z"}
+opa               | {"client_addr":"[::1]:33654","level":"info","msg":"Sent response.","req_id":53,"req_method":"GET","req_path":"/health","resp_bytes":3,"resp_duration":0.457469,"resp_status":200,"time":"2026-05-06T14:08:38Z"}
+opa               | {"client_addr":"[::1]:39382","level":"info","msg":"Received request.","req_id":54,"req_method":"GET","req_path":"/health","time":"2026-05-06T14:08:43Z"}
+opa               | {"client_addr":"[::1]:39382","level":"info","msg":"Sent response.","req_id":54,"req_method":"GET","req_path":"/health","resp_bytes":3,"resp_duration":0.240956,"resp_status":200,"time":"2026-05-06T14:08:43Z"}
+opa               | {"client_addr":"[::1]:39386","level":"info","msg":"Received request.","req_id":55,"req_method":"GET","req_path":"/health","time":"2026-05-06T14:08:48Z"}
+opa               | {"client_addr":"[::1]:39386","level":"info","msg":"Sent response.","req_id":55,"req_method":"GET","req_path":"/health","resp_bytes":3,"resp_duration":0.266187,"resp_status":200,"time":"2026-05-06T14:08:48Z"}
+opa               | {"client_addr":"[::1]:38234","level":"info","msg":"Received request.","req_id":56,"req_method":"GET","req_path":"/health","time":"2026-05-06T14:08:53Z"}
+opa               | {"client_addr":"[::1]:38234","level":"info","msg":"Sent response.","req_id":56,"req_method":"GET","req_path":"/health","resp_bytes":3,"resp_duration":0.236554,"resp_status":200,"time":"2026-05-06T14:08:53Z"}
+opa               | {"client_addr":"[::1]:38246","level":"info","msg":"Received request.","req_id":57,"req_method":"GET","req_path":"/health","time":"2026-05-06T14:08:58Z"}
+opa               | {"client_addr":"[::1]:38246","level":"info","msg":"Sent response.","req_id":57,"req_method":"GET","req_path":"/health","resp_bytes":3,"resp_duration":0.501717,"resp_status":200,"time":"2026-05-06T14:08:58Z"}
+opa               | {"client_addr":"[::1]:42732","level":"info","msg":"Received request.","req_id":58,"req_method":"GET","req_path":"/health","time":"2026-05-06T14:09:03Z"}
+opa               | {"client_addr":"[::1]:42732","level":"info","msg":"Sent response.","req_id":58,"req_method":"GET","req_path":"/health","resp_bytes":3,"resp_duration":1.110103,"resp_status":200,"time":"2026-05-06T14:09:03Z"}
+opa               | {"client_addr":"[::1]:42748","level":"info","msg":"Received request.","req_id":59,"req_method":"GET","req_path":"/health","time":"2026-05-06T14:09:10Z"}
+opa               | {"client_addr":"[::1]:42748","level":"info","msg":"Sent response.","req_id":59,"req_method":"GET","req_path":"/health","resp_bytes":3,"resp_duration":0.187856,"resp_status":200,"time":"2026-05-06T14:09:10Z"}
+opa               | {"client_addr":"[::1]:40322","level":"info","msg":"Received request.","req_id":60,"req_method":"GET","req_path":"/health","time":"2026-05-06T14:09:15Z"}
+opa               | {"client_addr":"[::1]:40322","level":"info","msg":"Sent response.","req_id":60,"req_method":"GET","req_path":"/health","resp_bytes":3,"resp_duration":0.210538,"resp_status":200,"time":"2026-05-06T14:09:15Z"}
+opa               | {"client_addr":"[::1]:40332","level":"info","msg":"Received request.","req_id":61,"req_method":"GET","req_path":"/health","time":"2026-05-06T14:09:20Z"}
+opa               | {"client_addr":"[::1]:40332","level":"info","msg":"Sent response.","req_id":61,"req_method":"GET","req_path":"/health","resp_bytes":3,"resp_duration":0.195114,"resp_status":200,"time":"2026-05-06T14:09:20Z"}
+opa               | {"client_addr":"[::1]:56124","level":"info","msg":"Received request.","req_id":62,"req_method":"GET","req_path":"/health","time":"2026-05-06T14:09:25Z"}
+opa               | {"client_addr":"[::1]:56124","level":"info","msg":"Sent response.","req_id":62,"req_method":"GET","req_path":"/health","resp_bytes":3,"resp_duration":0.186464,"resp_status":200,"time":"2026-05-06T14:09:25Z"}
+opa               | {"client_addr":"[::1]:56130","level":"info","msg":"Received request.","req_id":63,"req_method":"GET","req_path":"/health","time":"2026-05-06T14:09:30Z"}
+opa               | {"client_addr":"[::1]:56130","level":"info","msg":"Sent response.","req_id":63,"req_method":"GET","req_path":"/health","resp_bytes":3,"resp_duration":0.404999,"resp_status":200,"time":"2026-05-06T14:09:30Z"}
+opa               | {"client_addr":"[::1]:41424","level":"info","msg":"Received request.","req_id":64,"req_method":"GET","req_path":"/health","time":"2026-05-06T14:09:35Z"}
+opa               | {"client_addr":"[::1]:41424","level":"info","msg":"Sent response.","req_id":64,"req_method":"GET","req_path":"/health","resp_bytes":3,"resp_duration":0.256504,"resp_status":200,"time":"2026-05-06T14:09:35Z"}
+opa               | {"client_addr":"[::1]:41438","level":"info","msg":"Received request.","req_id":65,"req_method":"GET","req_path":"/health","time":"2026-05-06T14:09:41Z"}
+opa               | {"client_addr":"[::1]:41438","level":"info","msg":"Sent response.","req_id":65,"req_method":"GET","req_path":"/health","resp_bytes":3,"resp_duration":0.186495,"resp_status":200,"time":"2026-05-06T14:09:41Z"}
+opa               | {"client_addr":"[::1]:55462","level":"info","msg":"Received request.","req_id":66,"req_method":"GET","req_path":"/health","time":"2026-05-06T14:09:46Z"}
+opa               | {"client_addr":"[::1]:55462","level":"info","msg":"Sent response.","req_id":66,"req_method":"GET","req_path":"/health","resp_bytes":3,"resp_duration":0.871405,"resp_status":200,"time":"2026-05-06T14:09:46Z"}
+opa               | {"client_addr":"[::1]:55466","level":"info","msg":"Received request.","req_id":67,"req_method":"GET","req_path":"/health","time":"2026-05-06T14:09:51Z"}
+opa               | {"client_addr":"[::1]:55466","level":"info","msg":"Sent response.","req_id":67,"req_method":"GET","req_path":"/health","resp_bytes":3,"resp_duration":0.184655,"resp_status":200,"time":"2026-05-06T14:09:51Z"}
+opa               | {"client_addr":"[::1]:53406","level":"info","msg":"Received request.","req_id":68,"req_method":"GET","req_path":"/health","time":"2026-05-06T14:09:56Z"}
+opa               | {"client_addr":"[::1]:53406","level":"info","msg":"Sent response.","req_id":68,"req_method":"GET","req_path":"/health","resp_bytes":3,"resp_duration":0.234191,"resp_status":200,"time":"2026-05-06T14:09:56Z"}
+opa               | {"client_addr":"[::1]:53418","level":"info","msg":"Received request.","req_id":69,"req_method":"GET","req_path":"/health","time":"2026-05-06T14:10:01Z"}
+opa               | {"client_addr":"[::1]:53418","level":"info","msg":"Sent response.","req_id":69,"req_method":"GET","req_path":"/health","resp_bytes":3,"resp_duration":0.187334,"resp_status":200,"time":"2026-05-06T14:10:01Z"}
+opa               | {"client_addr":"[::1]:52812","level":"info","msg":"Received request.","req_id":70,"req_method":"GET","req_path":"/health","time":"2026-05-06T14:10:06Z"}
+opa               | {"client_addr":"[::1]:52812","level":"info","msg":"Sent response.","req_id":70,"req_method":"GET","req_path":"/health","resp_bytes":3,"resp_duration":0.213272,"resp_status":200,"time":"2026-05-06T14:10:06Z"}
+opa               | {"client_addr":"[::1]:52822","level":"info","msg":"Received request.","req_id":71,"req_method":"GET","req_path":"/health","time":"2026-05-06T14:10:13Z"}
+opa               | {"client_addr":"[::1]:52822","level":"info","msg":"Sent response.","req_id":71,"req_method":"GET","req_path":"/health","resp_bytes":3,"resp_duration":0.203438,"resp_status":200,"time":"2026-05-06T14:10:13Z"}
+opa               | {"client_addr":"[::1]:42556","level":"info","msg":"Received request.","req_id":72,"req_method":"GET","req_path":"/health","time":"2026-05-06T14:10:18Z"}
+opa               | {"client_addr":"[::1]:42556","level":"info","msg":"Sent response.","req_id":72,"req_method":"GET","req_path":"/health","resp_bytes":3,"resp_duration":0.190745,"resp_status":200,"time":"2026-05-06T14:10:18Z"}
+opa               | {"client_addr":"[::1]:42564","level":"info","msg":"Received request.","req_id":73,"req_method":"GET","req_path":"/health","time":"2026-05-06T14:10:23Z"}
+opa               | {"client_addr":"[::1]:42564","level":"info","msg":"Sent response.","req_id":73,"req_method":"GET","req_path":"/health","resp_bytes":3,"resp_duration":0.53871,"resp_status":200,"time":"2026-05-06T14:10:23Z"}
+opa               | {"client_addr":"[::1]:46012","level":"info","msg":"Received request.","req_id":74,"req_method":"GET","req_path":"/health","time":"2026-05-06T14:10:28Z"}
+opa               | {"client_addr":"[::1]:46012","level":"info","msg":"Sent response.","req_id":74,"req_method":"GET","req_path":"/health","resp_bytes":3,"resp_duration":0.225218,"resp_status":200,"time":"2026-05-06T14:10:28Z"}
+opa               | {"client_addr":"[::1]:46014","level":"info","msg":"Received request.","req_id":75,"req_method":"GET","req_path":"/health","time":"2026-05-06T14:10:33Z"}
+opa               | {"client_addr":"[::1]:46014","level":"info","msg":"Sent response.","req_id":75,"req_method":"GET","req_path":"/health","resp_bytes":3,"resp_duration":0.2051,"resp_status":200,"time":"2026-05-06T14:10:33Z"}
+opa               | {"client_addr":"[::1]:48992","level":"info","msg":"Received request.","req_id":76,"req_method":"GET","req_path":"/health","time":"2026-05-06T14:10:38Z"}
+opa               | {"client_addr":"[::1]:48992","level":"info","msg":"Sent response.","req_id":76,"req_method":"GET","req_path":"/health","resp_bytes":3,"resp_duration":0.211453,"resp_status":200,"time":"2026-05-06T14:10:38Z"}
+opa               | {"client_addr":"[::1]:52456","level":"info","msg":"Received request.","req_id":77,"req_method":"GET","req_path":"/health","time":"2026-05-06T14:10:43Z"}
+opa               | {"client_addr":"[::1]:52456","level":"info","msg":"Sent response.","req_id":77,"req_method":"GET","req_path":"/health","resp_bytes":3,"resp_duration":0.192749,"resp_status":200,"time":"2026-05-06T14:10:43Z"}
+opa               | {"client_addr":"[::1]:52470","level":"info","msg":"Received request.","req_id":78,"req_method":"GET","req_path":"/health","time":"2026-05-06T14:10:50Z"}
+opa               | {"client_addr":"[::1]:52470","level":"info","msg":"Sent response.","req_id":78,"req_method":"GET","req_path":"/health","resp_bytes":3,"resp_duration":0.195665,"resp_status":200,"time":"2026-05-06T14:10:50Z"}
+opa               | {"client_addr":"[::1]:54902","level":"info","msg":"Received request.","req_id":79,"req_method":"GET","req_path":"/health","time":"2026-05-06T14:10:55Z"}
+opa               | {"client_addr":"[::1]:54902","level":"info","msg":"Sent response.","req_id":79,"req_method":"GET","req_path":"/health","resp_bytes":3,"resp_duration":1.26326,"resp_status":200,"time":"2026-05-06T14:10:55Z"}
+opa               | {"client_addr":"[::1]:54914","level":"info","msg":"Received request.","req_id":80,"req_method":"GET","req_path":"/health","time":"2026-05-06T14:11:00Z"}
+opa               | {"client_addr":"[::1]:54914","level":"info","msg":"Sent response.","req_id":80,"req_method":"GET","req_path":"/health","resp_bytes":3,"resp_duration":0.196919,"resp_status":200,"time":"2026-05-06T14:11:00Z"}
+opa               | {"client_addr":"[::1]:46046","level":"info","msg":"Received request.","req_id":81,"req_method":"GET","req_path":"/health","time":"2026-05-06T14:11:05Z"}
+opa               | {"client_addr":"[::1]:46046","level":"info","msg":"Sent response.","req_id":81,"req_method":"GET","req_path":"/health","resp_bytes":3,"resp_duration":0.209423,"resp_status":200,"time":"2026-05-06T14:11:05Z"}
+opa               | {"client_addr":"[::1]:46052","level":"info","msg":"Received request.","req_id":82,"req_method":"GET","req_path":"/health","time":"2026-05-06T14:11:10Z"}
+opa               | {"client_addr":"[::1]:46052","level":"info","msg":"Sent response.","req_id":82,"req_method":"GET","req_path":"/health","resp_bytes":3,"resp_duration":5.198573,"resp_status":200,"time":"2026-05-06T14:11:10Z"}
+opa               | {"client_addr":"[::1]:56428","level":"info","msg":"Received request.","req_id":83,"req_method":"GET","req_path":"/health","time":"2026-05-06T14:11:15Z"}
+opa               | {"client_addr":"[::1]:56428","level":"info","msg":"Sent response.","req_id":83,"req_method":"GET","req_path":"/health","resp_bytes":3,"resp_duration":0.25444,"resp_status":200,"time":"2026-05-06T14:11:15Z"}
+opa               | {"client_addr":"[::1]:56444","level":"info","msg":"Received request.","req_id":84,"req_method":"GET","req_path":"/health","time":"2026-05-06T14:11:21Z"}
+opa               | {"client_addr":"[::1]:56444","level":"info","msg":"Sent response.","req_id":84,"req_method":"GET","req_path":"/health","resp_bytes":3,"resp_duration":0.217327,"resp_status":200,"time":"2026-05-06T14:11:21Z"}
+opa               | {"client_addr":"[::1]:41048","level":"info","msg":"Received request.","req_id":85,"req_method":"GET","req_path":"/health","time":"2026-05-06T14:11:26Z"}
+opa               | {"client_addr":"[::1]:41048","level":"info","msg":"Sent response.","req_id":85,"req_method":"GET","req_path":"/health","resp_bytes":3,"resp_duration":0.194191,"resp_status":200,"time":"2026-05-06T14:11:26Z"}
+opa               | {"client_addr":"[::1]:41052","level":"info","msg":"Received request.","req_id":86,"req_method":"GET","req_path":"/health","time":"2026-05-06T14:11:31Z"}
+opa               | {"client_addr":"[::1]:41052","level":"info","msg":"Sent response.","req_id":86,"req_method":"GET","req_path":"/health","resp_bytes":3,"resp_duration":1.306215,"resp_status":200,"time":"2026-05-06T14:11:31Z"}
+opa               | {"client_addr":"[::1]:38660","level":"info","msg":"Received request.","req_id":87,"req_method":"GET","req_path":"/health","time":"2026-05-06T14:11:36Z"}
+opa               | {"client_addr":"[::1]:38660","level":"info","msg":"Sent response.","req_id":87,"req_method":"GET","req_path":"/health","resp_bytes":3,"resp_duration":0.188794,"resp_status":200,"time":"2026-05-06T14:11:36Z"}
+opa               | {"client_addr":"[::1]:38676","level":"info","msg":"Received request.","req_id":88,"req_method":"GET","req_path":"/health","time":"2026-05-06T14:11:42Z"}
+opa               | {"client_addr":"[::1]:38676","level":"info","msg":"Sent response.","req_id":88,"req_method":"GET","req_path":"/health","resp_bytes":3,"resp_duration":0.194236,"resp_status":200,"time":"2026-05-06T14:11:42Z"}
+opa               | {"client_addr":"[::1]:44008","level":"info","msg":"Received request.","req_id":89,"req_method":"GET","req_path":"/health","time":"2026-05-06T14:11:47Z"}
+opa               | {"client_addr":"[::1]:44008","level":"info","msg":"Sent response.","req_id":89,"req_method":"GET","req_path":"/health","resp_bytes":3,"resp_duration":0.17459,"resp_status":200,"time":"2026-05-06T14:11:47Z"}
+opa               | {"client_addr":"[::1]:44024","level":"info","msg":"Received request.","req_id":90,"req_method":"GET","req_path":"/health","time":"2026-05-06T14:11:53Z"}
+opa               | {"client_addr":"[::1]:44024","level":"info","msg":"Sent response.","req_id":90,"req_method":"GET","req_path":"/health","resp_bytes":3,"resp_duration":0.190073,"resp_status":200,"time":"2026-05-06T14:11:53Z"}
+opa               | {"client_addr":"[::1]:40076","level":"info","msg":"Received request.","req_id":91,"req_method":"GET","req_path":"/health","time":"2026-05-06T14:11:58Z"}
+opa               | {"client_addr":"[::1]:40076","level":"info","msg":"Sent response.","req_id":91,"req_method":"GET","req_path":"/health","resp_bytes":3,"resp_duration":0.188248,"resp_status":200,"time":"2026-05-06T14:11:58Z"}
+opa               | {"client_addr":"[::1]:40084","level":"info","msg":"Received request.","req_id":92,"req_method":"GET","req_path":"/health","time":"2026-05-06T14:12:03Z"}
+opa               | {"client_addr":"[::1]:40084","level":"info","msg":"Sent response.","req_id":92,"req_method":"GET","req_path":"/health","resp_bytes":3,"resp_duration":0.188646,"resp_status":200,"time":"2026-05-06T14:12:03Z"}
+opa               | {"client_addr":"[::1]:39718","level":"info","msg":"Received request.","req_id":93,"req_method":"GET","req_path":"/health","time":"2026-05-06T14:12:08Z"}
+opa               | {"client_addr":"[::1]:39718","level":"info","msg":"Sent response.","req_id":93,"req_method":"GET","req_path":"/health","resp_bytes":3,"resp_duration":0.182402,"resp_status":200,"time":"2026-05-06T14:12:08Z"}
+opa               | {"client_addr":"[::1]:39722","level":"info","msg":"Received request.","req_id":94,"req_method":"GET","req_path":"/health","time":"2026-05-06T14:12:13Z"}
+opa               | {"client_addr":"[::1]:39722","level":"info","msg":"Sent response.","req_id":94,"req_method":"GET","req_path":"/health","resp_bytes":3,"resp_duration":0.179712,"resp_status":200,"time":"2026-05-06T14:12:13Z"}
+ Compose Stopping Gracefully Stopping... press Ctrl+C again to force
+ Container fl-middleware Stopping 
+ Container hospital_b Stopping 
+ Container malicious_client Stopping 
+ Container hospital_a Stopping 
+ Container hospital_c Stopping 
+ Container hospital_c Stopped 
+ Container hospital_a Stopped 
+ Container malicious_client Stopped 
+ Container hospital_b Stopped 
+ Container fl-server Stopping 
+ Container fl-server Stopped 
+ Container fl-middleware Stopped 
+ Container opa Stopping 
+ Container keycloak Stopping 
+ Container opa Stopped 
+ Container keycloak Stopped 
+
+
+Run complete. Generating assurance report...
+Generating report for: run_2026-05-06_14-04-17
+✅ Report written: /home/yogen/NorthStar/federated-secure-fl/logs/run_2026-05-06_14-04-17/report.html
+Report: logs/run_2026-05-06_14-04-17/report.html
+✅ Run 2026-05-06_14-04-17 complete. Logs → logs/run_2026-05-06_14-04-17/

@@ -1,0 +1,10 @@
+{
+  "run_id":            "2026-05-09_09-44-42",
+  "started_at":        "2026-05-09T09:44:42Z",
+  "num_rounds":        "15",
+  "trust_weighting":   "true",
+  "attack_profile":    "none",
+  "hitl_enabled":      "false",
+  "clients":           ["hospital_a", "hospital_b", "hospital_c"],
+  "notes":             ""
+}

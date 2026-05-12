@@ -11,7 +11,7 @@ Privacy-preserving federated learning across distributed hospital nodes with ide
 
 ---
 
-## 2. Overview
+## 1. Overview
 
 Project North Star is a research-grade federated learning pipeline designed to demonstrate that **security architecture**, not model accuracy, is the hard problem in production FL deployments. Three hospital clients train a shared model without ever exposing raw data; every participation attempt is authenticated via Keycloak JWT credentials and authorised by an OPA policy engine before any gradient update is admitted. A persistent trust scoring engine computes per-client behavioural reputation using exponential moving average (EMA) smoothing, and those scores directly re-weight the FedAvg aggregation so that low-trust clients contribute proportionally less to the global model. The pipeline concludes each run by generating a self-contained HTML assurance report that provides an auditable record of every identity decision, trust event, and compliance flag — making the system suitable for regulated environments where model provenance must be demonstrated.
 
@@ -19,7 +19,7 @@ Project North Star is a research-grade federated learning pipeline designed to d
 
 ---
 
-## 3. Architecture
+## 2. Architecture
 
 ```
 ╔══════════════════════════════════════════════════════════════════════════════╗
@@ -68,7 +68,7 @@ Data flows
 
 ---
 
-## 4. Phase Map
+## 3. Phase Map
 
 | Phase | Name | What Was Built | Status |
 |-------|------|----------------|--------|
@@ -77,15 +77,15 @@ Data flows
 | **2** | JWT Authentication | Keycloak 24.0 identity provider with realm import; `fl-middleware` verifies client JWTs via JWKS endpoint before proxying any FL participation request. | ✅ Complete |
 | **3** | OPA Policy Enforcement | OPA Rego policy (`fl_policy.rego`) enforces `role==trainer` and revocation list; live client revocation via `PUT /v1/data/revoked_clients` without container restart. | ✅ Complete |
 | **3.5** | HITL Gate | Human-in-the-Loop gate on `fl-server` that can pause training after each round for operator approval, rejection, or emergency stop via REST endpoints. | ✅ Complete |
-| **4** | Trust Scoring Engine | Persistent SQLite-backed `TrustEngine` with EMA smoothing, per-client norm history, five scoring rules (dropout, policy warning, norm anomaly, low-loss bonus, participation bonus), and warmup guard. | ✅ Complete |
-| **5** | Byzantine Attack Simulation | `malicious_client.py` with `noise` (10× Gaussian) and `sign_flip` modes; `TrustWeightedFedAvg` aggregation that down-weights attacker contributions to near zero by round 11; verified comparison runs. | ✅ Complete |
+| **4** | Trust Scoring Engine | Persistent SQLite-backed `TrustEngine` with EMA smoothing, per-client norm history, six scoring rules (including cosine similarity), and warmup guard. | ✅ Complete |
+| **5** | Byzantine Attack Simulation | `malicious_client.py` with `noise` (10× Gaussian) and `sign_flip` modes; deterministic seeding for mock consensus; `TrustWeightedFedAvg` aggregation down-weights attacker contributions to near zero. | ✅ Complete |
 | **6** | Assurance Reporting | `GET /assurance/report` live JSON endpoint and `generate_report.py` offline HTML generator producing a self-contained dark/light-mode report with compliance flags, trust trajectory, and per-client cards. | ✅ Complete |
 
 ---
 
-## 5. Security Architecture
+## 4. Security Architecture
 
-### 5a. Zero Trust Admission (Keycloak + OPA)
+### 4a. Zero Trust Admission (Keycloak + OPA)
 
 Every client must present a valid JWT before any FL interaction. The flow is:
 
@@ -115,7 +115,7 @@ curl -X PUT http://localhost:8181/v1/data/revoked_clients \
      -d '["hospital_c"]'
 ```
 
-### 5b. Trust Scoring Engine (EMA)
+### 4b. Trust Scoring Engine (EMA)
 
 The `TrustEngine` class in `trust/scoring.py` maintains a persistent reputation score per client in SQLite.
 
@@ -123,7 +123,7 @@ The `TrustEngine` class in `trust/scoring.py` maintains a persistent reputation 
 ```
 T_new = 0.3 × O_current + 0.7 × T_prev
 ```
-where `O_current` is the observation score for the current round, computed by applying the five rules below to `T_prev` as a starting point.
+where `O_current` is the observation score for the current round, computed by applying the six rules below to `T_prev` as a starting point.
 
 **Scoring rules:**
 
@@ -134,11 +134,12 @@ where `O_current` is the observation score for the current round, computed by ap
 | 3 | Norm anomaly | −0.15 | `update_norm > 2× client's rolling 5-round mean` (post-warmup) |
 | 4 | Low-loss bonus | +0.03 | `train_loss < LOW_LOSS_THRESHOLD` (default 0.3) and no dropout |
 | 5 | Participation bonus | +0.05 | Client present every round so far and zero lifetime anomalies |
+| 6 | Direction anomaly | −0.20 | Cosine similarity against global median < -0.3 (flags opposite-direction gradients) |
 
-Additional guards:
+**Additional guards:**
 - **Anomaly floor**: after 3+ lifetime anomalies, `O_current` is capped at 0.6, preventing EMA recovery for persistently malicious clients.
 - **Score clamp**: `T_new ∈ [0.1, 1.0]` — a client can never be fully expelled or fully trusted by score alone.
-- **Warmup guard**: during rounds 1–`WARMUP_ROUNDS` (default 3), `get_score()` returns the neutral baseline 0.8 regardless of DB state, so aggregation weighting only kicks in once a genuine behavioural history exists.
+- **Warmup guard**: during rounds 1–`WARMUP_ROUNDS` (default 3), `get_score()` returns the neutral baseline 0.8 regardless of DB state, so aggregation weighting only kicks in once a genuine behavioural history exists. Rule 6 is also skipped in Round 1 since no prior global consensus exists.
 
 **Per-client norm history — design rationale and bug fix:**
 
@@ -150,7 +151,10 @@ Additional guards:
 >
 > **Why this matters beyond this project:** shared global baselines are a common unstated assumption in trust-scoring FL literature — papers describe "the baseline norm" without specifying whether it is per-client or global. This is a concrete, reproducible failure mode with a one-line fix (`self._norm_history.setdefault(client_id, [])`). Reviewers of FL security systems should treat this as a checklist item.
 
-### 5c. Trust-Weighted Aggregation (TrustWeightedFedAvg)
+### 4c. Synchronization of Client Mocks
+To make Rule 6 (Direction-Based Detection) effective, "honest" mock clients use deterministic random seeding (`numpy.random.seed(server_round)`). This forces all honest clients to share a common "true gradient" direction in each round (mimicking real training where clients converge). This allows the server's median direction to act as a rock-solid reference for detecting sign-flippers.
+
+### 4d. Trust-Weighted Aggregation (TrustWeightedFedAvg)
 
 The custom Flower strategy in `server/server.py` replaces FedAvg's uniform weighting with trust-scaled effective sample counts:
 
@@ -158,13 +162,13 @@ The custom Flower strategy in `server/server.py` replaces FedAvg's uniform weigh
 w_eff_i = (n_i × T_i) / Σ_j (n_j × T_j)
 ```
 
-where `n_i` is the number of examples reported by client `i` and `T_i` is its current trust score. A client with `T = 0.4` contributes half as much weight as an identical client with `T = 0.8`. As an attacker's trust decays, its influence on the global model asymptotically approaches zero.
+where `n_i` is the number of examples reported by client `i` and `T_i` is its current trust score. A client with `T = 0.4` contributes half as much weight as an identical client with `T = 0.8`. As an attacker's trust decays, its influence on the global model asymptotically approaches zero. Clients flagged by Rule 3 or Rule 6 are programmatically excluded from the global model aggregation.
 
 **Fallback:** set `TRUST_WEIGHTING=false` in the environment to revert to uniform FedAvg with no code changes, enabling clean A/B comparisons.
 
 ---
 
-## 6. Attack Simulation
+## 5. Attack Simulation & Verification
 
 The attack profile is gated behind a Docker Compose profile so it never starts by accident:
 
@@ -176,23 +180,19 @@ docker compose --profile attack up malicious_client
 
 | Mode | Mechanism | Detection Signal |
 |------|-----------|-----------------|
-| `noise` | Adds Gaussian noise at **10× the normal update scale** to all weight tensors | `update_norm` spikes 10× above client's rolling mean; triggers Rule 3 from round 4 |
-| `sign_flip` | Multiplies every weight by **−1**, pushing the global model in the opposite gradient direction | Large negative-direction norm; triggers Rule 3 and rapid trust decay |
+| `noise` | Adds Gaussian noise at **10× the normal update scale** to all weight tensors | `update_norm` spikes 10× above client's rolling mean; triggers Rule 3 |
+| `sign_flip` | Multiplies every weight by **−1**, pushing the global model in the opposite direction | Cosine similarity < -0.3; triggers Rule 6 and rapid trust decay |
 
-**Verified results — run `runB_11-40-11_defended` (15 rounds, `noise` mode):**
+**Verification Sweep Results:**
 
-| Metric | Value |
-|--------|-------|
-| Malicious client initial trust | 0.800 |
-| Malicious client final trust | 0.368 |
-| Honest hospital final trust | 0.860 |
-| Anomalies flagged (malicious) | 12 of 15 rounds |
-| False positives (honest clients) | 0 (after per-client norm fix) |
-| Attacker aggregation weight | < 1% of total by round 11 |
+We validated the pipeline across three scenarios using `run_experiment.sh`:
+1. **Run A (Noise Attack):** Magnitude-based detection successfully down-weighted and excluded clients pushing massive random updates.
+2. **Run B (Sign-Flip Attack):** Rule 6 successfully flagged the adversary (Cosine Sim ≈ -0.4) and rapidly decayed their score, entirely dropping them from aggregation.
+3. **Run C (Clean Baseline):** Zero false positives for honest hospitals.
 
 ---
 
-## 7. Assurance Reporting
+## 6. Assurance Reporting
 
 ### Live JSON endpoint
 
@@ -214,14 +214,14 @@ python3 experiments/generate_report.py logs/run_<id>/
 
 The HTML file is fully self-contained (all CSS and JS inlined), renders correctly from `file://`, and supports system dark/light mode via `prefers-color-scheme`.
 
-**Report sections:**
+**Report sections & Enhancements:**
 
 | Section | Contents |
 |---------|----------|
 | Run Header | Run ID, timestamp, number of rounds, attack profile, trust weighting enabled |
 | Compliance Summary | Total flags, breakdown by type, pass/warn/fail badge |
 | Identity & Policy | Admission attempts, allowed vs. denied counts, policy errors |
-| Trust Trajectory | Per-client trust score across all rounds (tabular) |
+| Trust Trajectory | Per-client trust score across all rounds. Includes **Cosine Sim** metric column. |
 | Per-Client Cards | Final trust score, anomaly count, rounds participated |
 | Round Summary | Loss and accuracy per round, gate decision |
 | Scope Note | Reminder that training is mocked; security architecture is the contribution |
@@ -231,13 +231,13 @@ The HTML file is fully self-contained (all CSS and JS inlined), renders correctl
 | Flag Type | Trigger |
 |-----------|---------|
 | `POLICY_DENIAL` | OPA rejected an admission attempt |
-| `TRUST_ANOMALY` | `is_anomaly=true` in a `trust_updated` event |
+| `TRUST_ANOMALY` | `is_anomaly=true` (e.g., Rule 3 or Rule 6 triggered) |
 | `OPERATOR_REJECT` | Human operator rejected a round via HITL gate |
 | `OPERATOR_STOP` | Human operator issued emergency stop |
 
 ---
 
-## 8. Quick Start
+## 7. Quick Start
 
 ### Prerequisites
 
@@ -245,7 +245,7 @@ The HTML file is fully self-contained (all CSS and JS inlined), renders correctl
 |-------------|-------|
 | Docker + Docker Compose v2 | `docker compose version` to verify |
 | Python 3.10+ | For offline report generation only |
-| 8 GB RAM recommended | Keycloak alone needs ~1.5 GB; all containers together ~4 GB |
+| 16 GB RAM recommended | Keycloak alone needs ~1.5 GB; all containers together ~4 GB |
 
 ### Steps
 
@@ -283,9 +283,9 @@ curl -X POST http://localhost:9081/gate/stop     # emergency stop
 **5. Run with a malicious client (Byzantine attack simulation):**
 ```bash
 export HITL_ENABLED=false
-cd infra
-docker compose down -v
-docker compose --profile attack up --build
+export ATTACK_MODE=sign_flip  # or 'noise'
+export COMPOSE_PROFILES=attack
+./run_experiment.sh
 ```
 
 **6. Revoke a client mid-run (from a separate terminal):**
@@ -314,7 +314,7 @@ curl http://localhost:9081/assurance/report | python3 -m json.tool
 
 ---
 
-## 9. Project Structure
+## 8. Project Structure
 
 ```
 federated-secure-fl/
@@ -337,7 +337,7 @@ federated-secure-fl/
 │   └── Dockerfile
 │
 ├── trust/                         # Trust scoring engine
-│   ├── scoring.py                 # TrustEngine: EMA formula, 5 scoring rules, per-client norm history
+│   ├── scoring.py                 # TrustEngine: EMA formula, 6 scoring rules, per-client norm history
 │   ├── schema.sql                 # SQLite DDL for client_trust table
 │   └── __init__.py
 │
@@ -376,7 +376,7 @@ federated-secure-fl/
 
 ---
 
-## 10. Configuration Reference
+## 9. Configuration Reference
 
 All variables can be set in `infra/.env` or exported before calling `run_experiment.sh`.
 
@@ -400,7 +400,7 @@ All variables can be set in `infra/.env` or exported before calling `run_experim
 
 ---
 
-## 11. Scope Note
+## 10. Scope Note
 
 This project is a **security architecture demonstrator**, not a production FL system. The following are intentional simplifications:
 
@@ -411,14 +411,14 @@ This project is a **security architecture demonstrator**, not a production FL sy
 
 ---
 
-## 12. Extensibility
+## 11. Extensibility
 
 The architecture is designed for minimal coupling. Key extension points:
 
 | What to extend | Where to change | Notes |
 |----------------|-----------------|-------|
 | Real ML model | `client/mock_model.py` + `client/client.py` | Replace `MockModel` with a PyTorch/TF `NumPyClient`; the server aggregation is model-agnostic |
-| Additional scoring rules | `trust/scoring.py` → `update_score()` | Rules 1–5 are clearly delimited; add Rule 6+ after the Rule 5 block |
+| Additional scoring rules | `trust/scoring.py` → `update_score()` | Rules 1–6 are clearly delimited; add Rule 7+ after the Rule 6 block |
 | PostgreSQL trust DB | `DB_URL` env var + `trust/schema.sql` | Schema uses ANSI SQL; swap `sqlite3` calls for SQLAlchemy sessions |
 | Additional OPA policies | `policy/fl_policy.rego` | OPA bundles support multiple policy files; add data-quality or geographic checks |
 | New compliance flag types | `server/assurance.py` → `_build_report()` | Add a list comprehension in the `flags` builder |
@@ -427,23 +427,7 @@ The architecture is designed for minimal coupling. Key extension points:
 
 ---
 
-## 13. Academic References
-
-The design of Project North Star draws on the following literature. References are particularly relevant for situating the per-client norm history fix (§5b) and trust-weighted aggregation (§5c) in the broader FL security literature.
-
-1. **McMahan, H. B., et al. (2017).** Communication-Efficient Learning of Deep Networks from Decentralized Data. *AISTATS 2017.* — Original FedAvg algorithm.
-
-2. **Blanchard, P., et al. (2017).** Machine Learning with Adversaries: Byzantine Tolerant Gradient Descent. *NeurIPS 2017.* — Foundational Byzantine fault tolerance in distributed ML; motivates norm-based anomaly detection.
-
-3. **Fung, C., et al. (2020).** The Limitations of Federated Learning in Sybil Settings. *RAID 2020.* — Demonstrates that contribution-based defences can be gamed; motivates the anomaly floor and Rule 5 design.
-
-4. **Cao, X., et al. (2021).** FLTrust: Byzantine-Robust Federated Learning via Trust Bootstrapping. *NDSS 2021.* — Closest prior work to this project's EMA scoring; requires a server-held clean dataset, which this project avoids.
-
-5. **Mothukuri, V., et al. (2021).** A Survey on Security and Privacy of Federated Learning. *Future Generation Computer Systems, 115.* — Taxonomy of FL attack surfaces; §3.3 covers norm-based detection and shared-baseline pitfalls.
-
-6. **Open Policy Agent Documentation.** https://www.openpolicyagent.org/docs/ — Rego language reference; `fl_policy.rego` follows OPA's recommended admission control pattern.
 
 ---
 
 *Project North Star — internal research use only.*
-

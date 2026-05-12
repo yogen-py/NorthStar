@@ -12,6 +12,7 @@ from flwr.common import Metrics, Parameters, Scalar
 from flwr.server.client_proxy import ClientProxy
 from flwr.common import FitRes, EvaluateRes
 import numpy as np
+from flwr.common import parameters_to_ndarrays
 from dotenv import load_dotenv
 
 from shared.logger import get_logger, log_event, Timer
@@ -64,6 +65,17 @@ def evaluate_metrics_aggregation(metrics: List[Tuple[int, Metrics]]) -> Metrics:
     return aggregated
 
 
+def _cosine_similarity(vec_a: list, vec_b: list) -> float:
+    """Cosine similarity between two lists of weight arrays (flattened to 1D)."""
+    a = np.concatenate([w.flatten() for w in vec_a])
+    b = np.concatenate([w.flatten() for w in vec_b])
+    norm_a = np.linalg.norm(a)
+    norm_b = np.linalg.norm(b)
+    if norm_a == 0 or norm_b == 0:
+        return 1.0  # no update — treat as neutral
+    return float(np.dot(a, b) / (norm_a * norm_b))
+
+
 class LoggingFedAvg(fl.server.strategy.FedAvg):
     """FedAvg with per-round structured JSON logging and Trust Engine (Phase 4)."""
 
@@ -73,6 +85,9 @@ class LoggingFedAvg(fl.server.strategy.FedAvg):
         # D2: inject TrustEngine and track previous round participants for dropout
         self.trust_engine = trust_engine
         self._previous_round_client_ids: set = set()
+        # Cosine-sim signal: store previous round's aggregated weights.
+        # None in Round 1 — cosine sim is skipped and defaults to 1.0.
+        self._global_weights: list | None = None
 
     def _apply_trust_weights(self, server_round, results):
         """
@@ -127,6 +142,43 @@ class LoggingFedAvg(fl.server.strategy.FedAvg):
         client_metrics = {}
 
         self._round_clients = []
+
+        # ── Cosine-similarity pre-computation ────────────────────────────────
+        # Decode each client's received weights and compute the delta vs. the
+        # previous round's global weights.  Round 1 is skipped (no prior
+        # global weights available) and every client defaults to cosine_sim=1.0.
+        client_cosine_sims: dict[str, float] = {}
+        if self._global_weights is not None:
+            # Build per-client delta vectors
+            client_deltas: dict[str, list] = {}
+            for _proxy, _fit_res in results:
+                _cid = str(_fit_res.metrics.get("client_id") or _proxy.cid)
+                received = parameters_to_ndarrays(_fit_res.parameters)
+                delta = [r - g for r, g in zip(received, self._global_weights)]
+                client_deltas[_cid] = delta
+
+            # Compute median direction across all client deltas
+            if client_deltas:
+                all_flat = np.stack([
+                    np.concatenate([w.flatten() for w in d])
+                    for d in client_deltas.values()
+                ])  # shape: (num_clients, total_params)
+                median_flat = np.median(all_flat, axis=0)
+                # Reshape median back into a list-of-arrays matching layer shapes
+                median_direction: list = []
+                offset = 0
+                ref_delta = next(iter(client_deltas.values()))
+                for layer in ref_delta:
+                    n = layer.size
+                    median_direction.append(
+                        median_flat[offset: offset + n].reshape(layer.shape)
+                    )
+                    offset += n
+
+                for _cid, delta in client_deltas.items():
+                    client_cosine_sims[_cid] = _cosine_similarity(delta, median_direction)
+        # ── End cosine-sim pre-computation ───────────────────────────────────
+
         for client_proxy, fit_res in results:
             client_id  = str(fit_res.metrics.get("client_id") or client_proxy.cid)
             update_norm = float(fit_res.metrics.get("update_norm", 0.0))
@@ -148,13 +200,14 @@ class LoggingFedAvg(fl.server.strategy.FedAvg):
             # Detect whether this norm was already clamped by the client
             # (i.e. the raw value was inf/nan and the client returned 1e6 sentinel).
             norm_was_clamped = (update_norm >= 1e6)
+            cosine_sim = client_cosine_sims.get(client_id, 1.0)
             self.trust_engine.update_score(client_id, {
                 "round":           server_round,
                 "update_norm":     update_norm,
                 "train_loss":      train_loss,
                 "dropout":         False,
                 "norm_was_clamped": norm_was_clamped,
-            })
+            }, cosine_sim=cosine_sim)
 
         # D3: Dropout detection — clients in previous round but not this one
         for dropped_id in (self._previous_round_client_ids - current_round_client_ids):
@@ -169,6 +222,29 @@ class LoggingFedAvg(fl.server.strategy.FedAvg):
         # D3: Update module-level round counter (used by policy-warning route)
         global current_round
         current_round = server_round
+
+        # --- scoring phase complete; build exclusion list ---
+        # All update_score() calls for this round (including dropout clients) are
+        # done above. is_flagged_anomalous() now reflects the current-round anomaly
+        # status for every participating client.
+        excluded_ids = [
+            str(fit_res.metrics.get("client_id") or proxy.cid)
+            for proxy, fit_res in results
+            if self.trust_engine.is_flagged_anomalous(
+                str(fit_res.metrics.get("client_id") or proxy.cid)
+            )
+        ]
+        clean_results = [
+            (proxy, fit_res) for proxy, fit_res in results
+            if str(fit_res.metrics.get("client_id") or proxy.cid) not in excluded_ids
+        ]
+        # Pathological fallback: if ALL clients are flagged (e.g. adversarial
+        # majority), fall back to the full result set to avoid an empty aggregation
+        # and potential crash in FedAvg's parameter averaging.
+        agg_results = clean_results if clean_results else results
+
+        # Store for round_complete logging in aggregate_evaluate
+        self._last_excluded_ids = excluded_ids
 
         # D3: Build _round_clients with live trust scores (0.8 during warmup)
         self._round_clients = [
@@ -192,7 +268,14 @@ class LoggingFedAvg(fl.server.strategy.FedAvg):
 
         original_n_map = {str(r.metrics.get("client_id") or p.cid): r.num_examples for p, r in results}
 
-        results = self._apply_trust_weights(server_round, results)
+        if excluded_ids:
+            log_event(log, "clients_excluded_from_aggregation",
+                correlation_id=cid,
+                round=server_round,
+                excluded=excluded_ids,
+            )
+
+        agg_results = self._apply_trust_weights(server_round, agg_results)
 
         log_event(log, "trust_weighting_applied",
             round=server_round,
@@ -203,11 +286,16 @@ class LoggingFedAvg(fl.server.strategy.FedAvg):
                 "effective_n": r.num_examples,
                 "trust_score": self.trust_engine.get_score(
                     str(r.metrics.get("client_id") or p.cid), current_round=server_round),
-            } for p, r in results],
+            } for p, r in agg_results],
         )
 
         with Timer() as t:
-            result = super().aggregate_fit(server_round, results, failures)
+            result = super().aggregate_fit(server_round, agg_results, failures)
+
+        # Update stored global weights for next round's cosine-sim computation.
+        # result[0] is None only on catastrophic failure (no clients aggregated).
+        if result is not None and result[0] is not None:
+            self._global_weights = parameters_to_ndarrays(result[0])
 
         log_event(log, "aggregation_complete",
             correlation_id=cid,
@@ -237,6 +325,7 @@ class LoggingFedAvg(fl.server.strategy.FedAvg):
                 num_clients=len(results),
                 num_failures=len(failures),
                 duration_ms=t.duration_ms,
+                excluded_from_aggregation=getattr(self, "_last_excluded_ids", []),
             )
 
             summary = {

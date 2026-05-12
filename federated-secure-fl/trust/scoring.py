@@ -40,6 +40,9 @@ class TrustEngine:
         else:
             self._db_path = db_url
         self._norm_history: dict[str, list[float]] = {}
+        # Tracks the most-recent anomaly flag per client (used by aggregate_fit
+        # to exclude flagged clients from the aggregation weight computation).
+        self._last_anomaly_status: dict[str, bool] = {}
 
     def _connect(self) -> sqlite3.Connection:
         """Return a sqlite3 connection with row_factory set."""
@@ -87,7 +90,7 @@ class TrustEngine:
             return 0.8
         return float(row["trust_score"])
 
-    def update_score(self, client_id: str, observation: dict) -> None:
+    def update_score(self, client_id: str, observation: dict, cosine_sim: float = 1.0) -> None:
         """
         GAP 4: Full update_score implementation.
 
@@ -160,20 +163,34 @@ class TrustEngine:
 
             # Rule 3 — Abnormal norm (post-warmup only)
             import math
-            is_anomaly = False
-            
+            is_norm_anomaly = False
+
             history = self._norm_history.setdefault(client_id, [])
             if rounds_participated >= WARMUP_ROUNDS:
                 if not math.isfinite(update_norm):
                     observation_score -= 0.15
-                    is_anomaly = True
+                    is_norm_anomaly = True
                 elif len(history) >= 3:
                     baseline = float(np.mean(history[-5:]))
                     if update_norm > 2.0 * baseline and baseline > 0:
                         observation_score -= 0.15
-                        is_anomaly = True
-            
+                        is_norm_anomaly = True
+
             history.append(update_norm)
+
+            # Rule 6 — Direction Anomaly (cosine similarity against round median)
+            # A client whose update points significantly opposite to the majority
+            # is penalised independently of the norm check.
+            is_direction_anomaly = cosine_sim < -0.3
+            if is_direction_anomaly:
+                observation_score -= 0.20
+
+            # Combined anomaly flag: either signal is sufficient to flag the client.
+            is_anomaly = is_norm_anomaly or is_direction_anomaly
+
+            # Cache anomaly status for is_flagged_anomalous() — updated before
+            # EMA so aggregate_fit() can read it immediately after update_score().
+            self._last_anomaly_status[client_id] = is_anomaly
 
             # Rule 4 — Low loss bonus
             if train_loss < LOW_LOSS_THRESHOLD and not dropout:
@@ -234,9 +251,21 @@ class TrustEngine:
             observation_score=round(observation_score, 6),
             T_prev=round(T_prev, 6),
             is_anomaly=is_anomaly,
+            is_direction_anomaly=is_direction_anomaly,
+            cosine_sim=round(cosine_sim, 4),
             dropout=dropout,
             policy_warning=policy_warn,
             update_norm=round(update_norm, 6),
             train_loss=round(train_loss, 6),
             baseline_norm=round(new_baseline_norm, 6),
         )
+
+    def is_flagged_anomalous(self, client_id: str) -> bool:
+        """Return True if the client's most recent scored round was flagged as anomalous.
+
+        Reads from the in-memory _last_anomaly_status dict that is updated in
+        update_score() before the EMA step, so this is safe to call immediately
+        after update_score() returns without an additional DB query.
+        Defaults to False for clients that have not yet been scored this session.
+        """
+        return self._last_anomaly_status.get(client_id, False)

@@ -78,9 +78,15 @@ class MockMNISTClient(fl.client.NumPyClient):
             old_params = [p.copy() for p in self.params]
 
             # Simulate training: small perturbation to weights
+            # Use server_round to seed the noise so clients share a common 'true' gradient direction
+            round_val = int(config.get("server_round", self.round_num))
+            np.random.seed(round_val)
+            delta_noise = [np.random.randn(*p.shape).astype(np.float32) * 0.001 for p in self.params]
+            np.random.seed()  # reset to unseeded
+            
             self.params = [
-                p + np.random.randn(*p.shape).astype(np.float32) * 0.001
-                for p in self.params
+                p + d
+                for p, d in zip(self.params, delta_noise)
             ]
 
             # Simulate improving metrics over rounds
